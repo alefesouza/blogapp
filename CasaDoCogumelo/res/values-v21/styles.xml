@@ -1,5 +1,5 @@
 <resources>
-    <style name="CasaDoCogumelo.Theme" parent="Theme.AppCompat.NoActionBar">
+    <style name="CogumeloNoticias.Theme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBar">false</item>
 		<item name="android:selectableItemBackgroundBorderless">@drawable/toolbar_ripple</item>
@@ -23,7 +23,7 @@
 		<item name="selectableItemBackground">@drawable/toolbar_ripple</item>
     </style>
     
-	<style name="BlackOverflow" parent="CasaDoCogumelo.Theme">
+	<style name="BlackOverflow" parent="CogumeloNoticias.Theme">
 		<item name="actionOverflowButtonStyle">@style/MyActionButtonOverFlow</item>
 		<item name="homeAsUpIndicator">@drawable/ic_arrow_black</item>
 		<item name="actionModeShareDrawable">@drawable/ic_share_black</item>

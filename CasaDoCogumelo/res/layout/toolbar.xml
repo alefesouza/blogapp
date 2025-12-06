@@ -15,6 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:elevation="@dimen/toolbar_elevation"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
 			app:theme="@style/Toolbar" />
 
@@ -22,6 +23,11 @@
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+		<View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/toolbar_dropshadow"
+			android:id="@+id/dropshadow" />
     </FrameLayout>
     </LinearLayout>
 </FrameLayout>

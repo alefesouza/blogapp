@@ -5,51 +5,29 @@
     android:layout_height="match_parent"
     android:id="@+id/frame" >
 
-		<RelativeLayout
+		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:fitsSystemWindows="true"
 			android:orientation="vertical">
-
-			<android.support.v7.widget.Toolbar
-				android:id="@+id/toolbar"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:maxHeight="?attr/actionBarSize"
-				app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-				app:theme="@style/Toolbar" />
 			
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:id="@+id/linear_tabs"
-				android:layout_below="@+id/toolbar">
+				<android.support.v7.widget.Toolbar
+					android:id="@+id/toolbar"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:maxHeight="?attr/actionBarSize"
+					app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+					app:theme="@style/Toolbar" />
 
-				<com.acasadocogumelo.lib.SlidingTabLayout
+				<com.acasadocogumelo.cogumelonoticias.lib.SlidingTabLayout
 					android:id="@+id/sliding_tabs"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />
-			</LinearLayout>
 
 			<android.support.v4.view.ViewPager
 				android:id="@+id/pager"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_below="@+id/linear_tabs" />
-			
-			<FrameLayout
-				android:id="@+id/content_frame"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:layout_below="@+id/toolbar"
-				android:visibility="gone">
-			</FrameLayout>
-			
-			<LinearLayout
-				android:id="@+id/adLayout"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_alignParentBottom="true"
-				android:orientation="vertical" />
-		</RelativeLayout>
+				android:layout_below="@+id/header"/>
+		</LinearLayout>
 </FrameLayout>

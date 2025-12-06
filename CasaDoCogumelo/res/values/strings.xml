@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">A Casa do Cogumelo</string>
+    <string name="app_name">Cogumelo Notícias</string>
 
     <string name="blog_description">O maior site sobre a Nintendo no Brasil, atualizado diariamente com Notícias, Vídeos, Imagens e Gameplay.</string>
     <string name="search">Pesquisar</string>
@@ -25,7 +25,15 @@
 	
     <string name="settings">Configurações</string>
     <string name="about">Sobre</string>
-
+    
+    <string name="wiiu">Wii U</string>
+    <string name="tresds">3DS</string>
+    <string name="mario">Mario</string>
+    <string name="zelda">Zelda</string>
+    <string name="pokemon">Pokémon</string>
+    <string name="donkeykong">Donkey Kong</string>
+    <string name="metroid">Metroid</string>
+    
     <string name="colors">Cores</string>
     <string name="pref_color">Escolher cor</string>
     <string name="pref_color_summary">Escolher a cor do aplicativo</string>
@@ -44,7 +52,14 @@
     <string name="dialog_notification">Suas notificações do site estão desativadas! Deseja ativar para receber todas as novidades em primeira mão?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
+    <string name="other">Outro</string>
 
-    <string name="drawer_open">Open</string>
-    <string name="drawer_close">Close</string>
+    <string name="addshortcutwidget">Categoria do Cogumelo Notícias</string>
+    <string name="widgettitle">Título do ícone</string>
+    <string name="widgeticon">Categoria:</string>
+    <string name="widgetcateg">Digite a categoria</string>
+    <string name="createshortcut">Criar atalho</string>
+
+    <string name="drawer_open">Abrir</string>
+    <string name="drawer_close">Fechar</string>
 </resources>

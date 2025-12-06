@@ -4,13 +4,13 @@
     <string-array name="navigation_main_sections">
         <item>Início</item>
         <item>Favoritos</item>
-        <item>Wii U</item>
-        <item>3DS</item>
-        <item>Mario</item>
-        <item>Zelda</item>
-        <item>Pokémon</item>
-        <item>Donkey Kong</item>
-        <item>Metroid</item>
+        <item>@string/wiiu</item>
+        <item>@string/tresds</item>
+        <item>@string/mario</item>
+        <item>@string/zelda</item>
+        <item>@string/pokemon</item>
+        <item>@string/donkeykong</item>
+        <item>@string/metroid</item>
         <item>Facebook</item>
         <item>Google+</item>
         <item>Twitter</item>

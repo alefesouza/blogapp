@@ -10,11 +10,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	android:id="@+id/conteudo"
-	android:background="@drawable/drawer"
-    android:orientation="vertical" >
+	android:background="@drawable/card"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/card_padding" >
 	
 		<LinearLayout
 			android:layout_width="match_parent"
+			android:id="@+id/space"
 			android:layout_height="175dp"
 			android:gravity="center">
 	<com.gc.materialdesign.views.ProgressBarDeterminate
@@ -34,18 +36,18 @@
         tools:ignore="ContentDescription"
 	/>
 	
-    <com.acasadocogumelo.other.CustomTextView
+    <com.acasadocogumelo.cogumelonoticias.other.CustomTextView
         android:id="@+id/titulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 		android:textColor="#000000"
 		android:layout_margin="10dp"
-	android:layout_below="@+id/image"
+		android:layout_below="@+id/image"
         android:textSize="16sp"
         app:fontName="RobotoSlab-Bold.ttf"
 	/>
 	
-    <com.acasadocogumelo.other.CustomTextView
+    <com.acasadocogumelo.cogumelonoticias.other.CustomTextView
         android:id="@+id/descricao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

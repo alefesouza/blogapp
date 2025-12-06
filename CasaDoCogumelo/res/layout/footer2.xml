@@ -4,13 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     
-	<com.acasadocogumelo.other.CustomTextView
+	<com.acasadocogumelo.cogumelonoticias.other.CustomTextView
         android:id="@+id/myTextView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/drawer"
         android:gravity="center_vertical"
         android:paddingBottom="16dp"
         android:paddingLeft="18dp"

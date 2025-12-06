@@ -4,8 +4,9 @@
         android:id="@+id/menu_share"
         android:title="@string/share"
         app:showAsAction="always" />
-    <item android:id="@+id/menu_back"
-        android:title="@string/back" />
+    <item
+        android:id="@+id/menu_open"
+        android:title="@string/openinbrowser" />
     <item
         android:id="@+id/menu_forward"
         android:title="@string/forward" />

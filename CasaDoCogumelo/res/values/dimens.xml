@@ -3,4 +3,12 @@
     <dimen name="list_margin">5dp</dimen>
     <dimen name="tab_height">48dp</dimen>
     <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="card_padding">10dp</dimen>
+
+    <dimen name="margin_standard">16dp</dimen>
+
+    <dimen name="toolbar_margin_start">72dp</dimen>
+    <dimen name="flexible_space_height">72dp</dimen>
+    <dimen name="flexible_space_image_height">200dp</dimen>
+    <dimen name="flexible_space_show_fab_offset">120dp</dimen>
 </resources>

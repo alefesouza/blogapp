@@ -10,7 +10,7 @@
 		android:layout_height="match_parent"
 		android:orientation="vertical" >
 
-		<com.acasadocogumelo.other.CustomTextView
+		<com.acasadocogumelo.cogumelonoticias.other.CustomTextView
 			android:id="@+id/nomore"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

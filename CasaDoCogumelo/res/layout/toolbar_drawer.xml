@@ -3,76 +3,88 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/frame" >
+    android:id="@+id/frame"
+    tools:context=".MainActivity" >
 
 	<android.support.v4.widget.DrawerLayout
 		android:id="@+id/drawer_layout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
-
-		<RelativeLayout
+		<FrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:fitsSystemWindows="true"
-			android:orientation="vertical">
-
-			<android.support.v7.widget.Toolbar
-				android:id="@+id/toolbar"
+			android:fitsSystemWindows="true">
+			<com.github.ksoichiro.android.observablescrollview.TouchInterceptionFrameLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:maxHeight="?attr/actionBarSize"
-				app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-				app:theme="@style/Toolbar" />
-			
-			<LinearLayout
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:id="@+id/linear_tabs"
-				android:layout_below="@+id/toolbar">
-
-				<com.acasadocogumelo.lib.SlidingTabLayout
-					android:id="@+id/sliding_tabs"
+				android:id="@+id/container" >
+				<RelativeLayout
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content" />
-			</LinearLayout>
+					android:layout_height="match_parent"
+					android:orientation="vertical">
 
-			<android.support.v4.view.ViewPager
-				android:id="@+id/pager"
+			<FrameLayout
+				android:id="@+id/pager_wrapper"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_below="@+id/linear_tabs" />
+				android:layout_height="match_parent"
+				android:paddingTop="@dimen/tab_height">
+				<android.support.v4.view.ViewPager
+					android:id="@+id/pager"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent" />
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="4dp"
+					android:background="@drawable/toolbar_dropshadow"
+					android:id="@+id/dropshadow"/>
+			</FrameLayout>
 			
 			<FrameLayout
 				android:id="@+id/content_frame"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:layout_below="@+id/toolbar"
+				android:layout_below="@+id/header"
 				android:visibility="gone">
 			</FrameLayout>
 			
-			<LinearLayout
-				android:id="@+id/adLayout"
+			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_alignParentBottom="true"
-				android:orientation="vertical" />
-		</RelativeLayout>
+				android:id="@+id/header"
+				android:orientation="vertical">
 
-		<ListView
-			android:id="@+id/left_drawer"
-			android:layout_width="240dp"
-			android:layout_height="match_parent"
-			android:layout_gravity="start"
-			android:layout_marginRight="96dp"
-			android:background="@android:color/white"
-			android:choiceMode="singleChoice"
-			android:divider="#00000000"
-			android:dividerHeight="1.00dp"
-			android:listSelector="@drawable/drawer"
-			android:longClickable="false"
-			android:orientation="vertical"
-			android:overScrollMode="never"
-			android:scrollbars="none" />
+				<android.support.v7.widget.Toolbar
+					android:id="@+id/toolbar"
+					android:layout_width="match_parent"
+					android:layout_height="?attr/actionBarSize"
+					app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+					app:theme="@style/Toolbar" />
+				
+				<com.acasadocogumelo.cogumelonoticias.lib.SlidingTabLayout
+					android:id="@+id/sliding_tabs"
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/tab_height"
+					android:layout_below="@+id/toolbar" />
+			</RelativeLayout>
+		</RelativeLayout>
+		</com.github.ksoichiro.android.observablescrollview.TouchInterceptionFrameLayout>
+		</FrameLayout>
+
+			<ListView
+				android:id="@+id/left_drawer"
+				android:layout_width="240dp"
+				android:layout_height="match_parent"
+				android:layout_gravity="start"
+				android:layout_marginRight="96dp"
+				android:background="@android:color/white"
+				android:choiceMode="singleChoice"
+				android:divider="#00000000"
+				android:dividerHeight="1.00dp"
+				android:listSelector="@drawable/drawer"
+				android:longClickable="false"
+				android:orientation="vertical"
+				android:overScrollMode="never"
+				android:scrollbars="none" />
 
 	</android.support.v4.widget.DrawerLayout>
 </FrameLayout>

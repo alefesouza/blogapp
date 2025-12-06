@@ -39,11 +39,12 @@
 		android:background="#d92525"
 	/>
 
-    <View
+	<View
 		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_below="@+id/webview01"
-	/>
+		android:layout_height="4dp"
+		android:background="@drawable/toolbar_dropshadow"
+		android:layout_alignParentTop="true"
+		android:layout_above="@+id/progressBar2" />
 </RelativeLayout>
 </FrameLayout>
 
