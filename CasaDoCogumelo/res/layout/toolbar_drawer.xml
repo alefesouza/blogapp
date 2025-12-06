@@ -30,7 +30,7 @@
 				android:id="@+id/linear_tabs"
 				android:layout_below="@+id/toolbar">
 
-				<net.aloogle.apps.acasadocogumelo.lib.SlidingTabLayout
+				<com.acasadocogumelo.lib.SlidingTabLayout
 					android:id="@+id/sliding_tabs"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content" />

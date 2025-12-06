@@ -26,7 +26,7 @@
         android:background="#CCd5d5d5"
         android:visibility="visible" />
     
-	<net.aloogle.apps.acasadocogumelo.other.CustomTextView
+	<com.acasadocogumelo.other.CustomTextView
         android:id="@+id/myTextView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

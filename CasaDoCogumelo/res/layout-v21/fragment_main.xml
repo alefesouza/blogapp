@@ -27,8 +27,8 @@
 				android:dividerHeight="0dp"
 				android:background="#eeeeee"
 				android:scrollbars="none"
-				android:layout_marginLeft="5dp"
-				android:layout_marginRight="5dp" />
+				android:layout_marginLeft="@dimen/list_margin"
+				android:layout_marginRight="@dimen/list_margin" />
 </RelativeLayout>
 </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

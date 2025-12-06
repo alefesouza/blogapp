@@ -4,6 +4,6 @@
     android:orientation="vertical">
     <View
 		android:layout_width="match_parent"
-		android:layout_height="@dimen/space_to_ad"
+		android:layout_height="@dimen/space"
 	/>
 </LinearLayout>

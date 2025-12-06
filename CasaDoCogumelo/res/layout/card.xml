@@ -34,7 +34,7 @@
         tools:ignore="ContentDescription"
 	/>
 	
-    <net.aloogle.apps.acasadocogumelo.other.CustomTextView
+    <com.acasadocogumelo.other.CustomTextView
         android:id="@+id/titulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         app:fontName="RobotoSlab-Bold.ttf"
 	/>
 	
-    <net.aloogle.apps.acasadocogumelo.other.CustomTextView
+    <com.acasadocogumelo.other.CustomTextView
         android:id="@+id/descricao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

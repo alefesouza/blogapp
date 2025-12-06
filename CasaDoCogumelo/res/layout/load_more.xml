@@ -11,7 +11,7 @@
 		android:background="@drawable/drawer"
 		android:orientation="vertical" >
 
-		<net.aloogle.apps.acasadocogumelo.other.CustomTextView
+		<com.acasadocogumelo.other.CustomTextView
 			android:id="@+id/nomore"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"

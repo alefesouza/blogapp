@@ -1,4 +1,5 @@
 <resources>
-    <dimen name="size_to_ad">90dp</dimen>
-    <dimen name="space_to_ad">120dp</dimen>
+    <dimen name="space">30dp</dimen>
+    <dimen name="tab_height">48dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
 </resources>

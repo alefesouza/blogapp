@@ -1,6 +1,6 @@
 <resources>
-    <dimen name="size_to_ad">50dp</dimen>
-    <dimen name="space_to_ad">76dp</dimen>
+    <dimen name="space">26dp</dimen>
+    <dimen name="list_margin">5dp</dimen>
     <dimen name="tab_height">48dp</dimen>
     <dimen name="toolbar_elevation">4dp</dimen>
 </resources>

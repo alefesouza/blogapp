@@ -34,7 +34,6 @@
 	   android:layout_height="match_parent"
 	   android:layout_width="match_parent"
 	   android:layout_above="@+id/progressBar2"
-	   android:layout_marginBottom="@dimen/size_to_ad"
         android:visibility="gone" />
    
 	<com.gc.materialdesign.views.ProgressBarDeterminate
@@ -53,7 +52,7 @@
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"
 		android:layout_marginRight="16dp"
-		android:layout_marginBottom="66dp"
+		android:layout_marginBottom="16dp"
 		android:src="@drawable/ic_comments"
 		app:fab_colorNormal="#f44336"
 		app:fab_colorPressed="#e53935"
@@ -66,7 +65,7 @@
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"
 		android:layout_marginRight="16dp"
-		android:layout_marginBottom="66dp"
+		android:layout_marginBottom="16dp"
 		android:src="@drawable/ic_download"
 		app:fab_colorNormal="#f44336"
 		app:fab_colorPressed="#e53935"
@@ -79,7 +78,7 @@
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"
 		android:layout_marginRight="16dp"
-		android:layout_marginBottom="66dp"
+		android:layout_marginBottom="16dp"
 		android:src="@drawable/ic_open"
 		app:fab_colorNormal="#f44336"
 		app:fab_colorPressed="#e53935"

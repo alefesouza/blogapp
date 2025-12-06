@@ -9,14 +9,9 @@
 		android:id="@+id/drawer_layout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
-		<RelativeLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="vertical">
 		<FrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_marginBottom="@dimen/size_to_ad"
 			android:fitsSystemWindows="true">
 			<com.github.ksoichiro.android.observablescrollview.TouchInterceptionFrameLayout
 				android:layout_width="match_parent"
@@ -58,7 +53,7 @@
 					app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
 					app:theme="@style/Toolbar" />
 				
-				<net.aloogle.apps.acasadocogumelo.lib.SlidingTabLayout
+				<com.acasadocogumelo.lib.SlidingTabLayout
 					android:id="@+id/sliding_tabs"
 					android:layout_width="match_parent"
 					android:layout_height="@dimen/tab_height"
@@ -67,14 +62,6 @@
 		</RelativeLayout>
 		</com.github.ksoichiro.android.observablescrollview.TouchInterceptionFrameLayout>
 		</FrameLayout>
-		<LinearLayout
-			android:id="@+id/adLayout"
-			android:background="#eeeeee"
-			android:layout_width="match_parent"
-			android:layout_height="@dimen/size_to_ad"
-			android:layout_alignParentBottom="true"
-			android:orientation="vertical" />
-		</RelativeLayout>
 
 			<ListView
 				android:id="@+id/left_drawer"

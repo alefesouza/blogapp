@@ -14,7 +14,7 @@
 		android:textSize="16sp"
 	/>
 	
-	<net.aloogle.apps.acasadocogumelo.other.CustomTextView
+	<com.acasadocogumelo.other.CustomTextView
 		android:id="@+id/licensetext"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
