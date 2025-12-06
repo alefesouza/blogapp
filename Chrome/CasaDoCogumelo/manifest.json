@@ -1,7 +1,7 @@
 {
 	"name": "A Casa do Cogumelo",
 	"description": "O maior site sobre a Nintendo no Brasil, atualizado diariamente com Not\u00edcias, V\u00eddeos, Imagens e Gameplay.",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"manifest_version": 2,
 	"permissions": [ "http://apps.aloogle.net/blogapp/*", "http://*.blogspot.com/*", "storage", "notifications" ],
 	"options_page": "paginas/opcoes.html",

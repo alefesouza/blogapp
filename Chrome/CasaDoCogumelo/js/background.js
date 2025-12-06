@@ -32,7 +32,7 @@ if (!localStorage.storagepadrao) {
 	localStorage["notifposts"] = "true";
 	localStorage["notiflastposts"] = "true";
 	notifLatestPosts();
-	notifPost();
+	setTimeout(function(){ notifPost() }, 500);
 	window.open('paginas/opcoes.html');
 	localStorage.storagepadrao = "true";
 }
