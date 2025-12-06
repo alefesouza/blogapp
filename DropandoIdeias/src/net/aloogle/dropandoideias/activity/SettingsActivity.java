@@ -48,7 +48,7 @@ public class SettingsActivity extends ActionBarActivity {
 
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		
+
 		ActionBarColor(this, preferences.getString("prefIconColor", "branco"));
 
 		fl = (FrameLayout)findViewById(R.id.content_frame);
@@ -80,8 +80,13 @@ public class SettingsActivity extends ActionBarActivity {
 		} else {
 			activity.getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#000000\">" + activity.getString(R.string.settings) + "</font>"));
 		}
+
 		String userColor = preferences.getString("prefColor", "ff222222");
-		activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
+		if (userColor.equals("fundo")) {
+			activity.getSupportActionBar().setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.toolbar_bg));
+		} else {
+			activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
+		}
 	}
 
 	@Override

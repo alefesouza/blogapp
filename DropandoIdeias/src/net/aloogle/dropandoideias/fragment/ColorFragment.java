@@ -25,6 +25,7 @@ public class ColorFragment extends Fragment {
 	@SuppressWarnings("unused")
 	private Activity activity;
 	SharedPreferences preferences;
+	Editor editor;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -32,14 +33,25 @@ public class ColorFragment extends Fragment {
 		this.activity = getActivity();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.color_picker, container, false);
 		preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		editor = preferences.edit();
 		mColorPicker = (ColorPicker)view.findViewById(R.id.color_picker);
 		mColorPicker.setColor(Color.parseColor("#" + preferences.getString("prefColor", "ff222222")));
-		applySelectedColor();
+		if (preferences.getInt("lastFundo", 1) == 1) {
+			editor.putString("prefColor", "fundo");
+			editor.commit();
+			((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.toolbar_bg));
+			view.findViewById(R.id.colorframe).setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.toolbar_bg));
+			mColorPicker.setColor(Color.parseColor("#ffffffff"));
+		} else {
+			mColorPicker.setColor(Color.parseColor("#" + preferences.getString("lastColor", "ff222222")));
+			applySelectedColor();
+		}
 
 		Button buttonSet = (Button)view.findViewById(R.id.set);
 		buttonSet.setOnClickListener(new OnClickListener() {
@@ -53,10 +65,11 @@ public class ColorFragment extends Fragment {
 		buttonSave.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Editor editor = preferences.edit();
 				editor.putString("prefColor", "ff" + String.format("%06x", 0xffffff & mColorPicker.getColor()));
 				editor.commit();
 				editor.putString("lastColor", preferences.getString("prefColor", "ff222222"));
+				editor.commit();
+				editor.putInt("lastFundo", 0);
 				editor.commit();
 				getActivity().finish();
 			}

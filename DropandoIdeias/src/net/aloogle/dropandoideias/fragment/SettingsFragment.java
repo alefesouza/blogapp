@@ -32,8 +32,18 @@ public class SettingsFragment extends PreferenceFragment {
 
 		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		final Editor editor = preferences.edit();
-		editor.putString("lastColor", preferences.getString("prefColor", "ff222222"));
-		editor.commit();
+
+		if (preferences.getString("prefColor", "ff222222").equals("fundo")) {
+			editor.putString("lastColor", "ff222222");
+			editor.commit();
+			editor.putInt("lastFundo", 1);
+			editor.commit();
+		} else {
+			editor.putString("lastColor", preferences.getString("prefColor", "ff222222"));
+			editor.commit();
+			editor.putInt("lastFundo", 0);
+			editor.commit();
+		}
 
 		Preference prefColor = findPreference("prefColor");
 		prefColor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -43,12 +53,26 @@ public class SettingsFragment extends PreferenceFragment {
 					@Override
 					public void run() {
 						if (newValue.equals("outra")) {
+							if (preferences.getInt("lastDefault", 1) == 1) {
+								editor.putString("lastColor", "ff222222");
+								editor.commit();
+							}
 							editor.putString("prefColor", preferences.getString("lastColor", "ff222222"));
 							editor.commit();
 							Intent color = new Intent(getActivity(), SettingsActivity.class);
 							color.putExtra("fragment", 1);
 							startActivity(color);
+						} else if (newValue.equals("fundo")) {
+							editor.putInt("lastDefault", 1);
+							editor.commit();
+							editor.putString("lastColor", "ff222222");
+							editor.commit();
+							((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_bg));
 						} else {
+							editor.putString("lastColor", preferences.getString("prefColor", "ff222222"));
+							editor.commit();
+							editor.putInt("lastDefault", 0);
+							editor.commit();
 							SettingsActivity.ActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", "branco"));
 						}
 					}
@@ -80,10 +104,11 @@ public class SettingsFragment extends PreferenceFragment {
 					public void run() {
 						if (newValue.equals(true)) {
 							editor.putLong("longNotification", 0);
+							editor.commit();
 						} else {
 							editor.putLong("longNotification", System.currentTimeMillis() + 15 * 24 * 60 * 60 * 1000);
+							editor.commit();
 						}
-						editor.commit();
 					}
 				}, 100);
 				return true;

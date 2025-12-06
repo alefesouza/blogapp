@@ -29,6 +29,7 @@
 
     <string-array name="colors">
         <item>Padrão</item>
+        <item>Fundo do blog</item>
         <item>Preto</item>
         <item>Branco</item>
         <item>Vermelho</item>
@@ -38,6 +39,7 @@
 
     <string-array name="colorsValues">
         <item>ff222222</item>
+        <item>fundo</item>
         <item>ff1b1b1b</item>
         <item>ffffffff</item>
         <item>ffc62222</item>

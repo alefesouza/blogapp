@@ -33,7 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.*;
+import android.view.ViewTreeObserver. * ;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.CustomViewCallback;
@@ -134,6 +134,9 @@ public class WebViewActivity extends ActionBarActivity {
 		webView.getSettings().setJavaScriptEnabled(true);
 		webView.getSettings().setSupportZoom(true);
 		webView.getSettings().setBuiltInZoomControls(true);
+		if (Build.VERSION.SDK_INT >= 11) {
+			webView.getSettings().setDisplayZoomControls(false);
+		}
 
 		if (savedInstanceState != null) {
 			webView.restoreState(savedInstanceState);
@@ -173,8 +176,13 @@ public class WebViewActivity extends ActionBarActivity {
 
 	public void ActionBarColor(String title) {
 		String userColor = preferences.getString("prefColor", "ff222222");
-		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
-		findViewById(R.id.frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
+		if (userColor.equals("fundo")) {
+			getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_bg));
+			findViewById(R.id.frame).setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_bg));
+		} else {
+			getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
+			findViewById(R.id.frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
+		}
 	}
 
 	public void initDrawer() {

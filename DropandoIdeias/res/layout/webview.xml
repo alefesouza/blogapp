@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/frame">
+    android:id="@+id/frame" >
 
 <android.support.v4.widget.DrawerLayout
     android:id="@+id/drawer_layout"
@@ -20,9 +20,7 @@ android:fitsSystemWindows="true" >
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
+            android:layout_width="match_parent" android:layout_height="?attr/actionBarSize" android:maxHeight="?attr/actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
             app:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 

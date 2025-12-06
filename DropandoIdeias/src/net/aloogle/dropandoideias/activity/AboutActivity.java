@@ -56,8 +56,14 @@ public class AboutActivity extends ActionBarActivity {
 
 	public void ActionBarColor(String title) {
 		String userColor = preferences.getString("prefColor", "ff222222");
-		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
-		findViewById(R.id.frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
+
+		if(userColor.equals("fundo")) {
+			getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_bg));
+			findViewById(R.id.frame).setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_bg));
+		} else {
+			getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
+			findViewById(R.id.frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
+		}
 	}
 
 	public class webViewClient extends WebViewClient {
