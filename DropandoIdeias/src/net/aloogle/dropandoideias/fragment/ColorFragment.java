@@ -1,0 +1,72 @@
+package net.aloogle.dropandoideias.fragment;
+
+import android.app.Activity;
+import android.support.v4.app.Fragment;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import net.aloogle.dropandoideias.R;
+import net.aloogle.dropandoideias.lib.ColorPicker;
+
+public class ColorFragment extends Fragment {
+
+	private ColorPicker mColorPicker;
+	private View view;
+
+	@SuppressWarnings("unused")
+	private Activity activity;
+	SharedPreferences preferences;
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		this.activity = getActivity();
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+		Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.color_picker, container, false);
+		preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		mColorPicker = (ColorPicker)view.findViewById(R.id.color_picker);
+		mColorPicker.setColor(Color.parseColor("#" + preferences.getString("prefColor", "ff222222")));
+		applySelectedColor();
+
+		Button buttonSet = (Button)view.findViewById(R.id.set);
+		buttonSet.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				applySelectedColor();
+			}
+		});
+
+		Button buttonSave = (Button)view.findViewById(R.id.save);
+		buttonSave.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Editor editor = preferences.edit();
+				editor.putString("prefColor", "ff" + String.format("%06x", 0xffffff & mColorPicker.getColor()));
+				editor.commit();
+				editor.putString("lastColor", preferences.getString("prefColor", "ff222222"));
+				editor.commit();
+				getActivity().finish();
+			}
+		});
+		return view;
+	}
+
+	@SuppressWarnings("deprecation")
+	private void applySelectedColor() {
+		((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mColorPicker.getColor()));
+		view.findViewById(R.id.colorframe).setBackgroundDrawable(new ColorDrawable(mColorPicker.getColor()));
+	}
+}

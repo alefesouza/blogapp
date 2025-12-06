@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="drawer_array">
+
+    <string-array name="navigation_main_sections">
         <item>Início</item>
         <item>Animes</item>
         <item>Blogsfera</item>
@@ -11,5 +12,46 @@
         <item>Facebook</item>
         <item>Twitter</item>
         <item>YouTube</item>
+    </string-array>
+
+    <array name="drawable_ids">
+        <item>@drawable/drawer_inicio</item>
+        <item>@drawable/drawer_animes</item>
+        <item>@drawable/drawer_blogsfera</item>
+        <item>@drawable/drawer_games</item>
+        <item>@drawable/drawer_internet</item>
+        <item>@drawable/drawer_livros</item>
+        <item>@drawable/drawer_nerdices</item>
+        <item>@drawable/drawer_facebook</item>
+        <item>@drawable/drawer_twitter</item>
+        <item>@drawable/drawer_youtube</item>
+    </array>
+
+    <string-array name="colors">
+        <item>Padrão</item>
+        <item>Preto</item>
+        <item>Branco</item>
+        <item>Vermelho</item>
+        <item>Verde água</item>
+        <item>Escolher outra</item>
+    </string-array>
+
+    <string-array name="colorsValues">
+        <item>ff222222</item>
+        <item>ff1b1b1b</item>
+        <item>ffffffff</item>
+        <item>ffc62222</item>
+        <item>ff009e95</item>
+        <item>outra</item>
+    </string-array>
+
+    <string-array name="iconColors">
+        <item>Preto</item>
+        <item>Branco</item>
+    </string-array>
+
+    <string-array name="iconColorsValues">
+        <item>preto</item>
+        <item>branco</item>
     </string-array>
 </resources>

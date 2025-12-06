@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.aloogle.dropandoideias"
-    android:versionCode="6"
-    android:versionName="1.2.7" >
+    android:versionCode="7"
+    android:versionName="2.0">
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="14" />
 
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,50 +20,48 @@
 		android:protectionLevel="signature" />
 	<uses-permission android:name="net.aloogle.dropandoideias.permission.C2D_MESSAGE" />
 
-    <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="19" />
     <application
         android:name=".Application"
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:allowBackup="true"
-        android:theme="@style/AppTheme" >
-
+        android:theme="@style/DropandoIdeias.Theme">
         <activity
-            android:name=".SplashScreen"
-            android:label="@string/app_name"
-            android:configChanges="orientation|screenSize"
-			android:theme="@android:style/Theme.Light.NoTitleBar">
-
+            android:name=".activity.SplashScreen"
+            android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		
-		<activity android:name=".WebViewActivity"
-            android:configChanges="orientation|screenSize">
-		</activity>
-		
-		<activity android:name=".v14.WebViewActivity"
-            android:configChanges="orientation|screenSize">
-		</activity>
 
-		<service android:name="com.parse.PushService" />
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:configChanges="orientation|screenSize" />
+        
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:configChanges="orientation|screenSize" />
+        
+        <activity
+            android:name=".activity.AboutActivity"
+            android:configChanges="orientation|screenSize" />
+
+   <service android:name="com.parse.PushService" />
 		<receiver android:name="com.parse.ParseBroadcastReceiver">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 				<action android:name="android.intent.action.USER_PRESENT" />
 			</intent-filter>
 		</receiver>
-        <receiver android:name="net.aloogle.dropandoideias.CustomReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="net.aloogle.dropandoideias.UPDATE_STATUS" />
-            </intent-filter>
-        </receiver>
+		<receiver android:name="net.aloogle.dropandoideias.receiver.NotificationReceiver" >
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+				<action android:name="android.intent.action.USER_PRESENT" />
+				<action android:name="net.aloogle.dropandoideias.UPDATE_STATUS" />
+			</intent-filter>
+		</receiver>
 		<receiver android:name="com.parse.GcmBroadcastReceiver"
 			android:permission="com.google.android.c2dm.permission.SEND">
 			<intent-filter>

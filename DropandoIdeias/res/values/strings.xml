@@ -3,6 +3,7 @@
 
     <string name="app_name">Dropando Ideias</string>
 
+    <string name="blog_description">Um blog pra deixar seu inventário cheio! Internet, nerdices, cultura pop e mais.</string>
     <string name="search">Pesquisar</string>
     <string name="back">Voltar</string>
     <string name="forward">Avançar</string>
@@ -12,7 +13,25 @@
     <string name="cache">Limpar cache</string>
     <string name="cache2">Cache limpo!</string>
 
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
+    <string name="settings">Configurações</string>
+    <string name="about">Sobre</string>
 
+    <string name="colors">Cores</string>
+    <string name="pref_color">Escolher cor</string>
+    <string name="pref_color_summary">Escolher a cor do aplicativo</string>
+    <string name="pref_iconcolor">Cor dos ícones</string>
+    <string name="pref_iconcolor_summary">Escolher a cor dos ícones, ideal para cores claras (reinicie o aplicativo para mudar completamente)</string>
+    <string name="notifications">Notificações</string>
+    <string name="pref_notification">Receber notificações</string>
+    <string name="pref_notification_summary">Receber em primeira mão notificações de novos posts e vídeos do blog</string>
+
+    <string name="set">Aplicar</string>
+    <string name="save">Salvar</string>
+
+    <string name="dialog_notification">Suas notificações do blog estão desativadas! Deseja ativar para receber todas as novidades em primeira mão?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 </resources>
