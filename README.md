@@ -2,7 +2,7 @@
 
 BlogApp was a set of Android apps I created for free for blogs and news websites between 2014 and 2015 (I was 17 years old at the time). I started the project to improve my Android development skills and to get my work in front of more people.
 
-The first versions were just a simple WebView, but the latest versions were fully native Android apps written in Java, loading content through the WordPress REST API.
+The first versions were just a simple WebView, but the latest versions were fully native Android apps written in Java, loading content through the Blogger REST API.
 
 I didn’t publish the source code earlier because I thought the project could be monetized, but I never made a single penny from it 😂. So I decided to publish it in 2025, more than 10 years after the latest version was released.
 

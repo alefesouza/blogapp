@@ -1,0 +1,1 @@
+<? if (isset($token)) { } else { header("location:login.php"); } ?>

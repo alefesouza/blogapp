@@ -1,0 +1,89 @@
+<?
+$blogappid = $_GET["blogappid"];
+$platform = $_GET["platform"];
+$cache = "cache/".$blogappid."/main.".$platform.".json";
+
+if((!file_exists($cache) || $_GET['action'] == "update") || (isset($_GET["search"]) || isset($_GET["category"]) || isset($_GET["tag"]) || $_GET["page"] != "1")) {
+include('connect_db.php');
+$number = $_GET['number'];
+
+$css = mysqli_query($dbi, "SELECT * FROM extras WHERE blogappid=$blogappid AND oque='postcss';") or die ("ERROR: ".mysql_error());
+$infocss = mysqli_fetch_array($css);
+$js = mysqli_query($dbi, "SELECT * FROM extras WHERE blogappid=$blogappid AND oque='postjs';") or die ("ERROR: ".mysql_error());
+$infojs = mysqli_fetch_array($js);
+
+$blogappsql = mysqli_query($dbi, "SELECT * FROM login WHERE id=$blogappid;") or die ("ERROR: ".mysql_error());
+$infoblogapp = mysqli_fetch_array($blogappsql);
+$blogid = $infoblogapp["userid"];
+$base = $infoblogapp["site"];
+
+if(isset($_GET['page']) && $_GET['page'] != "") {
+	$page = '&page='.$_GET['page'];
+}
+
+if(isset($_GET['search']) && $_GET['search'] != "") {
+	$json = file_get_contents('https://public-api.wordpress.com/rest/v1.1/sites/'.$blogid.'/posts/?number='.$number.'&search='.urlencode($_GET['search']).$page);
+} else if(isset($_GET['category']) && $_GET['category'] != "") {
+	$category = $_GET['category'];
+	$json = file_get_contents('https://public-api.wordpress.com/rest/v1.1/sites/'.$blogid.'/posts/?number='.$number.'&category='.$category.$page);
+} else if(isset($_GET['tag']) && $_GET['tag'] != "") {
+	$tag = str_replace('%20', '-', $_GET['tag']);
+	$json = file_get_contents('https://public-api.wordpress.com/rest/v1.1/sites/'.$blogid.'/posts/?number='.$number.'&tag='.$_GET['tag'].$page);
+} else {
+	$json = file_get_contents('https://public-api.wordpress.com/rest/v1.1/sites/'.$blogid.'/posts/?number='.$number.$page.$after);
+}
+$site = json_decode($json);
+
+$posts = array("header" => "http://apps.aloogle.net/blogapp/wordpress/v2/headers/".$blogappid.".png", "posts" => array());
+
+$c = 0;
+
+foreach($site->posts as $post) {
+$titulo = trim(addslashes(html_entity_decode($post->title)));
+$id = $post->ID;
+$url = $post->URL;
+$author = $post->author->name;
+$content = $post->content;
+	
+preg_match_all('~<\s*meta\s+property="(og:image)"\s+content="([^"]*)|<\s*meta\s+property="(og:description)"\s+content="([^"]*)~i', file_get_contents($url), $matches);
+$imagem = $matches[2][1];
+$descricao = str_replace("'", "(apos)", html_entity_decode($matches[4][0], ENT_QUOTES, "UTF-8"));
+
+$comentarios = $post->discussion->comment_count;
+$data2 = date_parse($post->date);
+include("month.php");
+$date = $data2["day"]." ".$month." ".$data2["year"];
+
+if($usefbcomments) {
+$jsonfb = file_get_contents('https://graph.facebook.com/v2.6/?fields=og_object{comments}&id='.$hl_link[$i].'&access_token=');
+$commentsfb = json_decode($jsonfb);
+$comentarios += count($commentsfb->og_object->comments->data);
+}
+
+$tags = "";
+
+foreach ($post->tags as $key=>$val) {
+	$tag = $post->tags->$key->slug;
+	$tags .= '<a href="http://apps.aloogle.net/blogapp/start?tag='.$tag.'&title='.$key.'" class="tag">'.$key.'</a>, ';
+}
+if($tags != "") {
+	$tags = "<font class=\"tagscall\">Tags:</font> ".$tags;
+}
+$tags = substr($tags, 0, -2);
+
+if($_GET["platform"] == "windows") {
+	$top = "<p class=\"title\">".$titulo."</p><p class=\"authordate\">Por ".$author." - ".$date."</p>";
+}
+
+$posts["posts"][] = array("id" => $id, "title" => $titulo, "description" => $descricao, "image" => $imagem, "author" => $author, "url" => $url, "comments" => $comentarios, "date" => $date, "post" => str_replace("'", "(apos)", "<html><head><base href=\"".$base."\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0\" /><style>".$infocss['value']."</style></head><body>".$top.$content."<p>".$tags."</p></body><script>".$infojs['value']."</script></html>"));
+}
+
+if(!isset($_GET["search"]) && !isset($_GET["category"]) && !isset($_GET["tag"]) && ($_GET["page"] == "1" || !isset($_GET["page"]))) {
+	file_force_contents($cache, json_encode($posts));
+}
+
+echo json_encode($posts);
+} else {
+echo file_get_contents($cache);
+}
+?>
