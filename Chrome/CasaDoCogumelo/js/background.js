@@ -146,4 +146,4 @@ setInterval(function () {
 	if (localStorage["notifposts"] == "true") {
 		notifPost()
 	}
-}, 60000);
+}, 60000 * 20);
