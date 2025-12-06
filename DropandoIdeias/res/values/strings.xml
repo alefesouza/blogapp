@@ -4,10 +4,8 @@
     <string name="app_name">Dropando Ideias</string>
 
     <string name="search">Pesquisar</string>
-    <string name="queryhint">Sobre o que você quer ler? :)</string>
     <string name="back">Voltar</string>
     <string name="forward">Avançar</string>
-    <string name="nopages">Nenhuma página</string>
     <string name="home">Início</string>
     <string name="reload">Recarregar</string>
     <string name="sharepage">Compartilhar página</string>

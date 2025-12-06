@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.aloogle.dropandoideias"
-    android:versionCode="2"
-    android:versionName="1.1" >
+    android:versionCode="6"
+    android:versionName="1.2.7" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.VIBRATE" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+	<permission android:name="net.aloogle.dropandoideias.permission.C2D_MESSAGE"
+		android:protectionLevel="signature" />
+	<uses-permission android:name="net.aloogle.dropandoideias.permission.C2D_MESSAGE" />
 
     <uses-sdk
-        android:minSdkVersion="7"
+        android:minSdkVersion="10"
         android:targetSdkVersion="19" />
     <application
+        android:name=".Application"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:allowBackup="true"
@@ -36,6 +45,30 @@
 		<activity android:name=".v14.WebViewActivity"
             android:configChanges="orientation|screenSize">
 		</activity>
+
+		<service android:name="com.parse.PushService" />
+		<receiver android:name="com.parse.ParseBroadcastReceiver">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+				<action android:name="android.intent.action.USER_PRESENT" />
+			</intent-filter>
+		</receiver>
+        <receiver android:name="net.aloogle.dropandoideias.CustomReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="net.aloogle.dropandoideias.UPDATE_STATUS" />
+            </intent-filter>
+        </receiver>
+		<receiver android:name="com.parse.GcmBroadcastReceiver"
+			android:permission="com.google.android.c2dm.permission.SEND">
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+				<category android:name="net.aloogle.dropandoideias" />
+			</intent-filter>
+		</receiver>
     </application>
 
 </manifest>

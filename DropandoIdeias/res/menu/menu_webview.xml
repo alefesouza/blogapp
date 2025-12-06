@@ -7,17 +7,18 @@
         app:actionViewClass="android.support.v7.widget.SearchView" />
     <item
         android:id="@+id/menu_share"
-        android:title="@string/sharepage" />
+        android:title="@string/sharepage"
+        android:icon="@drawable/ic_action_share"
+        app:showAsAction="always" />
     <item android:id="@+id/menu_back"
-        android:title="@string/back"
-        app:showAsAction="ifRoom" />
+        android:title="@string/back" />
     <item
         android:id="@+id/menu_forward"
         android:title="@string/forward" />
     <item
-        android:id="@+id/menu_home"
-        android:title="@string/home" />
-    <item
         android:id="@+id/menu_reload"
         android:title="@string/reload" />
+    <item
+        android:id="@+id/menu_cache"
+        android:title="@string/cache" />
 </menu>

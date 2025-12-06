@@ -13,9 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
-        android:id="@+id/progressBar1"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:id="@+id/progressBar1" />
        
    <WebView
         android:id="@+id/webview01"
@@ -33,11 +31,12 @@
         android:visibility="gone">        
     </FrameLayout>
 
-<ListView
+	<ListView
         android:id="@+id/left_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+    	android:cacheColorHint="#00000000"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
