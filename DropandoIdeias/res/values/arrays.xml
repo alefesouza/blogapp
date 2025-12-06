@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="drawer_array">
+        <item>Início</item>
+        <item>Animes</item>
+        <item>Blogsfera</item>
+        <item>Games</item>
+        <item>Internet</item>
+        <item>Livros</item>
+        <item>Nerdices</item>
+        <item>Facebook</item>
+        <item>Twitter</item>
+        <item>YouTube</item>
+    </string-array>
+</resources>
