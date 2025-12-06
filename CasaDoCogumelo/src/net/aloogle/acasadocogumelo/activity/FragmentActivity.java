@@ -30,6 +30,7 @@ public class FragmentActivity extends ActionBarActivity {
 	Fragment webview = new WebViewFrag();
 	Fragment licenses = new LicensesFragment();
 	Fragment category = new CategoryFragment();
+	Fragment zoom = new ZoomFragment();
 	SharedPreferences preferences;
 
 	@SuppressLint("InlinedApi")
@@ -96,6 +97,9 @@ public class FragmentActivity extends ActionBarActivity {
 				ft.replace(R.id.content_frame, category);
 			} catch (UnsupportedEncodingException e) {}
 			break;
+		case 8:
+			ft.replace(R.id.content_frame, zoom);
+			break;
 		}
 		ft.commit();
 	}
@@ -104,8 +108,10 @@ public class FragmentActivity extends ActionBarActivity {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 		if (bw.equals("branco")) {
 			activity.getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#ffffff\">" + activity.getString(R.string.settings) + "</font>"));
+			activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white);
 		} else {
 			activity.getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#000000\">" + activity.getString(R.string.settings) + "</font>"));
+			activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_black);
 		}
 		String userColor = preferences.getString("prefColor", "padrao");
 		if (userColor.equals("padrao")) {
@@ -125,7 +131,6 @@ public class FragmentActivity extends ActionBarActivity {
 		} else {
 			activity.getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#000000\">" + title + "</font>"));
 		}
-
 		String userColor = preferences.getString("prefColor", "padrao");
 		if (userColor.equals("padrao")) {
 			activity.getSupportActionBar().setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.splash_bg));

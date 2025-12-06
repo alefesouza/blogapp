@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.MatrixCursor;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.graphics.Color;
@@ -29,6 +30,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,7 +43,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import java.io.UnsupportedEncodingException;
-import android.net.Uri;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import org.json.JSONArray;
@@ -120,7 +121,7 @@ public class MainActivity extends ActionBarActivity {
 
 		adView = new AdView(this);
 		adView.setAdUnitId("")
-		adView.setAdSize(AdSize.BANNER);
+		adView.setAdSize(AdSize.SMART_BANNER);
 
 		LinearLayout layout = (LinearLayout)findViewById(R.id.adLayout);
 
@@ -499,10 +500,13 @@ public class MainActivity extends ActionBarActivity {
 		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
 			public boolean onQueryTextSubmit(String s) {
+				try {
 				Intent intent = new Intent(MainActivity.this, FragmentActivity.class);
 				intent.putExtra("fragment", 4);
-				intent.putExtra("query", URLEncoder.encode(s));
+				intent.putExtra("query", URLEncoder.encode(s, "UTF-8"));
+				intent.putExtra("categorias", categoriaarray);
 				startActivity(intent);
+				} catch (UnsupportedEncodingException e) {}
 				return false;
 			}
 
@@ -585,20 +589,28 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void populateAdapter(String query) {
-		final MatrixCursor c = new MatrixCursor(new String[]{
-				BaseColumns._ID,
-				"categoryName"
-			});
+		final MatrixCursor c = new MatrixCursor(new String[] { BaseColumns._ID, "categoryName" });
 		for (int i = 0; i < categoriaarray.size(); i++) {
 			if (categoriaarray.get(i).toString().toLowerCase().startsWith(query.toLowerCase())) {
 				reallyarray.add(categoriaarray.get(i).toString());
-				c.addRow(new Object[]{
-					i,
-					categoriaarray.get(i).toString()
-				});
+				c.addRow(new Object[]{ i, categoriaarray.get(i).toString() });
 			}
 			mAdapter.changeCursor(c);
 		}
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+				boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+				if (drawerOpen) {
+					mDrawerLayout.closeDrawer(mDrawerList);
+					return true;
+				} else {
+					MainActivity.this.finish();
+				}
+			}
+		return super.onKeyDown(keyCode, event);
 	}
 
 	public void onSaveInstanceState(Bundle savedInstanceState) {

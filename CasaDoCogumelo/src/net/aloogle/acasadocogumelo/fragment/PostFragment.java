@@ -11,10 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -26,20 +22,25 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
@@ -51,17 +52,16 @@ import com.koushikdutta.ion.ProgressCallback;
 import com.melnykov.fab.FloatingActionButton;
 import com.melnykov.fab.ObservableScrollView;
 import net.aloogle.acasadocogumelo.R;
-import net.aloogle.acasadocogumelo.activity.ZoomActivity;
+import net.aloogle.acasadocogumelo.activity.FragmentActivity;
 import net.aloogle.acasadocogumelo.adapter.TagAdapter;
 import net.aloogle.acasadocogumelo.lib.JSONParser;
 import net.aloogle.acasadocogumelo.lib.PlayerViewActivity;
 import net.aloogle.acasadocogumelo.other.CustomTextView;
 
-@SuppressLint({"NewApi","InflateParams","SetJavaScriptEnabled"})
+@SuppressLint({"NewApi","InflateParams","SetJavaScriptEnabled", "SimpleDateFormat"})
 @SuppressWarnings("deprecation")
 public class PostFragment extends Fragment implements ObservableScrollView.OnScrollChangedListener {
-
-	CustomTextView titulo;
+	CustomTextView titulo, autorhora;
 	ImageView imagem;
 	Activity activity;
 	View view;
@@ -82,7 +82,6 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 	JSONArray tags = null;
 	LinearLayout linear;
 	boolean favorite, finished, pressed;
-	int y, oldy;
 
 	FloatingActionButton fabcomment;
 
@@ -119,14 +118,12 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 
 		finished = false;
 		pressed = false;
-		y = 0;
-		oldy = 0;
 
 		linear = (LinearLayout)view.findViewById(R.id.linear);
 
 		adView = new AdView(getActivity());
 		adView.setAdUnitId("")
-		adView.setAdSize(AdSize.BANNER);
+		adView.setAdSize(AdSize.SMART_BANNER);
 
 		LinearLayout layout = (LinearLayout)view.findViewById(R.id.adLayout);
 
@@ -136,13 +133,16 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 
 		adView.loadAd(adRequest);
 
+		
+		autorhora = (CustomTextView)view.findViewById(R.id.autor);
 		titulo = (CustomTextView)view.findViewById(R.id.titulo);
 		imagem = (ImageView)view.findViewById(R.id.image);
 		Ion.with (imagem).load(getActivity().getIntent().getStringExtra("imagem").replace("s1600", preferences.getString("prefImageQuality", "s400")));
 		imagem.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), ZoomActivity.class);
+				Intent intent = new Intent(getActivity(), FragmentActivity.class);
+				intent.putExtra("fragment", 8);
 				intent.putExtra("imgurl", getActivity().getIntent().getStringExtra("imagem"));
 				startActivity(intent);
 			}
@@ -181,31 +181,6 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 
 		ObservableScrollView scroll = (ObservableScrollView)view.findViewById(R.id.scrollView1);
 		scroll.setOnScrollChangedListener(this);
-		scroll.setOnTouchListener(new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN:
-					pressed = true;
-					break;
-
-				case MotionEvent.ACTION_UP:
-					if (y < 400) {
-						((ActionBarActivity)getActivity()).getSupportActionBar().show();
-						fabcomment.show(true);
-					} else if (y < oldy) {
-						((ActionBarActivity)getActivity()).getSupportActionBar().show();
-						fabcomment.show(true);
-					} else {
-						((ActionBarActivity)getActivity()).getSupportActionBar().hide();
-						fabcomment.hide(true);
-					}
-					pressed = false;
-					break;
-				}
-				return pressed;
-			}
-		});
 
 		if (savedInstanceState != null) {}
 		else {
@@ -214,9 +189,7 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 		return view;
 	}
 
-	private class JSONParse extends AsyncTask < String,
-	String,
-	JSONObject > {
+	private class JSONParse extends AsyncTask <String, String, JSONObject> {
 
 		@Override
 		protected void onPreExecute() {
@@ -238,6 +211,77 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 				progressBar.setVisibility(View.GONE);
 				try {
 					try {
+						String postData = json.getString("data");
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+						try {
+							Date postDate = dateFormat.parse(postData);
+							Date currentDate = new Date();
+
+							long diff = currentDate.getTime() - postDate.getTime();
+							long seconds = diff / 1000;
+							long minutes = seconds / 60;
+							long hours = minutes / 60;
+							long days = hours / 24;
+
+							if(seconds < 0) {
+								autorhora.setText("Por " + json.getString("autor"));
+							} else {
+							String what = "";
+							
+							if(seconds < 60) {
+								String plural = null;
+								if(seconds <= 1) {
+									plural = "segundo";
+								} else {
+									plural = "segundos";
+								}
+								what = String.valueOf(seconds) + " " + plural;
+							} else if (minutes < 60) {
+								String plural = null;
+								if(seconds <= 1) {
+									plural = "minuto";
+								} else {
+									plural = "minutos";
+								}
+								what = String.valueOf(minutes) + " " + plural;
+							} else if (hours < 24) {
+								String plural = null;
+								if(hours <= 1) {
+									plural = "hora";
+								} else {
+									plural = "horas";
+								}
+								what = String.valueOf(hours) + " " + plural;
+							} else if (days < 31) {
+								String plural = null;
+								if(days <= 1) {
+									plural = "dia";
+								} else {
+									plural = "dias";
+								}
+								what = String.valueOf(days) + " " + plural;
+							}
+							
+							if(what.equals("")) {
+								Calendar c = Calendar.getInstance();
+								int year = c.get(Calendar.YEAR);
+								String withyear = "";
+								if(json.getString("data2").contains(String.valueOf(year))) {
+									withyear = json.getString("data2").replace(" " + String.valueOf(year), "");
+								} else {
+									withyear = json.getString("data2");
+								}
+								autorhora.setText("Por " + json.getString("autor") + " - " + withyear);
+							} else {
+								autorhora.setText("Por " + json.getString("autor") + " - Há " + what);
+							}
+						}
+
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
+						
 						textos = json.getJSONArray("textos");
 						for (int i = 0; i < textos.length(); i++) {
 							JSONObject c = textos.getJSONObject(i);
@@ -288,25 +332,27 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 										String[]parts = iframearray.get(i).toString().split("/");
 										final String videoId = parts[parts.length - 1];
 										ImageView imageView = (ImageView)video.findViewById(R.id.thumbnail);
-										final ProgressBar progressBar2 = (ProgressBar)video.findViewById(R.id.progress);
-										Ion.with (getActivity())
+										final ProgressBarDeterminate progressBar2 = (ProgressBarDeterminate)video.findViewById(R.id.progress);
+										Ion.with(getActivity())
 										.load("http://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg")
-										.progressBar(progressBar2)
-										.progress(new ProgressCallback() {
-											@Override
-											public void onProgress(final long downloaded, final long total) {
-												getActivity().runOnUiThread(new Runnable() {
-													@Override
-													public void run() {
-														progressBar2.setVisibility(View.VISIBLE);
+											.progress(new ProgressCallback() {
+												@Override
+												public void onProgress(final long downloaded, final long total) {
+													getActivity().runOnUiThread(new Runnable() {
+															@Override
+															public void run() {
+																float p = (float)downloaded / (float)total * 100;
+																progressBar2.setProgress((int)(Math.round(p)));
 
-														if (downloaded == total) {
-															progressBar2.setVisibility(View.GONE);
-														}
-													}
-												});
-											}
-										})
+																progressBar2.setVisibility(View.VISIBLE);
+
+																if (downloaded == total) {
+																	progressBar2.setVisibility(View.GONE);
+																}
+															}
+														});
+												}
+											})
 										.withBitmap()
 										.error(R.drawable.drawer_logo)
 										.intoImageView(imageView);
@@ -361,26 +407,27 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 										LayoutInflater imageminflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 										final View imagem = imageminflater.inflate(R.layout.post_image, null);
 										ImageView imageView = (ImageView)imagem.findViewById(R.id.imagem);
-										final ProgressBar progressBar2 = (ProgressBar)imagem.findViewById(R.id.progress);
-
-										Ion.with (getActivity())
+										final ProgressBarDeterminate progressBar2 = (ProgressBarDeterminate)imagem.findViewById(R.id.progress);
+										Ion.with(getActivity())
 										.load(imagemarray.get(i).toString().replace("s1600", preferences.getString("prefImageQuality", "s400")))
-										.progressBar(progressBar2)
-										.progress(new ProgressCallback() {
-											@Override
-											public void onProgress(final long downloaded, final long total) {
-												getActivity().runOnUiThread(new Runnable() {
-													@Override
-													public void run() {
-														progressBar2.setVisibility(View.VISIBLE);
+											.progress(new ProgressCallback() {
+												@Override
+												public void onProgress(final long downloaded, final long total) {
+													getActivity().runOnUiThread(new Runnable() {
+															@Override
+															public void run() {
+																float p = (float)downloaded / (float)total * 100;
+																progressBar2.setProgress((int)(Math.round(p)));
 
-														if (downloaded == total) {
-															progressBar2.setVisibility(View.GONE);
-														}
-													}
-												});
-											}
-										})
+																progressBar2.setVisibility(View.VISIBLE);
+
+																if (downloaded == total) {
+																	progressBar2.setVisibility(View.GONE);
+																}
+															}
+														});
+												}
+											})
 										.withBitmap()
 										.error(R.drawable.drawer_logo)
 										.intoImageView(imageView);
@@ -388,7 +435,8 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 										imageView.setOnClickListener(new OnClickListener() {
 											@Override
 											public void onClick(View v) {
-												Intent intent = new Intent(getActivity(), ZoomActivity.class);
+												Intent intent = new Intent(getActivity(), FragmentActivity.class);
+												intent.putExtra("fragment", 8);
 												intent.putExtra("imgurl", imagemarray.get(a).toString());
 												startActivity(intent);
 											}
@@ -471,14 +519,18 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 		if (iconcolor.equals("branco")) {
 			if (favorite) {
 				menu.findItem(R.id.menu_favorite).setIcon(R.drawable.ic_star_white);
+				menu.findItem(R.id.menu_favorite).setTitle("Desmarcar como favorito");
 			} else {
 				menu.findItem(R.id.menu_favorite).setIcon(R.drawable.ic_star_white_outline);
+				menu.findItem(R.id.menu_favorite).setTitle("Marcar como favorito");
 			}
 		} else {
 			if (favorite) {
 				menu.findItem(R.id.menu_favorite).setIcon(R.drawable.ic_star_black);
+				menu.findItem(R.id.menu_favorite).setTitle("Desmarcar como favorito");
 			} else {
 				menu.findItem(R.id.menu_favorite).setIcon(R.drawable.ic_star_black_outline);
+				menu.findItem(R.id.menu_favorite).setTitle("Marcar como favorito");
 			}
 		}
 		super.onPrepareOptionsMenu(menu);
@@ -539,14 +591,18 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 	}
 
 	@Override
-	public void onScrollChanged(ScrollView scrollView, int l, int t, int oldl, int oldt) {
-		y = t;
-		oldy = oldt;
-
+	public void onScrollChanged(ScrollView scrollView, int x, int y, int oldx, int oldy) {
+		if (y < 400) {
+			fabcomment.show(true);
+		} else if (y < oldy) {
+			fabcomment.show(true);
+		} else {
+			fabcomment.hide(true);
+		}
+		
 		View view = scrollView.getChildAt(scrollView.getChildCount() - 1);
 		int diff = (view.getBottom() - (scrollView.getHeight() + scrollView.getScrollY()));
 		if (diff == 0) {
-			((ActionBarActivity)getActivity()).getSupportActionBar().show();
 			fabcomment.show(true);
 		}
 	}

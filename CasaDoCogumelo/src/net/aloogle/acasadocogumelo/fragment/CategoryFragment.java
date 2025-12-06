@@ -108,7 +108,7 @@ public class CategoryFragment extends Fragment implements AbsListView.OnScrollLi
 
 			adView = new AdView(getActivity());
 			adView.setAdUnitId("")
-			adView.setAdSize(AdSize.BANNER);
+			adView.setAdSize(AdSize.SMART_BANNER);
 
 			LinearLayout layout = (LinearLayout)view.findViewById(R.id.adLayout);
 
@@ -280,6 +280,7 @@ public class CategoryFragment extends Fragment implements AbsListView.OnScrollLi
 	public void onRefresh() {
 		ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(Activity.CONNECTIVITY_SERVICE);
 		if (cm != null && cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected()) {
+			list.setVisibility(View.GONE);
 			idarray.clear();
 			tituloarray.clear();
 			descricaoarray.clear();

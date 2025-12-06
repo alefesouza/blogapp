@@ -7,10 +7,18 @@
 
 	<ImageView
 		android:id="@+id/thumbnail"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="175dp"
-		android:layout_centerHorizontal="true"
-		android:layout_centerVertical="true"
+		android:layout_centerInParent="true"
+	/>
+
+    <com.gc.materialdesign.views.ProgressBarDeterminate
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+		android:background="#d92525"
+		android:layout_centerInParent="true"
+		android:visibility="gone"
 	/>
 
 	<ImageView
@@ -18,15 +26,6 @@
 		android:layout_width="150dp"
 		android:layout_height="50dp"
 		android:src="@drawable/play"
-		android:layout_centerHorizontal="true"
-		android:layout_centerVertical="true"
-	/>
-
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="match_parent"
-        android:layout_height="175dp"
-		android:visibility="gone"
-		style="?android:attr/progressBarStyleHorizontal"
+		android:layout_centerInParent="true"
 	/>
 </RelativeLayout>

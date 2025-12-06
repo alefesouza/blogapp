@@ -95,7 +95,7 @@ public class WebViewFrag extends Fragment {
 
 		adView = new AdView(getActivity());
 		adView.setAdUnitId("")
-		adView.setAdSize(AdSize.BANNER);
+		adView.setAdSize(AdSize.SMART_BANNER);
 
 		LinearLayout layout = (LinearLayout)view.findViewById(R.id.adLayout);
 

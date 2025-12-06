@@ -17,12 +17,12 @@
             android:layout_height="wrap_content"
             android:maxHeight="?attr/actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:theme="@style/Toolbar"
             android:fitsSystemWindows="true" />
 
     <FrameLayout
         android:id="@+id/content_frame"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>
     </LinearLayout>

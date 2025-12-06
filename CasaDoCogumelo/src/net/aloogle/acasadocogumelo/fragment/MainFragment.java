@@ -42,13 +42,11 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 	ArrayList <String> imagemarray = new ArrayList <String> ();
 	ArrayList <String> urlarray = new ArrayList <String> ();
 	ArrayList <String> dataarray = new ArrayList <String> ();
-	int more;
+	int more, mLastFirstVisibleItem;
 	boolean ismore, block, isfirst, passed, nomore;
 	String lastToken, title, lastUrl;
 	ViewGroup footer3, footer4, footer5;
 	ProgressBarCircularIndeterminate progressBar;
-	int mLastFirstVisibleItem;
-	boolean mIsScrollingUp;
 	private SwipeRefreshLayout mSwipeLayout;
 
 	private static String url = "http://apps.aloogle.net/blogapp/acasadocogumelo/app/json/main.php";
@@ -132,9 +130,7 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 		return view;
 	}
 
-	private class JSONParse extends AsyncTask < String,
-	String,
-	JSONObject > {
+	private class JSONParse extends AsyncTask <String, String, JSONObject> {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -253,15 +249,11 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		final ListView lw = list;
-
-		if (view.getId() == lw.getId()) {
-			final int currentFirstVisibleItem = lw.getFirstVisiblePosition();
+		if (view.getId() == list.getId()) {
+			final int currentFirstVisibleItem = list.getFirstVisiblePosition();
 			if (currentFirstVisibleItem > mLastFirstVisibleItem) {
-				mIsScrollingUp = false;
 				((ActionBarActivity)getActivity()).getSupportActionBar().hide();
 			} else if (currentFirstVisibleItem < mLastFirstVisibleItem) {
-				mIsScrollingUp = true;
 				((ActionBarActivity)getActivity()).getSupportActionBar().show();
 			}
 
@@ -315,6 +307,7 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 	public void onRefresh() {
 		ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(Activity.CONNECTIVITY_SERVICE);
 		if (cm != null && cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected()) {
+			list.setVisibility(View.GONE);
 			idarray.clear();
 			tituloarray.clear();
 			descricaoarray.clear();

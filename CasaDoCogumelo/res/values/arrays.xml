@@ -64,9 +64,9 @@
     </string-array>
 	
     <string-array name="images">
-        <item>Baixo</item>
-        <item>Medio</item>
-        <item>Alto</item>
+        <item>Baixa</item>
+        <item>Média</item>
+        <item>Alta</item>
     </string-array>
 
     <string-array name="imagesValues">

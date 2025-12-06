@@ -44,7 +44,7 @@ public class LicensesFragment extends Fragment {
 
 		String[]textos = {
 			"<h4>Notice for file(s)</h4>" +
-			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=ion\">Android Support Libraries</a>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=androidsupport\">Android Support Libraries</a>" +
 			"<br><ul>" +
 			"<li>android-support-v4</li>" +
 			"<li>android-support-v7-appcompat</li>" +
@@ -93,9 +93,9 @@ public class LicensesFragment extends Fragment {
 			"<li>MaterialDesignLibrary</li>" +
 			"</ul>",
 			"<h4>Notice for file(s)</h4>" +
-			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=pinchzoom\">PinchZoom</a>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=photoview\">PhotoView</a>" +
 			"<br><ul>" +
-			"<li>pinchzoom.jar</li>" +
+			"<li>PhotoView</li>" +
 			"</ul>",
 			"<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=supportv4pf\">Android Support v4 Preference Fragment</a>" +
@@ -229,8 +229,20 @@ public class LicensesFragment extends Fragment {
 			"   limitations under the License." +
 			"  </code></pre>",
 			"<pre><code>" +
-			"Library by Tofeeq Abdul Ahmad." +
-			" </code></pre>",
+			"Copyright 2011, 2012 Chris Banes" +
+			"<br><br>" +
+			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
+			"   you may not use this file except in compliance with the License." +
+			"   You may obtain a copy of the License at" +
+			"<br><br>" +
+			"       http://www.apache.org/licenses/LICENSE-2.0" +
+			"<br><br>" +
+			"   Unless required by applicable law or agreed to in writing, software" +
+			"   distributed under the License is distributed on an \"AS IS\" BASIS," +
+			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
+			"   See the License for the specific language governing permissions and" +
+			"   limitations under the License." +
+			"  </code></pre>",
 			"<pre><code>" +
 			"   Copyright 2014 kolavar" +
 			"<br><br>" +

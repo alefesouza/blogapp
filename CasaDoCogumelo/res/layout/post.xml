@@ -10,18 +10,18 @@
 					android:layout_width="match_parent"
 					android:layout_height="match_parent"
 					android:id="@+id/scrollView1"
-					android:layout_marginBottom="50dp"
+					android:layout_marginBottom="@dimen/size_to_ad"
 					android:orientation="vertical">
 			<RelativeLayout
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:orientation="vertical"
-				android:layout_marginBottom="50dp"
+				android:layout_marginBottom="@dimen/size_to_ad"
 				android:background="#ffffff">
 				
 				<ImageView
 					android:id="@+id/image"
-					android:layout_width="fill_parent"
+					android:layout_width="match_parent"
 					android:layout_height="200dp"
 					android:scaleType="fitXY"
 					android:layout_alignParentTop="true"
@@ -36,23 +36,44 @@
 					android:layout_below="@+id/image"
 					android:layout_marginLeft="20dp"
 					android:layout_marginRight="20dp"
+					android:layout_marginTop="10dp"
+					android:layout_marginBottom="5dp"
 					android:textSize="20sp"
 					app:fontName="RobotoSlab-Bold.ttf"
 				/>
+			
+				<LinearLayout
+					android:id="@+id/autorhora"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/titulo"
+					android:layout_marginLeft="20dp"
+					android:layout_marginRight="20dp"
+					android:layout_marginBottom="10dp"
+					android:orientation="vertical" >
+					<net.aloogle.acasadocogumelo.other.CustomTextView
+						android:id="@+id/autor"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textColor="#000000"
+						android:textSize="12sp"
+						app:fontName="Roboto-Regular.ttf"
+					/>
+				</LinearLayout>
 
 				<com.gc.materialdesign.views.ProgressBarCircularIndeterminate
 					android:layout_width="32dp"
 					android:layout_height="32dp"
-					android:layout_below="@+id/titulo"
+					android:layout_below="@+id/autorhora"
 					android:id="@+id/progressBar1"
 					android:layout_centerHorizontal="true"
 					android:background="#d92525" />
 				
 				<LinearLayout
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
 					android:id="@+id/linear"
-					android:layout_below="@+id/titulo"
+					android:layout_below="@+id/autorhora"
 					android:layout_marginLeft="20dp"
 					android:layout_marginRight="20dp"
 					android:orientation="vertical" />
@@ -93,7 +114,7 @@
 				
 		<LinearLayout
 			android:id="@+id/adLayout"
-			android:layout_width="fill_parent"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="vertical"
 			android:layout_alignParentBottom="true"/>

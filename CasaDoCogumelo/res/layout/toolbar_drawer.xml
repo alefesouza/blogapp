@@ -22,7 +22,7 @@
 				android:layout_height="wrap_content"
 				android:maxHeight="?attr/actionBarSize"
 				app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-				app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+				app:theme="@style/Toolbar" />
 			
 			<LinearLayout
 				android:layout_width="match_parent"
@@ -44,7 +44,7 @@
 			
 			<FrameLayout
 				android:id="@+id/content_frame"
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="match_parent"
 				android:layout_below="@+id/toolbar"
 				android:visibility="gone">
@@ -52,7 +52,7 @@
 			
 			<LinearLayout
 				android:id="@+id/adLayout"
-				android:layout_width="fill_parent"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_alignParentBottom="true"
 				android:orientation="vertical" />

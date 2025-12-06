@@ -110,7 +110,7 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 
 		adView = new AdView(getActivity());
 		adView.setAdUnitId("")
-		adView.setAdSize(AdSize.BANNER);
+		adView.setAdSize(AdSize.SMART_BANNER);
 
 		LinearLayout layout = (LinearLayout)view.findViewById(R.id.adLayout);
 		layout.setVisibility(View.VISIBLE);
@@ -317,7 +317,7 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 					block = true;
 					isfirst = true;
 					passed = true;
-					search = URLEncoder.encode(query, "UTF-8"); ;
+					search = URLEncoder.encode(query, "UTF-8");
 					if (nomore) {
 						list.removeFooterView(footer4);
 						list.addFooterView(footer3, null, false);
@@ -494,6 +494,7 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 	public void onRefresh() {
 		ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(Activity.CONNECTIVITY_SERVICE);
 		if (cm != null && cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected()) {
+			list.setVisibility(View.GONE);
 			idarray.clear();
 			tituloarray.clear();
 			descricaoarray.clear();
