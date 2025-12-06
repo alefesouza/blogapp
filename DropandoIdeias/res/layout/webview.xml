@@ -71,6 +71,18 @@ android:fitsSystemWindows="true" >
 		app:fab_colorNormal="#009e95"
 		app:fab_colorPressed="#008c81"
 		android:visibility="gone" />
+
+	<com.melnykov.fab.FloatingActionButton
+		android:id = "@+id/fabopen"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:layout_margin="16dp"
+		android:src="@drawable/ic_open"
+		app:fab_colorNormal="#009e95"
+		app:fab_colorPressed="#008c81"
+		android:visibility="gone" />
    </RelativeLayout>
  </FrameLayout>
     

@@ -5,6 +5,7 @@ import android.app.DownloadManager;
 import android.app.DownloadManager.Request;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -39,7 +40,7 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver. * ;
+import android.view.ViewTreeObserver.*;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebChromeClient.CustomViewCallback;
@@ -52,8 +53,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.lang.reflect.InvocationTargetException;
 import com.melnykov.fab.FloatingActionButton;
 import net.aloogle.dropandoideias.R;
 import net.aloogle.dropandoideias.adapter.WebViewAdapter;
@@ -82,6 +87,7 @@ public class WebViewActivity extends ActionBarActivity {
 	int mActionBarSize;
 	FloatingActionButton fabcomment;
 	FloatingActionButton fabdownload;
+	FloatingActionButton fabopen;
 	long enqueue;
 
 	private FrameLayout mTargetView;
@@ -231,6 +237,95 @@ public class WebViewActivity extends ActionBarActivity {
 				return true;
 			}
 		});
+
+		fabopen = (FloatingActionButton)findViewById(R.id.fabopen);
+
+		if (Build.VERSION.SDK_INT <= 10) {
+			fabopen.setShadow(false);
+		}
+
+		fabopen.setOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View v) {
+				if (webView.getUrl().contains("facebook")) {
+					try {
+						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/510270682353379"));
+						startActivity(intent);
+					} catch (Exception e) {
+						Intent intent = new Intent(Intent.ACTION_VIEW);
+						intent.setData(Uri.parse(webView.getUrl()));
+						startActivity(intent);
+					}
+				} else if (webView.getUrl().contains("twitter")) {
+					try {
+						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?screen_name=dropandoideias"));
+						startActivity(intent);
+					} catch (Exception e) {
+						Intent intent = new Intent(Intent.ACTION_VIEW);
+						intent.setData(Uri.parse(webView.getUrl()));
+						startActivity(intent);
+					}
+				} else if (webView.getUrl().contains("youtube")) {
+					if (webView.getUrl().contains("v=")) {
+						try {
+							URL aURL = null;
+							try {
+								aURL = new URL(webView.getUrl());
+							} catch (MalformedURLException e) {
+								e.printStackTrace();
+							}
+							Intent intent = new Intent(Intent.ACTION_VIEW);
+							intent.setData(Uri.parse("vnd.youtube://" + getQueryMap(aURL.getQuery()).get("v")));
+							startActivity(intent);
+						} catch (Exception e) {
+							Intent intent = new Intent(Intent.ACTION_VIEW);
+							intent.setData(Uri.parse(webView.getUrl()));
+							startActivity(intent);
+						}
+					} else {
+						try {
+							Intent intent = new Intent(Intent.ACTION_VIEW);
+							intent.setPackage("com.google.android.youtube");
+							String canal = webView.getUrl().replace("m.","").replace("#/","");
+							intent.setData(Uri.parse(canal));
+							startActivity(intent);
+						} catch (ActivityNotFoundException e) {
+							Intent intent = new Intent(Intent.ACTION_VIEW);
+							intent.setData(Uri.parse(webView.getUrl()));
+							startActivity(intent);
+						}
+					}
+				}
+			}
+		});
+
+		fabopen.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				String app = null;
+				if (webView.getUrl().contains("facebook")) {
+					app = "Facebook";
+				} else if (webView.getUrl().contains("twitter")) {
+					app = "Twitter";
+				} else if (webView.getUrl().contains("youtube")) {
+					app = "YouTube";
+				}
+				Toast toast = Toast.makeText(WebViewActivity.this, "Abrir no aplicativo do " + app, Toast.LENGTH_SHORT);
+				toast.show();
+				return true;
+			}
+		});
+	}
+
+	public static Map <String, String> getQueryMap(String query) {
+		String a = query.replace("?", "&");
+		String[]params = a.split("&");
+		Map <String, String> map = new HashMap <String, String> ();
+		for (String param : params) {
+			String name = param.split("=")[0];
+			String value = param.split("=")[1];
+			map.put(name, value);
+		}
+		return map;
 	}
 
 	public int getStatusBarHeight() {
@@ -527,8 +622,6 @@ public class WebViewActivity extends ActionBarActivity {
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		String lastUrl = preferences.getString("WebViewLastUrl", "http://dropandoideias.com");
 		switch (item.getItemId()) {
 		case R.id.menu_back:
 			webView.goBack();
@@ -537,12 +630,12 @@ public class WebViewActivity extends ActionBarActivity {
 			webView.goForward();
 			return true;
 		case R.id.menu_reload:
-			webView.loadUrl(lastUrl);
+			webView.reload();
 			return true;
 		case R.id.menu_share:
 			Intent sharePageIntent = new Intent();
 			sharePageIntent.setAction(Intent.ACTION_SEND);
-			sharePageIntent.putExtra(Intent.EXTRA_TEXT, webView.getTitle() + " " + lastUrl);
+			sharePageIntent.putExtra(Intent.EXTRA_TEXT, webView.getTitle() + " " + webView.getUrl());
 			sharePageIntent.setType("text/plain");
 			startActivity(Intent.createChooser(sharePageIntent, getResources().getText(R.string.sharepage)));
 			return true;
@@ -612,15 +705,23 @@ public class WebViewActivity extends ActionBarActivity {
 				if (webView.getUrl().equals("http://dropandoideias.com") || webView.getUrl().equals("http://dropandoideias.com/") || webView.getUrl().contains("dropandoideias.com/category") || webView.getUrl().contains("dropandoideias.com/index.php?s=")) {
 					fabcomment.setVisibility(View.GONE);
 					fabdownload.setVisibility(View.GONE);
+					fabopen.setVisibility(View.GONE);
 				} else if (webView.getUrl().contains(".jpg") || webView.getUrl().contains(".png") || webView.getUrl().contains(".gif")) {
 					fabcomment.setVisibility(View.GONE);
 					fabdownload.setVisibility(View.VISIBLE);
+					fabopen.setVisibility(View.GONE);
 				} else if (webView.getUrl().contains("dropandoideias.com")) {
 					fabcomment.setVisibility(View.VISIBLE);
 					fabdownload.setVisibility(View.GONE);
+					fabopen.setVisibility(View.GONE);
+				} else if (webView.getUrl().contains("twitter.com") || webView.getUrl().contains("facebook.com") || webView.getUrl().contains("youtube.com")) {
+					fabcomment.setVisibility(View.GONE);
+					fabdownload.setVisibility(View.GONE);
+					fabopen.setVisibility(View.VISIBLE);
 				} else {
 					fabcomment.setVisibility(View.GONE);
 					fabdownload.setVisibility(View.GONE);
+					fabopen.setVisibility(View.GONE);
 				}
 			}
 		}

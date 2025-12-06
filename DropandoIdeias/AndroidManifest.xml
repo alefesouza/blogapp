@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.aloogle.dropandoideias"
-    android:versionCode="13"
-    android:versionName="2.2.3.1">
+    android:versionCode="14"
+    android:versionName="2.2.3.2">
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -76,11 +76,6 @@
 				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
 				<category android:name="net.aloogle.dropandoideias" />
-			</intent-filter>
-		</receiver>
-		<receiver android:name=".receiver.CancelReceiver">
-			<intent-filter>
-				<action android:name="notification_cancelled"/>
 			</intent-filter>
 		</receiver>
     </application>
