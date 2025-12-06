@@ -12,11 +12,11 @@ Don’t mind the coding practices or standards used here, I was just starting to
 
 ### Screenshots
 
-| App | Version | #1 | #2 | #3 |
-|-|-|-|-|-|
-| DropandoIdeias | 3.7.1 | <img src="./DropandoIdeias/Screenshots/phone/1.webp"> | <img src="./DropandoIdeias/Screenshots/phone/2.webp"> | <img src="./DropandoIdeias/Screenshots/phone/3.webp"> |
-| CasaDoCogumelo | 3.5.7 | <img src="./CasaDoCogumelo/Screenshots/phone/1.webp"> | <img src="./CasaDoCogumelo/Screenshots/phone/2.webp"> | <img src="./CasaDoCogumelo/Screenshots/phone/3.webp"> |
-| ZeldaComBr | 2.2.2 | <img src="./ZeldaComBr/Screenshots/phone/1.webp"> | <img src="./ZeldaComBr/Screenshots/phone/2.webp"> | <img src="./ZeldaComBr/Screenshots/phone/3.webp"> |
+| App | Version | Release date | #1 | #2 | #3 |
+|-|-|-|-|-|-|
+| DropandoIdeias | 3.7.1 | 24/08/2015 | <img src="./DropandoIdeias/Screenshots/phone/1.webp"> | <img src="./DropandoIdeias/Screenshots/phone/2.webp"> | <img src="./DropandoIdeias/Screenshots/phone/3.webp"> |
+| CasaDoCogumelo | 3.5.7 | 14/06/2015 | <img src="./CasaDoCogumelo/Screenshots/phone/1.webp"> | <img src="./CasaDoCogumelo/Screenshots/phone/2.webp"> | <img src="./CasaDoCogumelo/Screenshots/phone/3.webp"> |
+| ZeldaComBr | 2.2.2 | 09/12/2014 | <img src="./ZeldaComBr/Screenshots/phone/1.webp"> | <img src="./ZeldaComBr/Screenshots/phone/2.webp"> | <img src="./ZeldaComBr/Screenshots/phone/3.webp"> |
 
 More screenshots, including table version, on the directory for each app.
 
