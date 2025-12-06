@@ -11,6 +11,8 @@
     <string name="home">Início</string>
     <string name="reload">Recarregar</string>
     <string name="sharepage">Compartilhar página</string>
+    <string name="cache">Limpar cache</string>
+    <string name="cache2">Cache limpo!</string>
 
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>

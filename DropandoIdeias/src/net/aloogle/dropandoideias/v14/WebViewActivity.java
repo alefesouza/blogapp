@@ -32,23 +32,24 @@ import android.widget.SearchView;
 import android.widget.Toast;
 import java.lang.reflect.InvocationTargetException;
 import net.aloogle.dropandoideias.R;
+import android.view.Window;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout.*;
+import android.view.*;
+import android.view.ViewTreeObserver.*;
 
-@SuppressLint("NewApi")public class WebViewActivity extends Activity {
+@SuppressLint("NewApi")
+public class WebViewActivity extends Activity {
 
 	WebView webView;
 	ProgressBar progressBar;
+	ProgressBar progressBar2;
 
 	private FrameLayout mTargetView;
 	private FrameLayout mContentView;
 	private CustomViewCallback mCustomViewCallback;
 	private View mCustomView;
 	private webChromeClient mClient;
-
-	private DrawerLayout mDrawerLayout;
-	private ListView mDrawerList;
-	private ActionBarDrawerToggle mDrawerToggle;
-
-	private String[]mDrawerTitles;
 
 	@SuppressLint("SetJavaScriptEnabled")
 	@Override
@@ -57,6 +58,24 @@ import net.aloogle.dropandoideias.R;
 		setContentView(R.layout.activity_webview);
 
 		progressBar = (ProgressBar)findViewById(R.id.progressBar1);
+
+		progressBar2 = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
+		progressBar2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, 24));
+
+		final FrameLayout decorView = (FrameLayout) getWindow().getDecorView();
+		decorView.addView(progressBar2);
+
+		ViewTreeObserver observer = progressBar2.getViewTreeObserver();
+		observer.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+				@Override
+				public void onGlobalLayout() {
+					View contentView = decorView.findViewById(android.R.id.content);
+					progressBar2.setY(contentView.getY() - 10);
+
+					ViewTreeObserver observer = progressBar2.getViewTreeObserver();
+					observer.removeGlobalOnLayoutListener(this);
+				}
+			});
 
 		webView = (WebView)findViewById(R.id.webview01);
 		mClient = new webChromeClient();
@@ -71,120 +90,12 @@ import net.aloogle.dropandoideias.R;
 		mContentView = (FrameLayout)findViewById(R.id.main_content);
 		mTargetView = (FrameLayout)findViewById(R.id.target_view);
 		webView.setDownloadListener(new DownloadListener() {
-			public void onDownloadStart(final String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-				Intent i = new Intent(Intent.ACTION_VIEW);
-				i.setData(Uri.parse(url));
-				startActivity(i);
-			}
-		});
-
-		mDrawerTitles = getResources().getStringArray(R.array.drawer_array);
-		mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-		mDrawerList = (ListView)findViewById(R.id.left_drawer);
-
-		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-
-		mDrawerList.setAdapter(new ArrayAdapter < String > (this, R.layout.drawer_list_item, mDrawerTitles));
-		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setHomeButtonEnabled(true);
-
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
-			public void onDrawerClosed(View view) {
-				invalidateOptionsMenu();
-			}
-
-			public void onDrawerOpened(View drawerView) {
-				invalidateOptionsMenu();
-			}
-		};
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
-	}
-
-	private class DrawerItemClickListener implements ListView.OnItemClickListener {
-		@Override
-		public void onItemClick(AdapterView <  ?  > parent, View view, int position, long id) {
-			selectItem(position);
-		}
-	}
-
-	private void selectItem(int position) {
-		switch (position) {
-		case 0:
-			progressBar.setVisibility(View.VISIBLE);
-			webView.setVisibility(View.GONE);
-			webView.loadUrl("http://dropandoideias.com");
-			mDrawerLayout.closeDrawer(mDrawerList);
-			break;
-		case 1:
-			progressBar.setVisibility(View.VISIBLE);
-			webView.setVisibility(View.GONE);
-			webView.loadUrl("http://dropandoideias.com/category/animes-2");
-			mDrawerLayout.closeDrawer(mDrawerList);
-			break;
-		case 2:
-			progressBar.setVisibility(View.VISIBLE);
-			webView.setVisibility(View.GONE);
-			webView.loadUrl("http://dropandoideias.com/category/blogsfera");
-			mDrawerLayout.closeDrawer(mDrawerList);
-			break;
-		case 3:
-			progressBar.setVisibility(View.VISIBLE);
-			webView.setVisibility(View.GONE);
-			webView.loadUrl("http://dropandoideias.com/category/games-2");
-			mDrawerLayout.closeDrawer(mDrawerList);
-			break;
-		case 4:
-			progressBar.setVisibility(View.VISIBLE);
-			webView.setVisibility(View.GONE);
-			webView.loadUrl("http://dropandoideias.com/category/internet-2");
-			mDrawerLayout.closeDrawer(mDrawerList);
-			break;
-		case 5:
-			progressBar.setVisibility(View.VISIBLE);
-			webView.setVisibility(View.GONE);
-			webView.loadUrl("http://dropandoideias.com/category/livros-2");
-			mDrawerLayout.closeDrawer(mDrawerList);
-			break;
-		case 6:
-			progressBar.setVisibility(View.VISIBLE);
-			webView.setVisibility(View.GONE);
-			webView.loadUrl("http://dropandoideias.com/category/nerdices");
-			mDrawerLayout.closeDrawer(mDrawerList);
-			break;
-		case 7:
-			progressBar.setVisibility(View.VISIBLE);
-			webView.setVisibility(View.GONE);
-			webView.loadUrl("http://facebook.com/DropandoIdeias");
-			mDrawerLayout.closeDrawer(mDrawerList);
-			break;
-		case 8:
-			progressBar.setVisibility(View.VISIBLE);
-			webView.setVisibility(View.GONE);
-			webView.loadUrl("http://twitter.com/dropandoideias");
-			mDrawerLayout.closeDrawer(mDrawerList);
-			break;
-		case 9:
-			progressBar.setVisibility(View.VISIBLE);
-			webView.setVisibility(View.GONE);
-			webView.loadUrl("http://youtube.com/user/dropandoideias");
-			mDrawerLayout.closeDrawer(mDrawerList);
-			break;
-		default:
-		}
-	}
-
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-		super.onPostCreate(savedInstanceState);
-		mDrawerToggle.syncState();
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		mDrawerToggle.onConfigurationChanged(newConfig);
+				public void onDownloadStart(final String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+					Intent i = new Intent(Intent.ACTION_VIEW);
+					i.setData(Uri.parse(url));
+					startActivity(i);
+				}
+			});
 	}
 
 	@Override
@@ -197,73 +108,63 @@ import net.aloogle.dropandoideias.R;
 		searchView.setQueryHint(getString(R.string.queryhint));
 
 		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				progressBar.setVisibility(View.VISIBLE);
-				webView.setVisibility(View.GONE);
-				webView.loadUrl("http://dropandoideias.com/index.php?s=" + query);
-				return false;
-			}
+				@Override
+				public boolean onQueryTextSubmit(String query) {
+					webView.loadUrl("http://dropandoideias.com/index.php?s=" + query);
+					return false;
+				}
 
-			@Override
-			public boolean onQueryTextChange(String txt) {
-				return false;
-			}
-		});
+				@Override
+				public boolean onQueryTextChange(String txt) {
+					return false;
+				}
+			});
+
+		int linlayId = getResources().getIdentifier("android:id/search_plate", null, null);
+        ViewGroup v = (ViewGroup) searchView.findViewById(linlayId);
+        v.setBackgroundResource(R.drawable.apptheme_textfield_activated_holo_light);
 
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.menu_search).setVisible(!drawerOpen);
-		menu.findItem(R.id.menu_back).setVisible(!drawerOpen);
-		menu.findItem(R.id.menu_reload).setVisible(!drawerOpen);
-		menu.findItem(R.id.menu_forward).setVisible(!drawerOpen);
-		return super.onPrepareOptionsMenu(menu);
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+		String lastUrl = preferences.getString("WebViewLastUrl", "http://dropandoideias.com");
 		switch (item.getItemId()) {
-		case R.id.menu_back:
-			if (webView.canGoBack()) {
-				webView.goBack();
-			} else {
-				Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.nopages), Toast.LENGTH_LONG);
+			case R.id.menu_back:
+				if (webView.canGoBack()) {
+					webView.goBack();
+				} else {
+					Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.nopages), Toast.LENGTH_LONG);
+					toast.show();
+				}
+				return true;
+			case R.id.menu_forward:
+				if (webView.canGoForward()) {
+					webView.goForward();
+				} else {
+					Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.nopages), Toast.LENGTH_LONG);
+					toast.show();
+				}
+				return true;
+			case R.id.menu_reload:
+				webView.loadUrl(lastUrl);
+				return true;
+			case R.id.menu_share:
+				Intent sharePageIntent = new Intent();
+				sharePageIntent.setAction(Intent.ACTION_SEND);
+				sharePageIntent.putExtra(Intent.EXTRA_TEXT, lastUrl);
+				sharePageIntent.setType("text/plain");
+				startActivity(Intent.createChooser(sharePageIntent, getResources().getText(R.string.sharepage)));
+				return true;
+			case R.id.menu_cache:
+				webView.clearCache(true);
+				Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.cache2), Toast.LENGTH_LONG);
 				toast.show();
-			}
-			return true;
-		case R.id.menu_forward:
-			if (webView.canGoForward()) {
-				webView.goForward();
-			} else {
-				Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.nopages), Toast.LENGTH_LONG);
-				toast.show();
-			}
-			return true;
-		case R.id.menu_reload:
-			progressBar.setVisibility(View.VISIBLE);
-			webView.setVisibility(View.GONE);
-			webView.reload();
-			return true;
-		case R.id.menu_share:
-			Intent sharePageIntent = new Intent();
-			sharePageIntent.setAction(Intent.ACTION_SEND);
-			sharePageIntent.putExtra(Intent.EXTRA_TEXT, webView.getUrl());
-			sharePageIntent.setType("text/plain");
-			startActivity(Intent.createChooser(sharePageIntent, getResources().getText(R.string.app_name)));
-			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-			Editor editor = preferences.edit();
-			editor.putString("WebViewLastUrl", webView.getUrl());
-			editor.commit();
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -271,19 +172,22 @@ import net.aloogle.dropandoideias.R;
 		@Override
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
 			super.onPageStarted(view, url, favicon);
+			progressBar2.setVisibility(View.VISIBLE);
 		}
 
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			if (url.contains("dropandoideias.com") || url.contains("twitter.com/dropandoideias") || url.contains("facebook.com/DropandoIdeias") || url.contains("/user/dropandoideias") || url.contains("youtube.com/watch")) {
-				progressBar.setVisibility(View.VISIBLE);
-				webView.setVisibility(View.GONE);
 				view.loadUrl(url);
 			} else {
 				Intent i = new Intent(Intent.ACTION_VIEW);
 				i.setData(Uri.parse(url));
 				startActivity(i);
 			}
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(WebViewActivity.this);
+			Editor editor = preferences.edit();
+			editor.putString("WebViewLastUrl", url);
+			editor.commit();
 			return true;
 		}
 
@@ -303,6 +207,11 @@ import net.aloogle.dropandoideias.R;
 	}
 
 	class webChromeClient extends WebChromeClient {
+		public void onProgressChanged(WebView view, int progress) {
+			progressBar2.setProgress(progress);
+
+			if(progress == 100) { progressBar2.setVisibility(View.GONE); }
+		}
 
 		@Override
 		public void onShowCustomView(View view, CustomViewCallback callback) {
@@ -352,9 +261,9 @@ import net.aloogle.dropandoideias.R;
 		try {
 			Class.forName
 			("android.webkit.WebView")
-			.getMethod
+				.getMethod
 			("onPause", (Class[])null)
-			.invoke
+				.invoke
 			(webView, (Object[])null);
 		} catch (ClassNotFoundException cnfe) {}
 

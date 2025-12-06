@@ -5,21 +5,20 @@
         android:icon="@drawable/ic_action_search"
         android:showAsAction="always|collapseActionView"
         android:actionViewClass="android.widget.SearchView"/>
-    <item android:id="@+id/menu_back"
-        android:title="@string/back"
-        android:icon="@drawable/ic_action_back"
-        android:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/menu_reload"
-        android:icon="@drawable/ic_action_reload"
-        android:title="@string/reload"
-        android:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/menu_forward"
-        android:title="@string/forward"
-        android:icon="@drawable/ic_action_forward"
-        android:showAsAction="always" />
     <item
         android:id="@+id/menu_share"
-        android:title="@string/sharepage" />
+        android:title="@string/sharepage"
+        android:icon="@drawable/ic_action_share"
+        android:showAsAction="always" />
+    <item android:id="@+id/menu_back"
+        android:title="@string/back" />
+    <item
+        android:id="@+id/menu_forward"
+        android:title="@string/forward" />
+    <item
+        android:id="@+id/menu_reload"
+        android:title="@string/reload" />
+    <item
+        android:id="@+id/menu_cache"
+        android:title="@string/cache" />
 </menu>
