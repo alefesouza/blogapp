@@ -27,7 +27,7 @@
         android:layout_alignParentStart="true"
         android:src="@drawable/ic_launcher" />
 	
-	<net.aloogle.acasadocogumelo.other.CustomTextView
+	<net.aloogle.apps.acasadocogumelo.other.CustomTextView
         android:id="@+id/myTextView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         android:textSize="14.0sp"
         app:fontName="Roboto-Medium.ttf" />
 
-	<net.aloogle.acasadocogumelo.other.CustomTextView
+	<net.aloogle.apps.acasadocogumelo.other.CustomTextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/myTextView1"

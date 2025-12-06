@@ -20,25 +20,16 @@
                 android:layout_centerInParent="true"
                 android:background="#d92525" />
 			
-			<ListView
+		<com.github.ksoichiro.android.observablescrollview.ObservableListView
 				android:id="@+id/list"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginBottom="@dimen/size_to_ad"
 				android:divider="@android:color/transparent"
 				android:dividerHeight="0dp"
 				android:background="#eeeeee"
 				android:scrollbars="none"
 				android:layout_marginLeft="5dp"
 				android:layout_marginRight="5dp" />
-
-		<LinearLayout
-			android:id="@+id/adLayout"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:orientation="vertical"
-			android:visibility="gone" />
 </RelativeLayout>
 </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

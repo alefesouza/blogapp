@@ -30,14 +30,13 @@
 		android:layout_centerInParent="true"
 		android:background="#d92525" />
 
-   <net.aloogle.acasadocogumelo.lib.ObservableWebView
+	<com.github.ksoichiro.android.observablescrollview.ObservableWebView
         android:id="@+id/webview01"
 	   android:layout_height="match_parent"
 	   android:layout_width="match_parent"
 	   android:layout_above="@+id/progressBar2"
 	   android:layout_marginBottom="@dimen/size_to_ad"
-        android:visibility="gone">
-   </net.aloogle.acasadocogumelo.lib.ObservableWebView>
+        android:visibility="gone" />
    
 	<com.gc.materialdesign.views.ProgressBarDeterminate
         android:id="@+id/progressBar2"

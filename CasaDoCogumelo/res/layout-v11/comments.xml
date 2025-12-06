@@ -1,0 +1,64 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/frame" >
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical">
+			<FrameLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:fitsSystemWindows="true">
+				<com.github.ksoichiro.android.observablescrollview.TouchInterceptionFrameLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/container" >
+					<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:orientation="vertical">
+
+						<FrameLayout
+							android:id="@+id/pager_wrapper"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent">
+							<android.support.v4.view.ViewPager
+								android:id="@+id/pager"
+								android:layout_width="match_parent"
+								android:layout_height="match_parent" />
+						</FrameLayout>
+
+						<RelativeLayout
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:id="@+id/header"
+							android:orientation="vertical">
+
+							<android.support.v7.widget.Toolbar
+								android:id="@+id/toolbar"
+								android:layout_width="match_parent"
+								android:layout_height="?attr/actionBarSize"
+								app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+								app:theme="@style/Toolbar" />
+
+							<net.aloogle.apps.acasadocogumelo.lib.SlidingTabLayout
+								android:id="@+id/sliding_tabs"
+								android:layout_width="match_parent"
+								android:layout_height="@dimen/tab_height"
+								android:layout_below="@+id/toolbar" />
+						</RelativeLayout>
+					</RelativeLayout>
+				</com.github.ksoichiro.android.observablescrollview.TouchInterceptionFrameLayout>
+			</FrameLayout>
+			<LinearLayout
+				android:id="@+id/adLayout"
+				android:background="#eeeeee"
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/size_to_ad"
+				android:layout_alignParentBottom="true"
+				android:orientation="vertical" />
+		</RelativeLayout>
+</FrameLayout>

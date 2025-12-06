@@ -1,0 +1,35 @@
+<resources>
+    <style name="CasaDoCogumelo.Theme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBar">false</item>
+		<item name="android:selectableItemBackgroundBorderless">@drawable/toolbar_ripple</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowActionBarOverlay">true</item>
+		<item name="colorPrimary">@color/logo_red</item>
+        <item name="colorAccent">@color/logo_red</item>
+        <item name="homeAsUpIndicator">@drawable/ic_arrow_white</item>
+   		<item name="dropDownListViewStyle">@style/DropDownListViewStyle</item>
+		<item name="actionModeShareDrawable">@drawable/ic_share_white</item>
+        <item name="android:scrollingCache">false</item>
+    </style>
+
+    <style name="DropDownListViewStyle" parent="Widget.AppCompat.ListView.DropDown">
+        <item name="android:listSelector">@drawable/apptheme_item_background_holo_light</item>
+    </style>
+	
+	<style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    	<item name="actionBarItemBackground">@drawable/toolbar_ripple</item>
+		<item name="selectableItemBackground">@drawable/toolbar_ripple</item>
+    </style>
+    
+	<style name="BlackOverflow" parent="CasaDoCogumelo.Theme">
+		<item name="actionOverflowButtonStyle">@style/MyActionButtonOverFlow</item>
+		<item name="homeAsUpIndicator">@drawable/ic_arrow_black</item>
+		<item name="actionModeShareDrawable">@drawable/ic_share_black</item>
+	</style>
+
+    <style name="MyActionButtonOverFlow" parent="Widget.AppCompat.Light.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_more_black</item>
+    </style>
+</resources>

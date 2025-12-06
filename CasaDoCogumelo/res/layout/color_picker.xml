@@ -6,7 +6,7 @@
         android:background="#CCFFFFFF"
         android:orientation="vertical" >
 
-        <net.aloogle.acasadocogumelo.lib.ColorPicker
+	<net.aloogle.apps.acasadocogumelo.lib.ColorPicker
             android:id="@+id/color_picker"
             android:layout_width="240dp"
             android:layout_height="wrap_content"

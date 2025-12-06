@@ -14,11 +14,9 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxHeight="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-            app:theme="@style/Toolbar"
-            android:fitsSystemWindows="true" />
+			app:theme="@style/Toolbar" />
 
     <FrameLayout
         android:id="@+id/content_frame"

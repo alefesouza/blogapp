@@ -25,15 +25,15 @@
         android:layout_below="@id/divider2"
         android:background="#CCd5d5d5"
         android:visibility="visible" />
-        android:visibility="visible" />
-	<net.aloogle.acasadocogumelo.other.CustomTextView
+    
+	<net.aloogle.apps.acasadocogumelo.other.CustomTextView
         android:id="@+id/myTextView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/divider"
-        android:background="@drawable/footer_button_ripple"
+        android:background="@drawable/drawer"
         android:gravity="center_vertical"
         android:paddingBottom="16dp"
         android:paddingLeft="18dp"
