@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:id="@+id/frame">
+
+	<FrameLayout
+		android:id="@+id/main_content"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" >
+		<ImageView
+			android:id="@+id/image"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:adjustViewBounds="true" />
+
+		<View
+			android:id="@+id/overlay"
+			android:layout_width="match_parent"
+			android:layout_height="@dimen/flexible_space_image_height" />
+
+		<com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:id="@+id/scroll"
+			android:orientation="vertical"
+			android:fillViewport="true">
+
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:layout_below="@+id/placeholder">
+
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="@dimen/flexible_space_image_height"
+					android:id="@+id/placeholder"
+					android:background="@android:color/transparent" />
+
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_below="@+id/placeholder"
+					android:id="@+id/rl"
+					android:background="#ffffff">
+					<net.aloogle.dropandoideias.other.CustomTextView
+						android:id="@+id/titulo"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textColor="#000000"
+						android:layout_marginLeft="20dp"
+						android:layout_marginRight="20dp"
+						android:layout_marginTop="10dp"
+						android:layout_marginBottom="5dp"
+						android:textSize="27sp"
+						app:fontName="Special-Elite.ttf"
+						/>
+
+					<LinearLayout
+						android:id="@+id/autorhora"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_below="@+id/titulo"
+						android:layout_marginLeft="20dp"
+						android:layout_marginRight="20dp"
+						android:layout_marginBottom="10dp"
+						android:orientation="vertical" >
+						<net.aloogle.dropandoideias.other.CustomTextView
+							android:id="@+id/autor"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:textColor="#000000"
+							android:textSize="12sp"
+							app:fontName="Roboto-Regular.ttf"
+							/>
+					</LinearLayout>
+
+					<ProgressBar
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_below="@+id/autorhora"
+						android:id="@+id/progressBar1"
+						android:layout_centerHorizontal="true" />
+
+					<WebView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:id="@+id/webView"
+						android:layout_below="@+id/autorhora"
+						android:orientation="vertical" />
+					<View
+						android:layout_width="match_parent"
+						android:layout_height="?attr/actionBarSize"
+						android:layout_below="@+id/webView"
+						/>
+				</RelativeLayout>
+			</RelativeLayout>
+		</com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
+
+		<android.support.design.widget.FloatingActionButton
+			android:id="@+id/fabcomments"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/ic_comments"
+			android:layout_marginBottom="16dp"
+			android:layout_marginRight="16dp"
+			android:layout_gravity="right|bottom"
+			app:fabSize="normal" />
+
+		<RelativeLayout
+			android:layout_width="56dp"
+			android:layout_height="56dp"
+			android:layout_gravity="right|bottom"
+			android:layout_marginRight="16dp"
+			android:layout_marginBottom="16dp"
+			android:id="@+id/relat"
+			android:elevation="10dp">
+			<net.aloogle.dropandoideias.other.CustomTextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="18dp"
+				android:layout_centerHorizontal="true"
+				android:id="@+id/comentarioscount"
+				android:textColor="@color/colorAccent"
+				android:textSize="12sp"
+				app:fontName="Roboto-Regular.ttf"
+				/>
+		</RelativeLayout>
+
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			<android.support.v7.widget.Toolbar
+				android:id="@+id/toolbar"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:maxHeight="?attr/actionBarSize"
+				android:fitsSystemWindows="true"
+				app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+				app:theme="@style/Toolbar" />
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="4dp"
+				android:id="@+id/dropshadow"
+				android:background="@drawable/toolbar_dropshadow"
+				android:layout_below="@+id/toolbar" />
+
+			<ProgressBar
+				android:id="@+id/progress"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/toolbar"
+				style="@style/ProgressBarAppTheme"
+				/>
+		</RelativeLayout>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:paddingLeft="@dimen/margin_standard">
+
+			<TextView
+				android:id="@+id/title"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:ellipsize="end"
+				android:gravity="center_vertical"
+				android:maxLines="1"
+				android:minHeight="?attr/actionBarSize"
+				android:textColor="@android:color/white"
+				android:textSize="20sp" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/flexible_space_image_height"
+				android:background="@android:color/transparent" />
+		</LinearLayout>
+	</FrameLayout>
+
+	<FrameLayout
+		android:id="@+id/target_view"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="#000000"
+		android:visibility="gone">
+	</FrameLayout>
+</FrameLayout>

@@ -1,0 +1,39 @@
+<resources>
+    <style name="BlogApp.Theme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBar">false</item>
+		<item name="android:selectableItemBackgroundBorderless">@drawable/toolbar_ripple</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowActionBarOverlay">true</item>
+		<item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+		<item name="actionModeShareDrawable">@drawable/ic_share</item>
+        <item name="android:scrollingCache">false</item>
+        <item name="dropDownListViewStyle">@style/DropDownListViewStyle</item>
+    </style>
+
+    <style name="ProgressBarAppTheme" parent="android:Widget.Material.ProgressBar.Horizontal">
+        <item name="android:layout_marginTop">-6dp</item>
+    </style>
+
+    <style name="DropDownListViewStyle" parent="Widget.AppCompat.ListView.DropDown">
+        <item name="android:listSelector">@drawable/apptheme_item_background_holo_light</item>
+    </style>
+	
+	<style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    	<item name="actionBarItemBackground">@drawable/toolbar_ripple</item>
+		<item name="selectableItemBackground">@drawable/toolbar_ripple</item>
+		<item name="background">@color/colorPrimary</item>
+    </style>
+
+	<style name="BlackOverflow" parent="BlogApp.Theme">
+		<item name="actionOverflowButtonStyle">@style/MyActionButtonOverFlow</item>
+        <item name="homeAsUpIndicator">@drawable/ic_arrow_black</item>
+		<item name="actionModeShareDrawable">@drawable/ic_share_black</item>
+	</style>
+
+    <style name="MyActionButtonOverFlow" parent="Widget.AppCompat.Light.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_more_black</item>
+    </style>
+</resources>

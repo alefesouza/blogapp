@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="list_margin">5dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+    <dimen name="flexible_space_image_height">250dp</dimen>
+    <dimen name="card_padding">0dp</dimen>
+    <dimen name="margin_standard">16dp</dimen>
+</resources>
