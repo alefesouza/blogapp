@@ -6,6 +6,16 @@ The first versions were just a simple WebView, but the latest versions were full
 
 I didn’t publish the source code earlier because I thought the project could be monetized, but I never made a single penny from it 😂. So I decided to publish it in 2025, more than 10 years after the latest version was released.
 
+### Screenshots
+
+| App | Version | #1 | #2 | #3 |
+|-|-|-|-|-|
+| DropandoIdeias | 3.7.1 | <img src="./DropandoIdeias/Screenshots/phone/1.webp"> | <img src="./DropandoIdeias/Screenshots/phone/2.webp"> | <img src="./DropandoIdeias/Screenshots/phone/3.webp"> |
+| CasaDoCogumelo | 3.5.7 | <img src="./CasaDoCogumelo/Screenshots/phone/1.webp"> | <img src="./CasaDoCogumelo/Screenshots/phone/2.webp"> | <img src="./CasaDoCogumelo/Screenshots/phone/3.webp"> |
+| ZeldaComBr | 2.2.2 | <img src="./ZeldaComBr/Screenshots/phone/1.webp"> | <img src="./ZeldaComBr/Screenshots/phone/2.webp"> | <img src="./ZeldaComBr/Screenshots/phone/3.webp"> |
+
+More screenshots, including table version, on the directory for each app.
+
 Licença
 ----------
 
