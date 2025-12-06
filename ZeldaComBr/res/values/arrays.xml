@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="navigation_main_sections">
+        <item>Home</item>
+        <item>Artigos</item>
+        <item>Notícias</item>
+        <item>Podcast</item>
+        <item>A série</item>
+        <item>Spin-offs</item>
+        <item>Detonados</item>
+        <item>Traduções</item>
+        <item>Mídia</item>
+        <item>Facebook</item>
+        <item>Twitter</item>
+        <item>YouTube</item>
+    </string-array>
+
+    <array name="drawable_ids">
+        <item>@drawable/ic_drawer_home</item>
+        <item>@drawable/ic_drawer_artigos</item>
+        <item>@drawable/ic_drawer_noticias</item>
+        <item>@drawable/ic_drawer_podcast</item>
+        <item>@drawable/ic_drawer_triforce</item>
+        <item>@drawable/ic_drawer_games</item>
+        <item>@drawable/ic_drawer_detonados</item>
+        <item>@drawable/ic_drawer_traducoes</item>
+        <item>@drawable/ic_drawer_midia</item>
+        <item>@drawable/ic_drawer_facebook</item>
+        <item>@drawable/ic_drawer_twitter</item>
+        <item>@drawable/ic_drawer_youtube</item>
+    </array>
+
+    <string-array name="sounds">
+        <item>Item</item>
+        <item>Item 2</item>
+        <item>Hey!</item>
+        <item>Listen!</item>
+        <item>Tatl</item>
+        <item>Padrão do sistema</item>
+        <item>Nenhum</item>
+    </string-array>
+
+    <string-array name="soundsValues">
+        <item>item</item>
+        <item>item2</item>
+        <item>hey</item>
+        <item>listen</item>
+        <item>tatl</item>
+        <item>padrao</item>
+        <item>nenhum</item>
+    </string-array>
+</resources>

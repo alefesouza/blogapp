@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Zelda.com.br</string>
+
+    <string name="blog_description">Site não-oficial sobre a série The Legend of Zelda, feito de fãs para fãs!</string>
+    <string name="search">Pesquisar</string>
+    <string name="sharepage">Compartilhar página</string>
+    <string name="back">Voltar</string>
+    <string name="forward">Avançar</string>
+    <string name="home">Início</string>
+    <string name="reload">Recarregar</string>
+    <string name="cache">Limpar cache</string>
+    <string name="cache2">Cache limpo!</string>
+
+    <string name="settings">Configurações</string>
+    <string name="about">Sobre</string>
+
+    <string name="notifications">Notificações</string>
+    <string name="pref_notification">Receber notificações</string>
+    <string name="pref_notification_summary">Receber notificações de novos posts do site</string>
+    <string name="pref_sounds">Som de notificação</string>
+    <string name="pref_sounds_summary">Escolher som das notificações</string>
+
+    <string name="dialog_notification">Suas notificações do site estão desativadas! Deseja ativar para receber todas as novidades em primeira mão?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+</resources>

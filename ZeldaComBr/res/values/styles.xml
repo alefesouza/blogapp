@@ -1,0 +1,25 @@
+<resources>
+
+    <style name="ZeldaComBr.Theme" parent="Theme.AppCompat.NoActionBar">
+    	<item name="actionBarItemBackground">@drawable/apptheme_item_background_holo_light</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="actionBarStyle">@style/ZeldaComBr.Actionbar.Theme</item>
+		<item name="actionOverflowButtonStyle">@style/MyActionButtonOverFlow</item>
+    	<item name="android:progressBarStyleHorizontal">@style/ProgressBarAppTheme</item>
+   		<item name="dropDownListViewStyle">@style/DropDownListViewStyle</item>
+    </style>
+
+    <style name="DropDownListViewStyle" parent="Widget.AppCompat.ListView.DropDown">
+        <item name="android:listSelector">@drawable/apptheme_item_background_holo_light</item>
+    </style>
+
+    <style name="ZeldaComBr.Actionbar.Theme" parent="Widget.AppCompat.Light.ActionBar">
+        <item name="android:background">#2e7d32</item>
+        <item name="android:height">58.0dip</item>
+    </style>
+
+    <style name="MyActionButtonOverFlow" parent="Widget.AppCompat.Light.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_more_white</item>
+    </style>
+</resources>
