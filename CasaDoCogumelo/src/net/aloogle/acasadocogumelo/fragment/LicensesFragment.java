@@ -51,8 +51,6 @@ public class LicensesFragment extends Fragment {
 			"<li>android-support-v7-cardview</li>" +
 			"<li>android-support-v7-recyclerview</li>" +
 			"<li>google-play-services</li>" +
-			"<li>SlidingTabStrip.java</li>" +
-			"<li>SlidingTabLayout.java</li>" +
 			"</ul>",
 			"<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=youtubeplayer\">YouTube Android Player API</a>" +
@@ -60,6 +58,8 @@ public class LicensesFragment extends Fragment {
 			"<li>YouTubeAndroidPlayer.jar</li>" +
 			"<li>PlayerViewActivity.java</li>" +
 			"<li>YouTubeFailureRecoveryActivity.java</li>" +
+			"<li>SlidingTabStrip.java</li>" +
+			"<li>SlidingTabLayout.java</li>" +
 			"</ul>",
 			"<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=parse\">Parse</a>" +
@@ -126,7 +126,7 @@ public class LicensesFragment extends Fragment {
 			"   limitations under the License." +
 			"  </code></pre>",
 			"<pre><code>" +
-			" Copyright 2012, Google Inc." +
+			"   Copyright 2014 Google Inc. All rights reserved." +
 			"<br><br>" +
 			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
 			"   you may not use this file except in compliance with the License." +
@@ -141,9 +141,9 @@ public class LicensesFragment extends Fragment {
 			"   limitations under the License." +
 			"  </code></pre>",
 			"<pre><code>" +
-			"Parse grants you a revocable, personal, worldwide, royalty-free," +
-			"non-assignable and non-exclusive license to use the software provided to you by Parse as part of the Parse Services as provided to you by Parse." +
-			"This license is for the sole purpose of enabling you to use and enjoy the benefit of the Parse Services as provided by Parse, in the manner permitted by the Terms." +
+			"   Parse grants you a revocable, personal, worldwide, royalty-free," +
+			"   non-assignable and non-exclusive license to use the software provided to you by Parse as part of the Parse Services as provided to you by Parse." +
+			"   This license is for the sole purpose of enabling you to use and enjoy the benefit of the Parse Services as provided by Parse, in the manner permitted by the Terms." +
 			"  </code></pre>",
 			"<pre><code>" +
 			"Copyright 2013 Koushik Dutta (2013)" +
@@ -191,27 +191,27 @@ public class LicensesFragment extends Fragment {
 			"   limitations under the License." +
 			"</code></pre>",
 			"<pre><code>" +
-			"The MIT License (MIT)" +
+			"   The MIT License (MIT)" +
 			"<br><br>" +
-			"Copyright (c) 2014 Oleksandr Melnykov" +
+			"   Copyright (c) 2014 Oleksandr Melnykov" +
 			"<br><br>" +
-			"Permission is hereby granted, free of charge, to any person obtaining a copy" +
-			"of this software and associated documentation files (the \"Software\"), to deal" +
-			"in the Software without restriction, including without limitation the rights" +
-			"to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" +
-			"copies of the Software, and to permit persons to whom the Software is" +
-			"furnished to do so, subject to the following conditions:" +
+			"   Permission is hereby granted, free of charge, to any person obtaining a copy" +
+			"   of this software and associated documentation files (the \"Software\"), to deal" +
+			"   in the Software without restriction, including without limitation the rights" +
+			"   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" +
+			"   copies of the Software, and to permit persons to whom the Software is" +
+			"   furnished to do so, subject to the following conditions:" +
 			"<br><br>" +
-			"The above copyright notice and this permission notice shall be included in all" +
-			"copies or substantial portions of the Software." +
+			"   The above copyright notice and this permission notice shall be included in all" +
+			"   copies or substantial portions of the Software." +
 			"<br><br>" +
-			"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR" +
-			"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY," +
-			"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE" +
-			"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" +
-			"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM," +
-			"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE" +
-			"SOFTWARE." +
+			"   THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR" +
+			"   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY," +
+			"   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE" +
+			"   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" +
+			"   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM," +
+			"   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE" +
+			"   SOFTWARE." +
 			"  </code></pre>",
 			"<pre><code>" +
 			"Copyright 2014 Ivan Navas" +

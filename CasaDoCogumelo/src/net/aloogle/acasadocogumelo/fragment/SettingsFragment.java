@@ -51,7 +51,7 @@ public class SettingsFragment extends PreferenceFragment {
 		}
 
 		FragmentActivity.ActionBarColor(((ActionBarActivity)getActivity()), getActivity().getString(R.string.settings));
-		getActivity().findViewById(R.id.content_frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#222222")));
+		getActivity().findViewById(R.id.content_frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#ff37474f")));
 		((ActionBarActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.ic_toolbar);
 
 		Preference prefColor = findPreference("prefColor");
@@ -66,7 +66,7 @@ public class SettingsFragment extends PreferenceFragment {
 							editor.commit();
 							editor.putString("lastColor", "ff222222");
 							editor.commit();
-							FragmentActivity.SettingsActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", "branco"));
+							FragmentActivity.ActionBarColor(((ActionBarActivity)getActivity()), getActivity().getString(R.string.settings));
 						} else if (newValue.equals("outra")) {
 							if (preferences.getInt("lastDefault", 1) == 1) {
 								editor.putString("lastColor", "ff222222");
@@ -82,7 +82,7 @@ public class SettingsFragment extends PreferenceFragment {
 							editor.commit();
 							editor.putInt("lastDefault", 0);
 							editor.commit();
-							FragmentActivity.SettingsActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", "branco"));
+							FragmentActivity.ActionBarColor(((ActionBarActivity)getActivity()), getActivity().getString(R.string.settings));
 						}
 					}
 				}, 100);
@@ -97,7 +97,7 @@ public class SettingsFragment extends PreferenceFragment {
 				new Handler().postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						FragmentActivity.SettingsActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", String.valueOf(newValue)));
+						FragmentActivity.ActionBarColor(((ActionBarActivity)getActivity()), getActivity().getString(R.string.settings));
 					}
 				}, 100);
 				return true;
@@ -130,6 +130,6 @@ public class SettingsFragment extends PreferenceFragment {
 			editor.putString("prefColor", "padrao");
 			editor.commit();
 		}
-		FragmentActivity.SettingsActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", "branco"));
+		FragmentActivity.ActionBarColor(((ActionBarActivity)getActivity()), getActivity().getString(R.string.settings));
 	}
 }

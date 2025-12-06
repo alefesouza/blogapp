@@ -63,7 +63,7 @@ public class FavoritesFragment extends Fragment implements AbsListView.OnScrollL
 	}
 
 	public void Go() {
-		String[]ids = preferences.getString("favoritesPostsId", "").split("\\$\\%\\#");
+		String[] ids = preferences.getString("favoritesPostsId", "").split("\\$\\%\\#");
 		for (int i = 0; i < ids.length; i++) {
 			if (ids[i].equals("")) {}
 			else {
@@ -71,7 +71,7 @@ public class FavoritesFragment extends Fragment implements AbsListView.OnScrollL
 			}
 		}
 
-		String[]titulos = preferences.getString("favoritesPostsTitle", "").split("\\$\\%\\#");
+		String[] titulos = preferences.getString("favoritesPostsTitle", "").split("\\$\\%\\#");
 		for (int i = 0; i < titulos.length; i++) {
 			if (titulos[i].equals("")) {}
 			else {
@@ -79,7 +79,7 @@ public class FavoritesFragment extends Fragment implements AbsListView.OnScrollL
 			}
 		}
 
-		String[]descricoes = preferences.getString("favoritesPostsDescription", "").split("\\$\\%\\#");
+		String[] descricoes = preferences.getString("favoritesPostsDescription", "").split("\\$\\%\\#");
 		for (int i = 0; i < descricoes.length; i++) {
 			if (descricoes[i].equals("")) {}
 			else {
@@ -87,7 +87,7 @@ public class FavoritesFragment extends Fragment implements AbsListView.OnScrollL
 			}
 		}
 
-		String[]imagens = preferences.getString("favoritesPostsImage", "").split("\\$\\%\\#");
+		String[] imagens = preferences.getString("favoritesPostsImage", "").split("\\$\\%\\#");
 		for (int i = 0; i < imagens.length; i++) {
 			if (imagens[i].equals("")) {}
 			else {
@@ -95,7 +95,7 @@ public class FavoritesFragment extends Fragment implements AbsListView.OnScrollL
 			}
 		}
 
-		String[]urls = preferences.getString("favoritesPostsUrl", "").split("\\$\\%\\#");
+		String[] urls = preferences.getString("favoritesPostsUrl", "").split("\\$\\%\\#");
 		for (int i = 0; i < urls.length; i++) {
 			if (urls[i].equals("")) {}
 			else {

@@ -79,7 +79,6 @@ public class ZoomFragment extends Fragment {
 				}
 			})
 			.withBitmap()
-			.deepZoom()
 			.intoImageView(mImageView);
 
 		mAttacher = new PhotoViewAttacher(mImageView);

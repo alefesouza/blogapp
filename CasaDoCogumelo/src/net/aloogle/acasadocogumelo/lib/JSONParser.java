@@ -53,8 +53,8 @@ public class JSONParser {
 			while ((line = reader.readLine()) != null) {
 				sb.append(line + "\n");
 			}
-			is.close();
 			json = sb.toString();
+			is.close();
 		} catch (Exception e) {
 			Log.e("Buffer Error", "Error converting result " + e.toString());
 		}

@@ -52,12 +52,6 @@ public class FragmentActivity extends ActionBarActivity {
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		if (iconcolor.equals("branco")) {
-			getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white);
-		} else {
-			getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_black);
-		}
-
 		selectItem(getIntent().getIntExtra("fragment", 0));
 	}
 
@@ -65,11 +59,9 @@ public class FragmentActivity extends ActionBarActivity {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		switch (position) {
 		case 0:
-			SettingsActionBarColor(this, preferences.getString("prefIconColor", "branco"));
 			ft.replace(R.id.content_frame, settings);
 			break;
 		case 1:
-			SettingsActionBarColor(this, preferences.getString("prefIconColor", "branco"));
 			ft.replace(R.id.content_frame, color);
 			break;
 		case 2:
@@ -103,33 +95,16 @@ public class FragmentActivity extends ActionBarActivity {
 		}
 		ft.commit();
 	}
-
-	public static void SettingsActionBarColor(ActionBarActivity activity, String bw) {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-		if (bw.equals("branco")) {
-			activity.getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#ffffff\">" + activity.getString(R.string.settings) + "</font>"));
-			activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white);
-		} else {
-			activity.getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#000000\">" + activity.getString(R.string.settings) + "</font>"));
-			activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_black);
-		}
-		String userColor = preferences.getString("prefColor", "padrao");
-		if (userColor.equals("padrao")) {
-			activity.getSupportActionBar().setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.splash_bg));
-			activity.findViewById(R.id.frame).setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.splash_bg));
-		} else {
-			activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
-			activity.findViewById(R.id.frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
-		}
-	}
-
+	
 	public static void ActionBarColor(ActionBarActivity activity, String title) {
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
 		String iconcolor = preferences.getString("prefIconColor", "branco");
 		if (iconcolor.equals("branco")) {
 			activity.getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#ffffff\">" + title + "</font>"));
+			activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_white);
 		} else {
 			activity.getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#000000\">" + title + "</font>"));
+			activity.getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_black);
 		}
 		String userColor = preferences.getString("prefColor", "padrao");
 		if (userColor.equals("padrao")) {

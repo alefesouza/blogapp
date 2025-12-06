@@ -19,7 +19,6 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,15 +44,19 @@ import com.gc.materialdesign.views.ProgressBarDeterminate;
 import com.melnykov.fab.FloatingActionButton;
 import com.google.android.gms.ads.*;
 import net.aloogle.acasadocogumelo.R;
-import net.aloogle.acasadocogumelo.activity.*;
+import net.aloogle.acasadocogumelo.activity.CommentsActivity;
+import net.aloogle.acasadocogumelo.activity.FragmentActivity;
+import net.aloogle.acasadocogumelo.lib.ObservableWebView;
 
-@SuppressLint({ "NewApi", "SetJavaScriptEnabled" })
-public class WebViewFrag extends Fragment {
-	public Toolbar mToolbar;
+@SuppressLint({"NewApi", "SetJavaScriptEnabled"})
+public class WebViewFrag extends Fragment implements ObservableWebView.OnScrollChangedCallback {
+	View view;
+	Activity activity;
+	
 	SharedPreferences preferences;
 	Editor editor;
 	String iconcolor;
-	WebView webView;
+	ObservableWebView webView;
 	ProgressBarCircularIndeterminate progressBar;
 	ProgressBarDeterminate progressBar2;
 	private AdView adView;
@@ -67,9 +70,6 @@ public class WebViewFrag extends Fragment {
 	private CustomViewCallback mCustomViewCallback;
 	private View mCustomView;
 	private webChromeClient mClient;
-
-	View view;
-	Activity activity;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -109,7 +109,7 @@ public class WebViewFrag extends Fragment {
 
 		progressBar = (ProgressBarCircularIndeterminate)view.findViewById(R.id.progressBar1);
 
-		webView = (WebView)view.findViewById(R.id.webview01);
+		webView = (ObservableWebView)view.findViewById(R.id.webview01);
 		mClient = new webChromeClient();
 		webView.setWebChromeClient(mClient);
 		webView.setWebViewClient(new webViewClient());
@@ -154,10 +154,8 @@ public class WebViewFrag extends Fragment {
 
 		fabcomment.setOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), FragmentActivity.class);
-				intent.putExtra("comments", true);
-				intent.putExtra("titulo", "Comentários");
-				intent.putExtra("url", "https://www.facebook.com/plugins/comments.php?href=" + webView.getUrl() + "&locale=pt_BR&numposts=5");
+				Intent intent = new Intent(getActivity(), CommentsActivity.class);
+				intent.putExtra("url", webView.getUrl().replace("?m=1", ""));
 				startActivity(intent);
 			}
 		});
@@ -165,7 +163,7 @@ public class WebViewFrag extends Fragment {
 		fabcomment.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
-				Toast toast = Toast.makeText(getActivity(), "Comentários do Facebook", Toast.LENGTH_SHORT);
+				Toast toast = Toast.makeText(getActivity(), "Comentários", Toast.LENGTH_SHORT);
 				toast.show();
 				return true;
 			}
@@ -287,16 +285,19 @@ public class WebViewFrag extends Fragment {
 					app = "Facebook";
 				} else if (webView.getUrl().contains("twitter")) {
 					app = "Twitter";
-				} else if (webView.getUrl().contains("youtube")) {
-					app = "YouTube";
 				} else if (webView.getUrl().contains("plus.google")) {
 					app = "Google+";
+				} else if (webView.getUrl().contains("youtube")) {
+					app = "YouTube";
 				}
 				Toast toast = Toast.makeText(getActivity(), "Abrir no aplicativo do " + app, Toast.LENGTH_SHORT);
 				toast.show();
 				return true;
 			}
 		});
+		
+		webView.setOnScrollChangedCallback(this);
+		
 		return view;
 	}
 
@@ -339,10 +340,6 @@ public class WebViewFrag extends Fragment {
 			menu.findItem(R.id.menu_share).setIcon(R.drawable.ic_share_white);
 		} else {
 			menu.findItem(R.id.menu_share).setIcon(R.drawable.ic_share_black);
-		}
-
-		if (getActivity().getIntent().getBooleanExtra("comments", false)) {
-			menu.findItem(R.id.menu_share).setVisible(false);
 		}
 		super.onPrepareOptionsMenu(menu);
 	}
@@ -423,8 +420,7 @@ public class WebViewFrag extends Fragment {
 				if (progress >= 50) {
 					progressBar.setVisibility(View.GONE);
 					webView.setVisibility(View.VISIBLE);
-					if (getActivity().getIntent().getBooleanExtra("comments", false)) {}
-					else {
+					
 						if (webView.getUrl().replace("?m=1", "").equals("http://acasadocogumelo.com") || webView.getUrl().replace("?m=1", "").equals("http://acasadocogumelo.com/") || webView.getUrl().replace("?m=1", "").equals("http://www.acasadocogumelo.com") || webView.getUrl().replace("?m=1", "").equals("http://www.acasadocogumelo.com/") || webView.getUrl().contains("acasadocogumelo.com/search")) {
 							fabcomment.setVisibility(View.GONE);
 							fabdownload.setVisibility(View.GONE);
@@ -437,7 +433,7 @@ public class WebViewFrag extends Fragment {
 							fabcomment.setVisibility(View.VISIBLE);
 							fabdownload.setVisibility(View.GONE);
 							fabopen.setVisibility(View.GONE);
-						} else if (webView.getUrl().contains("twitter.com") || webView.getUrl().contains("facebook.com") || webView.getUrl().contains("plus.google") || webView.getUrl().contains("youtube.com")) {
+						} else if (webView.getUrl().contains("facebook.com") || webView.getUrl().contains("plus.google") || webView.getUrl().contains("twitter.com") || webView.getUrl().contains("youtube.com")) {
 							fabcomment.setVisibility(View.GONE);
 							fabdownload.setVisibility(View.GONE);
 							fabopen.setVisibility(View.VISIBLE);
@@ -446,7 +442,6 @@ public class WebViewFrag extends Fragment {
 							fabdownload.setVisibility(View.GONE);
 							fabopen.setVisibility(View.GONE);
 						}
-					}
 				}
 			}
 		}
@@ -474,6 +469,23 @@ public class WebViewFrag extends Fragment {
 			mCustomViewCallback.onCustomViewHidden();
 			mContentView.setVisibility(View.VISIBLE);
 			((ActionBarActivity)getActivity()).getSupportActionBar().show();
+		}
+	}
+
+	@Override
+	public void onScroll(int l, int t, int oldl, int oldt) {
+		if (t < 100) {
+			fabcomment.show(true);
+			fabdownload.show(true);
+			fabopen.show(true);
+		} else if (t < oldt) {
+			fabcomment.show(true);
+			fabdownload.show(true);
+			fabopen.show(true);
+		} else {
+			fabcomment.hide(true);
+			fabdownload.hide(true);
+			fabopen.hide(true);
 		}
 	}
 

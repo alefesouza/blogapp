@@ -105,8 +105,6 @@ public class MainActivity extends ActionBarActivity {
 		titulo = "Notícias";
 		ActionBarColor(titulo);
 
-		getSupportActionBar().setTitle("Notícias");
-
 		initDrawer();
 		initNotification();
 

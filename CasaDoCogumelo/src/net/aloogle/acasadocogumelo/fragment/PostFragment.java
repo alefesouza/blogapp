@@ -17,7 +17,6 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +53,7 @@ import com.melnykov.fab.ObservableScrollView;
 import net.aloogle.acasadocogumelo.R;
 import net.aloogle.acasadocogumelo.activity.FragmentActivity;
 import net.aloogle.acasadocogumelo.adapter.TagAdapter;
+import net.aloogle.acasadocogumelo.lib.CustomLinkMovementMethod;
 import net.aloogle.acasadocogumelo.lib.JSONParser;
 import net.aloogle.acasadocogumelo.lib.PlayerViewActivity;
 import net.aloogle.acasadocogumelo.other.CustomTextView;
@@ -82,7 +82,8 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 	JSONArray tags = null;
 	LinearLayout linear;
 	boolean favorite, finished, pressed;
-
+	String stitulo, sdescricao, simagem, surl;
+	
 	FloatingActionButton fabcomment;
 
 	SharedPreferences preferences;
@@ -133,21 +134,28 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 
 		adView.loadAd(adRequest);
 
-		
 		autorhora = (CustomTextView)view.findViewById(R.id.autor);
 		titulo = (CustomTextView)view.findViewById(R.id.titulo);
 		imagem = (ImageView)view.findViewById(R.id.image);
-		Ion.with (imagem).load(getActivity().getIntent().getStringExtra("imagem").replace("s1600", preferences.getString("prefImageQuality", "s400")));
-		imagem.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), FragmentActivity.class);
-				intent.putExtra("fragment", 8);
-				intent.putExtra("imgurl", getActivity().getIntent().getStringExtra("imagem"));
-				startActivity(intent);
-			}
-		});
-		titulo.setText(getActivity().getIntent().getStringExtra("titulo"));
+		
+		if(getActivity().getIntent().hasExtra("imagem")) {
+			stitulo = getActivity().getIntent().getStringExtra("titulo");
+			sdescricao = getActivity().getIntent().getStringExtra("descricao");
+			simagem = getActivity().getIntent().getStringExtra("imagem");
+			surl = getActivity().getIntent().getStringExtra("url");
+			
+			Ion.with(imagem).load(simagem.replace("s1600", preferences.getString("prefImageQuality", "s400")));
+			imagem.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(getActivity(), FragmentActivity.class);
+					intent.putExtra("fragment", 8);
+					intent.putExtra("imgurl", simagem);
+					startActivity(intent);
+				}
+			});
+			titulo.setText(stitulo);
+		}
 
 		net.aloogle.acasadocogumelo.activity.FragmentActivity.ActionBarColor(((ActionBarActivity)getActivity()), "");
 		((ActionBarActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.ic_toolbar);
@@ -160,11 +168,8 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 
 		fabcomment.setOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), net.aloogle.acasadocogumelo.activity.FragmentActivity.class);
-				intent.putExtra("fragment", 5);
-				intent.putExtra("comments", true);
-				intent.putExtra("titulo", "Comentários");
-				intent.putExtra("url", "https://www.facebook.com/plugins/comments.php?href=" + getActivity().getIntent().getStringExtra("url") + "&locale=pt_BR&numposts=5");
+				Intent intent = new Intent(getActivity(), net.aloogle.acasadocogumelo.activity.CommentsActivity.class);
+				intent.putExtra("url", surl);
 				startActivity(intent);
 				getActivity().overridePendingTransition(R.anim.bottom_in, R.anim.top_out);
 			}
@@ -173,7 +178,7 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 		fabcomment.setOnLongClickListener(new OnLongClickListener() {
 			@Override
 			public boolean onLongClick(View v) {
-				Toast toast = Toast.makeText(getActivity(), "Comentários do Facebook", Toast.LENGTH_SHORT);
+				Toast toast = Toast.makeText(getActivity(), "Comentários", Toast.LENGTH_SHORT);
 				toast.show();
 				return true;
 			}
@@ -211,6 +216,25 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 				progressBar.setVisibility(View.GONE);
 				try {
 					try {
+						if(getActivity().getIntent().hasExtra("imagem")) {} else {
+							stitulo = json.getString("titulo");
+							sdescricao = json.getString("descricao");
+							simagem = json.getString("imagem");
+							surl = json.getString("url");
+							
+							Ion.with(imagem).load(simagem.replace("s1600", preferences.getString("prefImageQuality", "s400")));
+							imagem.setOnClickListener(new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									Intent intent = new Intent(getActivity(), FragmentActivity.class);
+									intent.putExtra("fragment", 8);
+									intent.putExtra("imgurl", simagem);
+									startActivity(intent);
+								}
+							});
+							titulo.setText(stitulo);
+						}
+						
 						String postData = json.getString("data");
 						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -320,7 +344,7 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 								LayoutInflater textoinflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 								View texto = textoinflater.inflate(R.layout.post_text, null);
 								CustomTextView text = (CustomTextView)texto.findViewById(R.id.texto);
-								text.setMovementMethod(LinkMovementMethod.getInstance());
+								text.setMovementMethod(CustomLinkMovementMethod.getInstance(getActivity()));
 								text.setText(Html.fromHtml(textoarray.get(i).toString(), null, new TagAdapter()));
 								linear.addView(texto);
 							}
@@ -506,7 +530,7 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 
 		Intent sharePageIntent = new Intent();
 		sharePageIntent.setAction(Intent.ACTION_SEND);
-		sharePageIntent.putExtra(Intent.EXTRA_TEXT, getActivity().getIntent().getStringExtra("titulo") + " " + getActivity().getIntent().getStringExtra("url"));
+		sharePageIntent.putExtra(Intent.EXTRA_TEXT, stitulo + " " + surl);
 		sharePageIntent.setType("text/plain");
 		shareProvider.setShareIntent(sharePageIntent);
 
@@ -543,25 +567,25 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 			if (favorite) {
 				editor.putString("favoritesPostsId", preferences.getString("favoritesPostsId", "").replace(getActivity().getIntent().getStringExtra("id") + "$%#", ""));
 				editor.commit();
-				editor.putString("favoritesPostsTitle", preferences.getString("favoritesPostsTitle", "").replace(getActivity().getIntent().getStringExtra("titulo") + "$%#", ""));
+				editor.putString("favoritesPostsTitle", preferences.getString("favoritesPostsTitle", "").replace(stitulo + "$%#", ""));
 				editor.commit();
-				editor.putString("favoritesPostsDescription", preferences.getString("favoritesPostsDescription", "").replace(getActivity().getIntent().getStringExtra("descricao") + "$%#", ""));
+				editor.putString("favoritesPostsDescription", preferences.getString("favoritesPostsDescription", "").replace(sdescricao + "$%#", ""));
 				editor.commit();
-				editor.putString("favoritesPostsImage", preferences.getString("favoritesPostsImage", "").replace(getActivity().getIntent().getStringExtra("imagem") + "$%#", ""));
+				editor.putString("favoritesPostsImage", preferences.getString("favoritesPostsImage", "").replace(simagem + "$%#", ""));
 				editor.commit();
-				editor.putString("favoritesPostsUrl", preferences.getString("favoritesPostsUrl", "").replace(getActivity().getIntent().getStringExtra("url") + "$%#", ""));
+				editor.putString("favoritesPostsUrl", preferences.getString("favoritesPostsUrl", "").replace(surl + "$%#", ""));
 				editor.commit();
 				favorite = false;
 			} else {
 				editor.putString("favoritesPostsId", getActivity().getIntent().getStringExtra("id") + "$%#" + preferences.getString("favoritesPostsId", ""));
 				editor.commit();
-				editor.putString("favoritesPostsTitle", getActivity().getIntent().getStringExtra("titulo") + "$%#" + preferences.getString("favoritesPostsTitle", ""));
+				editor.putString("favoritesPostsTitle", stitulo + "$%#" + preferences.getString("favoritesPostsTitle", ""));
 				editor.commit();
-				editor.putString("favoritesPostsDescription", getActivity().getIntent().getStringExtra("descricao") + "$%#" + preferences.getString("favoritesPostsDescription", ""));
+				editor.putString("favoritesPostsDescription", sdescricao + "$%#" + preferences.getString("favoritesPostsDescription", ""));
 				editor.commit();
-				editor.putString("favoritesPostsImage", getActivity().getIntent().getStringExtra("imagem") + "$%#" + preferences.getString("favoritesPostsImage", ""));
+				editor.putString("favoritesPostsImage", simagem + "$%#" + preferences.getString("favoritesPostsImage", ""));
 				editor.commit();
-				editor.putString("favoritesPostsUrl", getActivity().getIntent().getStringExtra("url") + "$%#" + preferences.getString("favoritesPostsImage", ""));
+				editor.putString("favoritesPostsUrl", surl + "$%#" + preferences.getString("favoritesPostsUrl", ""));
 				editor.commit();
 				favorite = true;
 			}
@@ -570,18 +594,18 @@ public class PostFragment extends Fragment implements ObservableScrollView.OnScr
 		case R.id.menu_copylink:
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				final android.content.ClipboardManager clipboardManager = (android.content.ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-				final android.content.ClipData clipData = android.content.ClipData.newPlainText(getActivity().getIntent().getStringExtra("url"), getActivity().getIntent().getStringExtra("url"));
+				final android.content.ClipData clipData = android.content.ClipData.newPlainText(surl, surl);
 				clipboardManager.setPrimaryClip(clipData);
 			} else {
 				final android.text.ClipboardManager clipboardManager = (android.text.ClipboardManager)getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-				clipboardManager.setText(getActivity().getIntent().getStringExtra("url"));
+				clipboardManager.setText(surl);
 			}
 			Toast toast = Toast.makeText(getActivity(), "Link copiado para a área de transferência", Toast.LENGTH_SHORT);
 			toast.show();
 			return true;
 		case R.id.menu_openinbrowser:
 			Intent intent = new Intent(Intent.ACTION_VIEW);
-			intent.setData(Uri.parse(getActivity().getIntent().getStringExtra("url")));
+			intent.setData(Uri.parse(surl));
 			startActivity(intent);
 			return true;
 		default:

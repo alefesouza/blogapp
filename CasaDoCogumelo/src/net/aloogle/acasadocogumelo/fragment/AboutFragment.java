@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import net.aloogle.acasadocogumelo.R;
+import net.aloogle.acasadocogumelo.lib.CustomLinkMovementMethod;
 
 public class AboutFragment extends Fragment {
 	Activity activity;
@@ -43,7 +43,7 @@ public class AboutFragment extends Fragment {
 			"Aplicativo desenvolvido por <a href=\"http://google.com/+AlefeSouza\">Alefe Souza</a>.<br><br>Quer ter uma versão desse aplicativo para seu blog ou site? Entre em contato <a href=\"mailto:blogapp@apps.aloogle.net\">tocando aqui</a>!";
 
 		TextView sobre = (TextView)view.findViewById(R.id.sobre);
-		sobre.setMovementMethod(LinkMovementMethod.getInstance());
+		sobre.setMovementMethod(CustomLinkMovementMethod.getInstance(getActivity()));
 		sobre.setText(Html.fromHtml(sobretext));
 
 		view.findViewById(R.id.sourcecodelicenses).setOnClickListener(new View.OnClickListener() {

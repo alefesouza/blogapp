@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.aloogle.acasadocogumelo"
-    android:versionCode="16"
-    android:versionName="3.0.1">
+    android:versionCode="17"
+    android:versionName="3.0.2">
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -45,11 +45,12 @@
 		
         <activity
             android:name=".activity.FragmentActivity"
-            android:configChanges="orientation|screenSize" android:windowSoftInputMode="adjustPan" />
+            android:configChanges="orientation|screenSize" />
 
         <activity
-            android:name=".activity.ZoomActivity"
-            android:configChanges="orientation|screenSize" />
+            android:name=".activity.CommentsActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".lib.PlayerViewActivity"
