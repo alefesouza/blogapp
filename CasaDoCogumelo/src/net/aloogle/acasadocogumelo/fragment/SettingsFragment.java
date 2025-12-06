@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.Preference;
@@ -27,6 +29,7 @@ public class SettingsFragment extends PreferenceFragment {
 		this.activity = getActivity();
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,7 +38,7 @@ public class SettingsFragment extends PreferenceFragment {
 		preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		editor = preferences.edit();
 		
-		if(preferences.getString("prefColor", "padrao").equals("padrao")) {
+		if (preferences.getString("prefColor", "padrao").equals("padrao")) {
 			editor.putString("lastColor", "ff222222");
 			editor.commit();
 			editor.putInt("lastDefault", 1);
@@ -46,6 +49,10 @@ public class SettingsFragment extends PreferenceFragment {
 			editor.putInt("lastDefault", 0);
 			editor.commit();
 		}
+
+		FragmentActivity.ActionBarColor(((ActionBarActivity)getActivity()), getActivity().getString(R.string.settings));
+		getActivity().findViewById(R.id.content_frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#222222")));
+		((ActionBarActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.ic_toolbar);
 
 		Preference prefColor = findPreference("prefColor");
 		prefColor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -59,9 +66,9 @@ public class SettingsFragment extends PreferenceFragment {
 							editor.commit();
 							editor.putString("lastColor", "ff222222");
 							editor.commit();
-							FragmentActivity.ActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", "branco"));
+							FragmentActivity.SettingsActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", "branco"));
 						} else if (newValue.equals("outra")) {
-							if(preferences.getInt("lastDefault", 1) == 1) {
+							if (preferences.getInt("lastDefault", 1) == 1) {
 								editor.putString("lastColor", "ff222222");
 								editor.commit();
 							}
@@ -75,7 +82,7 @@ public class SettingsFragment extends PreferenceFragment {
 							editor.commit();
 							editor.putInt("lastDefault", 0);
 							editor.commit();
-							FragmentActivity.ActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", "branco"));
+							FragmentActivity.SettingsActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", "branco"));
 						}
 					}
 				}, 100);
@@ -90,7 +97,7 @@ public class SettingsFragment extends PreferenceFragment {
 				new Handler().postDelayed(new Runnable() {
 					@Override
 					public void run() {
-						FragmentActivity.ActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", String.valueOf(newValue)));
+						FragmentActivity.SettingsActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", String.valueOf(newValue)));
 					}
 				}, 100);
 				return true;
@@ -119,10 +126,10 @@ public class SettingsFragment extends PreferenceFragment {
 
 	public void onResume() {
 		super.onResume();
-		if(preferences.getInt("lastDefault", 1) == 1) {
+		if (preferences.getInt("lastDefault", 1) == 1) {
 			editor.putString("prefColor", "padrao");
 			editor.commit();
 		}
-		FragmentActivity.ActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", "branco"));
+		FragmentActivity.SettingsActionBarColor(((ActionBarActivity)getActivity()), preferences.getString("prefIconColor", "branco"));
 	}
 }

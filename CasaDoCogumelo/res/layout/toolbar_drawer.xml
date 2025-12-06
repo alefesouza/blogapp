@@ -1,0 +1,78 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/frame" >
+
+	<android.support.v4.widget.DrawerLayout
+		android:id="@+id/drawer_layout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:fitsSystemWindows="true"
+			android:orientation="vertical">
+
+			<android.support.v7.widget.Toolbar
+				android:id="@+id/toolbar"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:maxHeight="?attr/actionBarSize"
+				app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+				app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+			
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/linear_tabs"
+				android:layout_below="@+id/toolbar">
+
+				<net.aloogle.acasadocogumelo.lib.SlidingTabLayout
+					android:id="@+id/sliding_tabs"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content" />
+			</LinearLayout>
+
+			<android.support.v4.view.ViewPager
+				android:id="@+id/pager"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/linear_tabs" />
+			
+			<FrameLayout
+				android:id="@+id/content_frame"
+				android:layout_width="fill_parent"
+				android:layout_height="match_parent"
+				android:layout_below="@+id/toolbar"
+				android:visibility="gone">
+			</FrameLayout>
+			
+			<LinearLayout
+				android:id="@+id/adLayout"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:orientation="vertical" />
+		</RelativeLayout>
+
+		<ListView
+			android:id="@+id/left_drawer"
+			android:layout_width="240dp"
+			android:layout_height="match_parent"
+			android:layout_gravity="start"
+			android:layout_marginRight="96dp"
+			android:background="@android:color/white"
+			android:choiceMode="singleChoice"
+			android:divider="#00000000"
+			android:dividerHeight="1.00dp"
+			android:listSelector="@drawable/drawer"
+			android:longClickable="false"
+			android:orientation="vertical"
+			android:overScrollMode="never"
+			android:scrollbars="none" />
+
+	</android.support.v4.widget.DrawerLayout>
+</FrameLayout>

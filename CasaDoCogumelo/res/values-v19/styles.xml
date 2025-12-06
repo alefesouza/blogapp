@@ -7,13 +7,16 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="windowActionBarOverlay">true</item>
+        <item name="colorAccent">@color/logo_red</item>
         <item name="actionBarStyle">@style/CasaDoCogumelo.Actionbar.Theme</item>
+        <item name="android:scrollingCache">false</item>
         <item name="homeAsUpIndicator">@drawable/ic_arrow_white</item>
     	<item name="android:textSelectHandleLeft">@drawable/apptheme_text_select_handle_left</item>
     	<item name="android:textSelectHandleRight">@drawable/apptheme_text_select_handle_right</item>
     	<item name="android:textSelectHandle">@drawable/apptheme_text_select_handle_middle</item>
     	<item name="android:progressBarStyleHorizontal">@style/ProgressBarAppTheme</item>
    		<item name="dropDownListViewStyle">@style/DropDownListViewStyle</item>
+		<item name="actionModeShareDrawable">@drawable/ic_share_white</item>
     </style>
 
     <style name="DropDownListViewStyle" parent="Widget.AppCompat.ListView.DropDown">
@@ -28,10 +31,11 @@
 	<style name="ProgressBarAppTheme" parent="@android:style/Widget.Holo.Light.ProgressBar.Horizontal">
 		<item name="android:progressDrawable">@drawable/apptheme_progress_horizontal_holo_light</item>
 	</style>
-
+	
    <style name="BlackOverflow" parent="CasaDoCogumelo.Theme">
   	<item name="actionOverflowButtonStyle">@style/MyActionButtonOverFlow</item>
-        <item name="homeAsUpIndicator">@drawable/ic_arrow_black</item>
+    <item name="homeAsUpIndicator">@drawable/ic_arrow_black</item>
+	<item name="actionModeShareDrawable">@drawable/ic_share_black</item>
   </style>
 
     <style name="MyActionButtonOverFlow" parent="Widget.AppCompat.Light.ActionButton.Overflow">

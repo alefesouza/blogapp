@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+	
+	<net.aloogle.acasadocogumelo.other.CustomTextView
+		android:id="@+id/texto"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textIsSelectable="true"
+		android:textColorLink="#ff0000"
+		android:textColor="#000000"
+		android:layout_margin="10dp"
+		android:textSize="16sp"
+		app:fontName="Roboto-Regular.ttf"
+	/>
+    
+</LinearLayout>

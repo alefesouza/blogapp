@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:background="#ffffff" >
+				<com.melnykov.fab.ObservableScrollView
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:id="@+id/scrollView1"
+					android:layout_marginBottom="50dp"
+					android:orientation="vertical">
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical"
+				android:layout_marginBottom="50dp"
+				android:background="#ffffff">
+				
+				<ImageView
+					android:id="@+id/image"
+					android:layout_width="fill_parent"
+					android:layout_height="200dp"
+					android:scaleType="fitXY"
+					android:layout_alignParentTop="true"
+        			tools:ignore="ContentDescription"
+				/>
+
+				<net.aloogle.acasadocogumelo.other.CustomTextView
+					android:id="@+id/titulo"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="#000000"
+					android:layout_below="@+id/image"
+					android:layout_marginLeft="20dp"
+					android:layout_marginRight="20dp"
+					android:textSize="20sp"
+					app:fontName="RobotoSlab-Bold.ttf"
+				/>
+
+				<com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+					android:layout_width="32dp"
+					android:layout_height="32dp"
+					android:layout_below="@+id/titulo"
+					android:id="@+id/progressBar1"
+					android:layout_centerHorizontal="true"
+					android:background="#d92525" />
+				
+				<LinearLayout
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:id="@+id/linear"
+					android:layout_below="@+id/titulo"
+					android:layout_marginLeft="20dp"
+					android:layout_marginRight="20dp"
+					android:orientation="vertical" />
+				
+				<HorizontalScrollView
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_marginLeft="20dp"
+					android:id="@+id/horizontal"
+					android:layout_below="@+id/linear">
+				<LinearLayout
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:id="@+id/tags"
+					android:layout_marginTop="20dp"
+					android:layout_marginBottom="20dp"
+					android:orientation="horizontal" />
+				</HorizontalScrollView>
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="?attr/actionBarSize"
+					android:layout_below="@+id/horizontal"
+				/>
+		</RelativeLayout>
+				</com.melnykov.fab.ObservableScrollView>
+
+				<com.melnykov.fab.FloatingActionButton
+					android:id="@+id/fabcomments"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_alignParentBottom="true"
+					android:layout_alignParentRight="true"
+					android:layout_marginRight="16dp"
+					android:layout_marginBottom="66dp"
+					android:src="@drawable/ic_comments"
+					app:fab_colorNormal="#f44336"
+					app:fab_colorPressed="#e53935" />
+				
+		<LinearLayout
+			android:id="@+id/adLayout"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:layout_alignParentBottom="true"/>
+</RelativeLayout>

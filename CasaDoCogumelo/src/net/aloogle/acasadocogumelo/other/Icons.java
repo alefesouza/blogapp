@@ -4,7 +4,7 @@ public class Icons {
 
     private String title;
     private int icon;
-    private String count = "5";
+    private String count = "13";
 
     private boolean isCounterVisible = true;
 

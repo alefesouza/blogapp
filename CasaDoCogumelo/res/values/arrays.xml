@@ -3,38 +3,32 @@
 
     <string-array name="navigation_main_sections">
         <item>Início</item>
+        <item>Favoritos</item>
         <item>Wii U</item>
         <item>3DS</item>
-        <item>DS</item>
         <item>Mario</item>
         <item>Zelda</item>
         <item>Pokémon</item>
-        <item>Smash Bros</item>
         <item>Donkey Kong</item>
-        <item>Yoshi</item>
         <item>Metroid</item>
-        <item>Xenoblade</item>
-        <item>Fire Emblem</item>
         <item>Facebook</item>
+        <item>Google+</item>
         <item>Twitter</item>
         <item>YouTube</item>
     </string-array>
 
     <array name="drawable_ids">
         <item>@drawable/ic_launcher</item>
+        <item>@drawable/drawer_star</item>
         <item>@drawable/drawer_wiiu</item>
         <item>@drawable/drawer_3ds</item>
-        <item>@drawable/drawer_ds</item>
         <item>@drawable/drawer_mario</item>
         <item>@drawable/drawer_zelda</item>
         <item>@drawable/drawer_pokemon</item>
-        <item>@drawable/drawer_smashbros</item>
         <item>@drawable/drawer_dk</item>
-        <item>@drawable/drawer_yoshi</item>
         <item>@drawable/drawer_metroid</item>
-        <item>@drawable/drawer_xenoblade</item>
-        <item>@drawable/drawer_fireemblem</item>
         <item>@drawable/drawer_facebook</item>
+        <item>@drawable/drawer_googleplus</item>
         <item>@drawable/drawer_twitter</item>
         <item>@drawable/drawer_youtube</item>
     </array>
@@ -67,5 +61,17 @@
     <string-array name="iconColorsValues">
         <item>preto</item>
         <item>branco</item>
+    </string-array>
+	
+    <string-array name="images">
+        <item>Baixo</item>
+        <item>Medio</item>
+        <item>Alto</item>
+    </string-array>
+
+    <string-array name="imagesValues">
+        <item>s400</item>
+        <item>s1000</item>
+        <item>s1600</item>
     </string-array>
 </resources>

@@ -41,11 +41,11 @@ public class ColorFragment extends Fragment {
 		preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		editor = preferences.edit();
 		mColorPicker = (ColorPicker)view.findViewById(R.id.color_picker);
-		if(preferences.getInt("lastDefault", 1) == 1) {
+		if (preferences.getInt("lastDefault", 1) == 1) {
 			editor.putString("prefColor", "padrao");
 			editor.commit();
 			((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.splash_bg));
-			view.findViewById(R.id.colorframe).setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.splash_bg));
+			getActivity().findViewById(R.id.frame).setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.splash_bg));
 			mColorPicker.setColor(Color.parseColor("#ffffffff"));
 		} else {
 			mColorPicker.setColor(Color.parseColor("#" + preferences.getString("lastColor", "ff222222")));
@@ -79,6 +79,6 @@ public class ColorFragment extends Fragment {
 	@SuppressWarnings("deprecation")
 	private void applySelectedColor() {
 		((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(mColorPicker.getColor()));
-		view.findViewById(R.id.colorframe).setBackgroundDrawable(new ColorDrawable(mColorPicker.getColor()));
+		getActivity().findViewById(R.id.frame).setBackgroundDrawable(new ColorDrawable(mColorPicker.getColor()));
 	}
 }

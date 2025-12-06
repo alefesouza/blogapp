@@ -11,7 +11,7 @@ public class Application extends android.app.Application {
   @Override
   public void onCreate() {
     super.onCreate();
-	Parse.initialize(this, "", "");
-	PushService.setDefaultPushCallback(this, net.aloogle.acasadocogumelo.activity.SplashScreen.class);
+	  Parse.initialize(this, "", "");
+	  PushService.setDefaultPushCallback(this, net.aloogle.acasadocogumelo.activity.SplashScreen.class);
   }
 }

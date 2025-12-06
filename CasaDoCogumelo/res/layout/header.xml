@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:customfontdemo="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="175dp">
 
@@ -27,7 +27,7 @@
         android:layout_alignParentStart="true"
         android:src="@drawable/ic_launcher" />
 	
- <net.aloogle.acasadocogumelo.other.WebViewTextView
+	<net.aloogle.acasadocogumelo.other.CustomTextView
         android:id="@+id/myTextView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,9 +41,9 @@
         android:text="@string/app_name"
         android:textColor="#fffafafa"
         android:textSize="14.0sp"
-        customfontdemo:fontName="Roboto-Medium.ttf" />
+        app:fontName="Roboto-Medium.ttf" />
 
-	<net.aloogle.acasadocogumelo.other.WebViewTextView
+	<net.aloogle.acasadocogumelo.other.CustomTextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/myTextView1"
@@ -54,5 +54,5 @@
         android:text="@string/blog_description"
         android:textColor="#ffe5e5e5"
         android:textSize="14.0sp"
-        customfontdemo:fontName="Roboto-Regular.ttf" />
+        app:fontName="Roboto-Regular.ttf" />
 </RelativeLayout>
