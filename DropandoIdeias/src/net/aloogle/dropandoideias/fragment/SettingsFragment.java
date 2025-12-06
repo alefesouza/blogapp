@@ -33,7 +33,7 @@ public class SettingsFragment extends PreferenceFragment {
 		final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		final Editor editor = preferences.edit();
 
-		if (preferences.getString("prefColor", "ff222222").equals("fundo")) {
+		if(preferences.getString("prefColor", "ff222222").equals("fundo")) {
 			editor.putString("lastColor", "ff222222");
 			editor.commit();
 			editor.putInt("lastFundo", 1);
@@ -44,7 +44,7 @@ public class SettingsFragment extends PreferenceFragment {
 			editor.putInt("lastFundo", 0);
 			editor.commit();
 		}
-
+		
 		Preference prefColor = findPreference("prefColor");
 		prefColor.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 			@Override
@@ -53,7 +53,7 @@ public class SettingsFragment extends PreferenceFragment {
 					@Override
 					public void run() {
 						if (newValue.equals("outra")) {
-							if (preferences.getInt("lastDefault", 1) == 1) {
+							if(preferences.getInt("lastDefault", 1) == 1) {
 								editor.putString("lastColor", "ff222222");
 								editor.commit();
 							}

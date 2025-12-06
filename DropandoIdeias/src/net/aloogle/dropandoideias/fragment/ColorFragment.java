@@ -42,7 +42,7 @@ public class ColorFragment extends Fragment {
 		editor = preferences.edit();
 		mColorPicker = (ColorPicker)view.findViewById(R.id.color_picker);
 		mColorPicker.setColor(Color.parseColor("#" + preferences.getString("prefColor", "ff222222")));
-		if (preferences.getInt("lastFundo", 1) == 1) {
+		if(preferences.getInt("lastFundo", 1) == 1) {
 			editor.putString("prefColor", "fundo");
 			editor.commit();
 			((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.toolbar_bg));

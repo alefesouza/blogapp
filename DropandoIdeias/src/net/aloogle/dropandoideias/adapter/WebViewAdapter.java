@@ -9,15 +9,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import net.aloogle.dropandoideias.R;
-import net.aloogle.dropandoideias.other. * ;
+import net.aloogle.dropandoideias.other.*;
 import java.util.ArrayList;
 
 public class WebViewAdapter extends BaseAdapter {
 
 	private Context context;
-	private ArrayList < Icons > navDrawerItems;
+	private ArrayList <Icons> navDrawerItems;
 
-	public WebViewAdapter(Context context, ArrayList < Icons > navDrawerItems) {
+	public WebViewAdapter(Context context, ArrayList <Icons> navDrawerItems) {
 		this.context = context;
 		this.navDrawerItems = navDrawerItems;
 	}

@@ -18,7 +18,7 @@ import net.aloogle.dropandoideias.R;
 import android.text.Html;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.Color;
-import net.aloogle.dropandoideias.fragment.*;
+import net.aloogle.dropandoideias.fragment. * ;
 
 public class SettingsActivity extends ActionBarActivity {
 	final Context context = this;

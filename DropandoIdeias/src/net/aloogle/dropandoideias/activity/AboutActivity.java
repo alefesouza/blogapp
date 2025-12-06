@@ -57,7 +57,7 @@ public class AboutActivity extends ActionBarActivity {
 	public void ActionBarColor(String title) {
 		String userColor = preferences.getString("prefColor", "ff222222");
 
-		if(userColor.equals("fundo")) {
+		if (userColor.equals("fundo")) {
 			getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_bg));
 			findViewById(R.id.frame).setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_bg));
 		} else {
@@ -76,7 +76,7 @@ public class AboutActivity extends ActionBarActivity {
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			if (url.contains("aloogleapp=sendemail")) {
 				Intent i = new Intent(Intent.ACTION_SENDTO);
-				i.setData(Uri.parse("mailto:alefe@aloogle.net"));
+				i.setData(Uri.parse("mailto:blogapp@apps.aloogle.net"));
 				startActivity(i);
 			} else {
 				Intent i = new Intent(Intent.ACTION_VIEW);

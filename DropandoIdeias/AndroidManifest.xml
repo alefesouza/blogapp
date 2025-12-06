@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.aloogle.dropandoideias"
-    android:versionCode="11"
-    android:versionName="2.2.2">
+    android:versionCode="13"
+    android:versionName="2.2.3.1">
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="10"
         android:targetSdkVersion="14" />
 
 	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-permission android:name="android.permission.VIBRATE" />
@@ -38,8 +39,9 @@
 
         <activity
             android:name=".activity.WebViewActivity"
-            android:configChanges="orientation|screenSize" />
-        
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+                   
         <activity
             android:name=".activity.SettingsActivity"
             android:configChanges="orientation|screenSize" />
@@ -48,6 +50,11 @@
             android:name=".activity.AboutActivity"
             android:configChanges="orientation|screenSize" />
 
+        <activity
+            android:name=".activity.CommentActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+		
    <service android:name="com.parse.PushService" />
 		<receiver android:name="com.parse.ParseBroadcastReceiver">
 			<intent-filter>

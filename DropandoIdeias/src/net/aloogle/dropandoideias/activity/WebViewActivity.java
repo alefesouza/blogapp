@@ -1,10 +1,14 @@
 package net.aloogle.dropandoideias.activity;
 
 import android.app.AlertDialog;
+import android.app.DownloadManager;
+import android.app.DownloadManager.Request;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -16,6 +20,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.view.MenuItemCompat;
@@ -30,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
@@ -48,13 +54,12 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import com.melnykov.fab.FloatingActionButton;
 import net.aloogle.dropandoideias.R;
 import net.aloogle.dropandoideias.adapter.WebViewAdapter;
 import net.aloogle.dropandoideias.other.Icons;
 
-@SuppressLint({
-	"SetJavaScriptEnabled"
-})
+@SuppressLint({"SetJavaScriptEnabled","NewApi"})
 @SuppressWarnings("deprecation")
 public class WebViewActivity extends ActionBarActivity {
 	final Context context = this;
@@ -75,6 +80,9 @@ public class WebViewActivity extends ActionBarActivity {
 	ProgressBar progressBar;
 	ProgressBar progressBar2;
 	int mActionBarSize;
+	FloatingActionButton fabcomment;
+	FloatingActionButton fabdownload;
+	long enqueue;
 
 	private FrameLayout mTargetView;
 	private FrameLayout mContentView;
@@ -163,6 +171,66 @@ public class WebViewActivity extends ActionBarActivity {
 		});
 		initDrawer();
 		initNotification();
+
+		fabcomment = (FloatingActionButton)findViewById(R.id.fabcomments);
+
+		if (Build.VERSION.SDK_INT <= 10) {
+			fabcomment.setShadow(false);
+		}
+
+		fabcomment.setOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View v) {
+				Intent intent = new Intent(WebViewActivity.this, CommentActivity.class);
+				intent.putExtra("fburl", webView.getUrl());
+				startActivity(intent);
+			}
+		});
+
+		fabcomment.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				Toast toast = Toast.makeText(WebViewActivity.this, "Comentários do Facebook", Toast.LENGTH_SHORT);
+				toast.show();
+				return true;
+			}
+		});
+
+		fabdownload = (FloatingActionButton)findViewById(R.id.fabdownload);
+
+		if (Build.VERSION.SDK_INT <= 10) {
+			fabdownload.setShadow(false);
+		}
+
+		fabdownload.setOnClickListener(new View.OnClickListener() {
+			@Override public void onClick(View v) {
+				String[]parts = webView.getUrl().split("/");
+				String fileName = parts[parts.length - 1];
+				DownloadManager dm = (DownloadManager)getSystemService(DOWNLOAD_SERVICE);
+				Request request = new Request(Uri.parse(webView.getUrl()));
+				request.setTitle(fileName);
+				request.setDescription("Dropando Ideias");
+				request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+				enqueue = dm.enqueue(request);
+
+				BroadcastReceiver onComplete = new BroadcastReceiver() {
+					public void onReceive(Context ctxt, Intent intent) {
+						Toast toast = Toast.makeText(WebViewActivity.this, "Imagem salva na pasta " + Environment.DIRECTORY_DOWNLOADS, Toast.LENGTH_LONG);
+						toast.show();
+					}
+				};
+
+				WebViewActivity.this.registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+			}
+		});
+
+		fabdownload.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				Toast toast = Toast.makeText(WebViewActivity.this, "Baixar imagem", Toast.LENGTH_SHORT);
+				toast.show();
+				return true;
+			}
+		});
 	}
 
 	public int getStatusBarHeight() {
@@ -501,7 +569,7 @@ public class WebViewActivity extends ActionBarActivity {
 
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			if (url.contains("dropandoideias.com") || url.contains("twitter.com/dropandoideias") || url.contains("facebook.com/DropandoIdeias") || url.contains("/user/dropandoideias") || url.contains("youtube.com/watch")) {
+			if (url.contains("dropandoideias.com") || url.contains("twitter.com") || url.contains("facebook.com") || url.contains("youtube.com")) {
 				view.loadUrl(url);
 			} else {
 				Intent i = new Intent(Intent.ACTION_VIEW);
@@ -541,6 +609,19 @@ public class WebViewActivity extends ActionBarActivity {
 			if (progress >= 50) {
 				progressBar.setVisibility(View.GONE);
 				webView.setVisibility(View.VISIBLE);
+				if (webView.getUrl().equals("http://dropandoideias.com") || webView.getUrl().equals("http://dropandoideias.com/") || webView.getUrl().contains("dropandoideias.com/category") || webView.getUrl().contains("dropandoideias.com/index.php?s=")) {
+					fabcomment.setVisibility(View.GONE);
+					fabdownload.setVisibility(View.GONE);
+				} else if (webView.getUrl().contains(".jpg") || webView.getUrl().contains(".png") || webView.getUrl().contains(".gif")) {
+					fabcomment.setVisibility(View.GONE);
+					fabdownload.setVisibility(View.VISIBLE);
+				} else if (webView.getUrl().contains("dropandoideias.com")) {
+					fabcomment.setVisibility(View.VISIBLE);
+					fabdownload.setVisibility(View.GONE);
+				} else {
+					fabcomment.setVisibility(View.GONE);
+					fabdownload.setVisibility(View.GONE);
+				}
 			}
 		}
 
