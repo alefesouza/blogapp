@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="navigation_main_sections">
+        <item>Início</item>
+        <item>Wii U</item>
+        <item>3DS</item>
+        <item>DS</item>
+        <item>Mario</item>
+        <item>Zelda</item>
+        <item>Pokémon</item>
+        <item>Smash Bros</item>
+        <item>Donkey Kong</item>
+        <item>Yoshi</item>
+        <item>Metroid</item>
+        <item>Xenoblade</item>
+        <item>Fire Emblem</item>
+        <item>Facebook</item>
+        <item>Twitter</item>
+        <item>YouTube</item>
+    </string-array>
+
+    <array name="drawable_ids">
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/drawer_wiiu</item>
+        <item>@drawable/drawer_3ds</item>
+        <item>@drawable/drawer_ds</item>
+        <item>@drawable/drawer_mario</item>
+        <item>@drawable/drawer_zelda</item>
+        <item>@drawable/drawer_pokemon</item>
+        <item>@drawable/drawer_smashbros</item>
+        <item>@drawable/drawer_dk</item>
+        <item>@drawable/drawer_yoshi</item>
+        <item>@drawable/drawer_metroid</item>
+        <item>@drawable/drawer_xenoblade</item>
+        <item>@drawable/drawer_fireemblem</item>
+        <item>@drawable/drawer_facebook</item>
+        <item>@drawable/drawer_twitter</item>
+        <item>@drawable/drawer_youtube</item>
+    </array>
+
+    <string-array name="colors">
+        <item>Padrão</item>
+        <item>Branco</item>
+        <item>Vermelho</item>
+        <item>Verde</item>
+        <item>Bege claro</item>
+        <item>Marrom</item>
+        <item>Escolher outra</item>
+    </string-array>
+
+    <string-array name="colorsValues">
+        <item>padrao</item>
+        <item>ffffffff</item>
+        <item>ffd92525</item>
+        <item>ff197343</item>
+        <item>fffadd93</item>
+        <item>ff3d0305</item>
+        <item>outra</item>
+    </string-array>
+
+    <string-array name="iconColors">
+        <item>Preto</item>
+        <item>Branco</item>
+    </string-array>
+
+    <string-array name="iconColorsValues">
+        <item>preto</item>
+        <item>branco</item>
+    </string-array>
+</resources>
