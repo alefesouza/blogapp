@@ -1,0 +1,35 @@
+{
+	"name": "A Casa do Cogumelo",
+	"description": "O maior site sobre a Nintendo no Brasil, atualizado diariamente com Not\u00edcias, V\u00eddeos, Imagens e Gameplay.",
+	"version": "1.0.1",
+	"manifest_version": 2,
+	"permissions": [ "http://apps.aloogle.net/blogapp/*", "http://*.blogspot.com/*", "storage", "notifications" ],
+	"options_page": "paginas/opcoes.html",
+	"background": {
+	"page":
+		"background.html"
+	},
+	"icons": {
+		"16": "icons/icon_16.png",
+		"48": "icons/icon_48.png",
+		"128": "icons/icon_128.png"
+	},
+	"omnibox": { 
+		"keyword" : "cdc" 
+	},
+	"commands": {
+		"_execute_browser_action": {
+			"suggested_key": {
+				"default": "Shift+Alt+C"
+			}
+		}
+	},
+	"browser_action": {
+		"default_icon": {
+            "19": "icons/icon.png",
+            "38": "icons/icon_38.png"
+        },
+		"default_title": "A Casa do Cogumelo",
+		"default_popup": "popup.html"
+	}
+}

@@ -1,6 +1,6 @@
 ## BlogApp
 
-BlogApp was a set of Android apps I created for free for blogs and news websites between 2014 and 2015 (I was 17 years old at the time). I started the project to improve my Android development skills and to get my work in front of more people.
+BlogApp was a set of Android apps and Chrome extensions that I created for free for blogs and news websites between 2014 and 2015 (I was 17 years old at the time). I started the project to improve my Android, Chrome and PHP development skills and to get my work in front of more people.
 
 The first versions were just a simple WebView, but the latest versions were fully native Android apps written in Java, loading content through the Blogger REST API.
 
