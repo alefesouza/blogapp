@@ -41,7 +41,7 @@ public class ColorFragment extends Fragment {
 		preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		editor = preferences.edit();
 		mColorPicker = (ColorPicker)view.findViewById(R.id.color_picker);
-		if (preferences.getInt("lastDefault", 1) == 1) {
+		if(preferences.getInt("lastDefault", 1) == 1) {
 			editor.putString("prefColor", "padrao");
 			editor.commit();
 			((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.splash_bg));

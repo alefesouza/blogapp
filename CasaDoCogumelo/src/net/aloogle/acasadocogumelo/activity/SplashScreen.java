@@ -2,8 +2,12 @@ package net.aloogle.acasadocogumelo.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
+
 import com.parse.ParseAnalytics;
 import net.aloogle.acasadocogumelo.R;
 
@@ -17,6 +21,15 @@ public class SplashScreen extends Activity {
 		setContentView(R.layout.splash);
 		ParseAnalytics.trackAppOpened(getIntent());
 
+		if (getIntent().hasExtra("fromnotification")) {
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SplashScreen.this);
+			Editor editor = preferences.edit();
+			editor.remove("count");
+			editor.commit();
+			editor.remove("receivedTitles");
+			editor.commit();
+		}
+		
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {

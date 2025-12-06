@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.aloogle.acasadocogumelo"
-    android:versionCode="8"
-    android:versionName="2.1.1">
+    android:versionCode="10"
+    android:versionName="2.2.1">
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="14" />
+        android:targetSdkVersion="19" />
 
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -45,6 +45,9 @@
         <activity
             android:name=".activity.FragmentActivity"
             android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".activity.CommentActivity"
+            android:configChanges="orientation|screenSize" android:windowSoftInputMode="adjustPan" />
 
         <activity android:name="com.google.android.gms.ads.AdActivity"
              android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
@@ -70,6 +73,11 @@
 				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
 				<category android:name="net.aloogle.acasadocogumelo" />
+			</intent-filter>
+		</receiver>
+		<receiver android:name=".receiver.CancelReceiver">
+			<intent-filter>
+				<action android:name="notification_cancelled"/>
 			</intent-filter>
 		</receiver>
     </application>

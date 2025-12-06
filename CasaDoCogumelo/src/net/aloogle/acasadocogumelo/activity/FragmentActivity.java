@@ -1,30 +1,34 @@
 package net.aloogle.acasadocogumelo.activity;
 
 import android.annotation.SuppressLint;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.preference.PreferenceFragment;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.drawable.RippleDrawable;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import net.aloogle.acasadocogumelo.R;
+import android.text.Html;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.Color;
 import net.aloogle.acasadocogumelo.fragment.*;
 
 public class FragmentActivity extends ActionBarActivity {
+	final Context context = this;
+	public ImageView iv;
+	public RippleDrawable rb;
 	public Toolbar mToolbar;
-	
 	PreferenceFragment settings = new SettingsFragment();
 	Fragment color = new ColorFragment();
 	Fragment about = new AboutFragment();
 	FrameLayout fl;
-	
 	SharedPreferences preferences;
 
 	@SuppressLint("InlinedApi")
@@ -79,7 +83,7 @@ public class FragmentActivity extends ActionBarActivity {
 			activity.getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#000000\">" + activity.getString(R.string.settings) + "</font>"));
 		}
 		String userColor = preferences.getString("prefColor", "padrao");
-		if (userColor.equals("padrao")) {
+		if(userColor.equals("padrao")) {
 			activity.getSupportActionBar().setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.splash_bg));
 		} else {
 			activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));

@@ -22,14 +22,12 @@ import android.support.v4.app.Fragment;
 
 @SuppressWarnings("deprecation")
 public class AboutFragment extends Fragment {
-	@SuppressWarnings("unused")
-	private Activity activity;
-	
 	SharedPreferences preferences;
-
-	View view;
 	WebView webView;
 	ProgressBar progressBar;
+	@SuppressWarnings("unused")
+	private Activity activity;
+	View view;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -39,7 +37,7 @@ public class AboutFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-		Bundle savedInstanceState) {
+							 Bundle savedInstanceState) {
 		view = inflater.inflate(R.layout.about, container, false);
 		preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		progressBar = (ProgressBar)view.findViewById(R.id.progressBar1);
@@ -55,14 +53,14 @@ public class AboutFragment extends Fragment {
 
 	public void ActionBarColor() {
 		String userColor = preferences.getString("prefColor", "padrao");
-		if (userColor.equals("padrao")) {
+		if(userColor.equals("padrao")) {
 			((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.splash_bg));
 			view.findViewById(R.id.frame).setBackgroundDrawable(getResources().getDrawable(R.drawable.splash_bg));
 		} else {
 			((ActionBarActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
 			view.findViewById(R.id.frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
 		}
-
+		
 		String iconcolor = preferences.getString("prefIconColor", "branco");
 		if (iconcolor.equals("branco")) {
 			((ActionBarActivity)getActivity()).getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#ffffff\">" + getString(R.string.app_name) + "</font>"));

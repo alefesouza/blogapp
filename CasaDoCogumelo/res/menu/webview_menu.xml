@@ -8,6 +8,10 @@
         android:id="@+id/menu_share"
         android:title="@string/sharepage"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_comments"
+        android:title="@string/comments"
+        app:showAsAction="always" />
     <item android:id="@+id/menu_back"
         android:title="@string/back" />
     <item

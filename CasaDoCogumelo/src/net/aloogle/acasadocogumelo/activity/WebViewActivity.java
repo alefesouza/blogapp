@@ -52,13 +52,11 @@ import net.aloogle.acasadocogumelo.R;
 import net.aloogle.acasadocogumelo.adapter.WebViewAdapter;
 import net.aloogle.acasadocogumelo.other.Icons;
 
-@SuppressLint({"SetJavaScriptEnabled", "NewApi"})
+@SuppressLint({"SetJavaScriptEnabled","NewApi"})
 @SuppressWarnings("deprecation")
 public class WebViewActivity extends ActionBarActivity {
 	final Context context = this;
-	
 	public Toolbar mToolbar;
-	
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -68,17 +66,14 @@ public class WebViewActivity extends ActionBarActivity {
 	private WebViewAdapter adapter;
 	private String[]MDTitles;
 	private TypedArray MDIcons;
-	
 	SharedPreferences preferences;
 	Editor editor;
 	String iconcolor;
-	
 	WebView webView;
-	int mActionBarSize;
 	ProgressBar progressBar;
 	ProgressBar progressBar2;
-	
 	private AdView adView;
+	int mActionBarSize;
 
 	private FrameLayout mTargetView;
 	private FrameLayout mContentView;
@@ -100,7 +95,7 @@ public class WebViewActivity extends ActionBarActivity {
 		setContentView(R.layout.webview);
 
 		adView = new AdView(this);
-		adView.setAdUnitId("ca-app-pub-5148143657396132/8665228608");
+		adView.setAdUnitId("ca-app-pub-5148143657396132/1702526203");
 		adView.setAdSize(AdSize.BANNER);
 
 		LinearLayout layout = (LinearLayout)findViewById(R.id.adLayout);
@@ -199,6 +194,7 @@ public class WebViewActivity extends ActionBarActivity {
 			getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
 			findViewById(R.id.frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
 		}
+
 		getSupportActionBar().setTitle("");
 		getSupportActionBar().setIcon(R.drawable.ic_toolbar);
 	}
@@ -425,7 +421,6 @@ public class WebViewActivity extends ActionBarActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 
 		super.onConfigurationChanged(newConfig);
-
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
@@ -475,6 +470,24 @@ public class WebViewActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (Build.VERSION.SDK_INT >= 19) {
+			if (webView.getUrl().replace("?m=1", "").equals("http://acasadocogumelo.com/") || webView.getUrl().replace("?m=1", "").equals("http://acasadocogumelo.com") || webView.getUrl().replace("?m=1", "").equals("http://www.acasadocogumelo.com/") || webView.getUrl().replace("?m=1", "").equals("http://www.acasadocogumelo.com") || webView.getUrl().contains("acasadocogumelo.com/search")) {
+				menu.findItem(R.id.menu_share).setVisible(false);
+				menu.findItem(R.id.menu_comments).setVisible(false);
+			} else {
+				if (webView.getUrl().contains("acasadocogumelo.com")) {
+					menu.findItem(R.id.menu_share).setVisible(true);
+					menu.findItem(R.id.menu_comments).setVisible(true);
+				} else if (webView.getUrl().contains(".jpg") || webView.getUrl().contains(".png") || webView.getUrl().contains(".gif")) {
+					menu.findItem(R.id.menu_share).setVisible(true);
+					menu.findItem(R.id.menu_comments).setVisible(false);
+				} else {
+					menu.findItem(R.id.menu_share).setVisible(false);
+					menu.findItem(R.id.menu_comments).setVisible(false);
+				}
+			}
+		}
+
 		if (webView.canGoBack()) {
 			menu.findItem(R.id.menu_back).setEnabled(true);
 		} else {
@@ -489,9 +502,11 @@ public class WebViewActivity extends ActionBarActivity {
 		if (iconcolor.equals("branco")) {
 			menu.findItem(R.id.menu_search).setIcon(R.drawable.ic_search_white);
 			menu.findItem(R.id.menu_share).setIcon(R.drawable.ic_share_white);
+			menu.findItem(R.id.menu_comments).setIcon(R.drawable.ic_fbcomments_white);
 		} else {
 			menu.findItem(R.id.menu_search).setIcon(R.drawable.ic_search_black);
 			menu.findItem(R.id.menu_share).setIcon(R.drawable.ic_share_black);
+			menu.findItem(R.id.menu_comments).setIcon(R.drawable.ic_fbcomments_black);
 		}
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -516,7 +531,7 @@ public class WebViewActivity extends ActionBarActivity {
 		case R.id.menu_share:
 			Intent sharePageIntent = new Intent();
 			sharePageIntent.setAction(Intent.ACTION_SEND);
-			sharePageIntent.putExtra(Intent.EXTRA_TEXT, webView.getTitle() + " " + lastUrl);
+			sharePageIntent.putExtra(Intent.EXTRA_TEXT, webView.getTitle() + " " + webView.getUrl().replace("?m=1", ""));
 			sharePageIntent.setType("text/plain");
 			startActivity(Intent.createChooser(sharePageIntent, getResources().getText(R.string.sharepage)));
 			return true;
@@ -524,6 +539,11 @@ public class WebViewActivity extends ActionBarActivity {
 			webView.clearCache(true);
 			Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.cache2), Toast.LENGTH_LONG);
 			toast.show();
+			return true;
+		case R.id.menu_comments:
+			Intent comments = new Intent(WebViewActivity.this, CommentActivity.class);
+			comments.putExtra("fburl", webView.getUrl());
+			startActivity(comments);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -554,7 +574,6 @@ public class WebViewActivity extends ActionBarActivity {
 				i.setData(Uri.parse(url));
 				startActivity(i);
 			}
-			supportInvalidateOptionsMenu();
 			return true;
 		}
 
@@ -587,6 +606,7 @@ public class WebViewActivity extends ActionBarActivity {
 			if (progress >= 50) {
 				progressBar.setVisibility(View.GONE);
 				webView.setVisibility(View.VISIBLE);
+				supportInvalidateOptionsMenu();
 			}
 		}
 
