@@ -17,7 +17,11 @@ import android.view.MenuItem;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 import br.com.vidadesuporte.R;
 import br.com.vidadesuporte.fragment.CommentsFragment;
-import br.com.vidadesuporte.lib.SlidingTabLayout;
+import android.support.design.widget.TabLayout;
+import android.support.design.widget.TabLayout.TabLayoutOnPageChangeListener;
+import android.support.design.widget.TabLayout.OnTabSelectedListener;
+import android.graphics.*;
+import android.support.design.widget.TabLayout.*;
 
 @SuppressLint({"DefaultLocale","CutPasteId"})
 public class CommentsActivity extends AppCompatActivity {
@@ -57,10 +61,29 @@ public class CommentsActivity extends AppCompatActivity {
 		mPager = (ViewPager)findViewById(R.id.pager);
 		mPager.setAdapter(mPagerAdapter);
 
-		SlidingTabLayout slidingTabLayout = (SlidingTabLayout)findViewById(R.id.sliding_tabs);
-		slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.colorAccent));
-		slidingTabLayout.setDistributeEvenly(true);
-		slidingTabLayout.setViewPager(mPager);
+		TabLayout tabLayout = (TabLayout)findViewById(R.id.sliding_tabs);
+		if(preferences.getString("prefIconColor", "branco").equals("preto")) {
+			tabLayout.setTabTextColors(Color.parseColor("#000000"), Color.parseColor("#000000"));
+		} else {
+			tabLayout.setTabTextColors(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"));
+		}
+		tabLayout.setupWithViewPager(mPager);
+		tabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
+				@Override
+				public void onTabSelected(TabLayout.Tab p1) {
+					mPager.setCurrentItem(p1.getPosition());
+				}
+
+				@Override
+				public void onTabUnselected(TabLayout.Tab p1) {
+				}
+
+				@Override
+				public void onTabReselected(TabLayout.Tab p1) {
+				}
+		});
+		
+		mPager.addOnPageChangeListener(new TabLayoutOnPageChangeListener(tabLayout));
 	}
 
 	@Override

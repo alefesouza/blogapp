@@ -1,74 +1,67 @@
 package br.com.vidadesuporte.adapter;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Handler;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import java.util.ArrayList;
-import com.gc.materialdesign.views.ProgressBarDeterminate;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
-import com.koushikdutta.ion.ProgressCallback;
-import br.com.vidadesuporte.R;
+import android.widget.TextView;
+import android.content.*;
+import java.util.*;
 import br.com.vidadesuporte.other.*;
+import br.com.vidadesuporte.R;
+import android.widget.*;
+import com.koushikdutta.ion.*;
+import android.view.View.*;
+import android.os.*;
+import com.koushikdutta.async.future.*;
+import android.app.*;
+import com.gc.materialdesign.views.*;
+import ir.noghteh.*;
+import android.util.*;
+import android.graphics.Paint.Align;
+import android.view.ViewGroup.*;
 
-public class CardAdapter extends BaseAdapter {
-
+public class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 	private Context context;
-	private ArrayList <Posts> posts;
+	private List <Posts> posts;
 
-	public CardAdapter(Context context, ArrayList <Posts> posts) {
+	public CardAdapter(Context context, List <Posts> posts) {
 		this.context = context;
 		this.posts = posts;
 	}
 
-	@Override
-	public int getCount() {
-		return posts.size();
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                   int viewType) {
+		  View item = LayoutInflater.from(parent.getContext())
+			  .inflate(R.layout.card, null);
+
+		  ItemViewHolder viewHolder = new ItemViewHolder(item);
+		  return viewHolder;
+    }
+	
+	public void remove(int position) {
+		posts.remove(position);
+		notifyItemRemoved(position);
+	}
+	
+	public void add(Posts card, int position) {
+		posts.add(card);
+		notifyItemInserted(position);
 	}
 
-	@Override
-	public Object getItem(int position) {
-		return posts.get(position);
-	}
-
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
-
-	@SuppressLint("InflateParams")
-	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			LayoutInflater mInflater = (LayoutInflater)context
-				.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-			convertView = mInflater.inflate(
-				R.layout.card, null);
-		}
-
-		CustomTextView titulo = (CustomTextView)convertView.findViewById(R.id.titulo);
-		ImageView imagem = (ImageView)convertView.findViewById(R.id.image);
-		CustomTextView descricao = (CustomTextView)convertView.findViewById(R.id.descricao);
-		CustomTextView comentarios = (CustomTextView)convertView.findViewById(R.id.comentarios);
-
-		titulo.setText(posts.get(position).getTitle());
+    @Override
+    public void onBindViewHolder(final RecyclerView.ViewHolder holderr, final int position) {
+		if (holderr instanceof ItemViewHolder) {
+		final ItemViewHolder holder =	(ItemViewHolder)holderr;
+		holder.titulo.setText(posts.get(position).getTitle());
 
 		if(posts.get(position).getDescription().equals("")) {
-			descricao.setVisibility(View.GONE);
+			holder.descricao.setVisibility(View.GONE);
 		} else {
-			descricao.setText(posts.get(position).getDescription());
+			holder.descricao.setText(posts.get(position).getDescription());
 		}
-
-		final ProgressBarDeterminate progressBar2 = (ProgressBarDeterminate)convertView.findViewById(R.id.progress);
 
 		Ion.with (context)
 			.load(posts.get(position).getImage())
@@ -79,16 +72,16 @@ public class CardAdapter extends BaseAdapter {
 							@Override
 							public void run() {
 								float p = (float)downloaded / (float)total * 100;
-								progressBar2.setProgress((int)(Math.round(p)));
+								holder.progressBar2.setProgress((int)(Math.round(p)));
 
-								progressBar2.setVisibility(View.VISIBLE);
+								holder.progressBar2.setVisibility(View.VISIBLE);
 							}
 						});
 				}
 			})
 			.withBitmap()
 			.error(R.drawable.logo)
-			.intoImageView(imagem)
+			.intoImageView(holder.imagem)
 			.setCallback(new FutureCallback<ImageView>() {
 				@Override
 				public void onCompleted(Exception e, final ImageView imageView) {
@@ -96,28 +89,32 @@ public class CardAdapter extends BaseAdapter {
 					new Handler().postDelayed(new Runnable() {
 							@Override
 							public void run() {
-								progressBar2.setVisibility(View.GONE);
+								holder.progressBar2.setVisibility(View.GONE);
 							}
 						}, 100);
 				}
 			});
 
-		RelativeLayout relative = (RelativeLayout)convertView.findViewById(R.id.conteudo);
-		relative.setOnClickListener(new OnClickListener() {
+		Ion.with(context)
+			.load(posts.get(position).getCategory())
+			.withBitmap()
+			.intoImageView(holder.category);
+
+		holder.relative.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					Intent intent = new Intent(context, br.com.vidadesuporte.activity.PostActivity.class);
-					intent.putExtra("extraJson", "{ \"id\": \"" + posts.get(position).getId() + "\", \"titulo\": \"" + posts.get(position).getTitle() + "\", \"descricao\": \"" + posts.get(position).getDescription() + "\", \"imagem\": \"" + posts.get(position).getImage() + "\", \"url\": \"" + posts.get(position).getUrl() + "\", \"comentarios\": \"" + posts.get(position).getComments() + "\" }");
+					intent.putExtra("extraJson", "{ \"id\": \"" + posts.get(position).getId() + "\", \"titulo\": \"" + posts.get(position).getTitle() + "\", \"descricao\": \"" + posts.get(position).getDescription() + "\", \"imagem\": \"" + posts.get(position).getImage() + "\", \"url\": \"" + posts.get(position).getUrl() + "\", \"categoriaicon\": \"" + posts.get(position).getCategory() + "\" }");
+					intent.putExtra("comentarios", posts.get(position).getComments());
 					context.startActivity(intent);
 				}
 			});
 
-		RelativeLayout commentsspace = (RelativeLayout)convertView.findViewById(R.id.commentsspace);
 		if(posts.get(position).getComments().equals("")) {
-			convertView.findViewById(R.id.comentariosline).setVisibility(View.GONE);
-			commentsspace.setVisibility(View.GONE);
+			holder.comentariosline.setVisibility(View.GONE);
+			holder.commentsspace.setVisibility(View.GONE);
 		} else {
-			comentarios.setText(posts.get(position).getComments() + " " + context.getString(R.string.comentarios));
-			commentsspace.setOnClickListener(new OnClickListener() {
+			holder.comentarios.setText(posts.get(position).getComments() + " " + context.getString(R.string.comentarios));
+			holder.commentsspace.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
 						Intent intent = new Intent(context, br.com.vidadesuporte.activity.CommentsActivity.class);
 						intent.putExtra("url", posts.get(position).getUrl());
@@ -125,7 +122,40 @@ public class CardAdapter extends BaseAdapter {
 						context.startActivity(intent);
 					}
 				});
+			}
 		}
-		return convertView;
-	}
+    }
+ 
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
+
+		public CustomTextView titulo;
+		public ImageView imagem;
+		public ImageView category;
+		public CustomTextView descricao;
+		public CustomTextView comentarios;
+		public RelativeLayout imagerelative;
+		public ProgressBarDeterminate progressBar2;
+		public RelativeLayout commentsspace;
+		public RelativeLayout relative;
+		public View comentariosline;
+
+        public ItemViewHolder(View item) {
+            super(item);
+			titulo = (CustomTextView)item.findViewById(R.id.titulo);
+			imagem = (ImageView)item.findViewById(R.id.image);
+			category = (ImageView)item.findViewById(R.id.category);
+			descricao = (CustomTextView)item.findViewById(R.id.descricao);
+			comentarios = (CustomTextView)item.findViewById(R.id.comentarios);
+			imagerelative = (RelativeLayout)item.findViewById(R.id.imagerelative);
+			progressBar2 = (ProgressBarDeterminate)item.findViewById(R.id.progress);
+			commentsspace = (RelativeLayout)item.findViewById(R.id.commentsspace);
+			relative = (RelativeLayout)item.findViewById(R.id.conteudo);
+			comentariosline = item.findViewById(R.id.comentariosline);
+        }
+    }
+	
+    @Override
+    public int getItemCount() {
+        return posts.size();
+    }
 }

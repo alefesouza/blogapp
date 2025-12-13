@@ -80,13 +80,11 @@
 					android:layout_centerHorizontal="true"
 					android:background="@color/colorAccent" />
 				
-				<LinearLayout
+				<WebView
 					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:id="@+id/linear"
+					android:layout_height="wrap_content"
+					android:id="@+id/webView"
 					android:layout_below="@+id/autorhora"
-					android:layout_marginLeft="20dp"
-					android:layout_marginRight="20dp"
 					android:orientation="vertical" />
 
 				<HorizontalScrollView
@@ -94,7 +92,7 @@
 					android:layout_height="match_parent"
 					android:layout_marginLeft="20dp"
 					android:id="@+id/horizontal"
-					android:layout_below="@+id/linear">
+					android:layout_below="@+id/webView">
 					<LinearLayout
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"

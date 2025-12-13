@@ -132,7 +132,7 @@ public class CommentsFragment extends Fragment {
 
 		@Override
 		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-			String erro = "<html><head><style>body { background-image: url('erro.png'); background-repeat: no-repeat; background-position: center; background-color: #000000; min-height: 431px; }</style></head></html>";
+			String erro = "<html><head><style>body { background-image: url('erro.png'); background-repeat: no-repeat; background-position: center; background-color: #1b1b1b; min-height: 431px; }</style></head></html>";
 			webView.loadDataWithBaseURL("file:///android_asset/", erro, "text/html", "utf-8", null);
 			super.onReceivedError(view, errorCode, description, failingUrl);
 		}

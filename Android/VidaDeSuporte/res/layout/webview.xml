@@ -83,6 +83,7 @@
 			android:id="@+id/target_view"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
+			android:background="#000000"
 			android:visibility="gone">        
 		</FrameLayout>
 </LinearLayout>

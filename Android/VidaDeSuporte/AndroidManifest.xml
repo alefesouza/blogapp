@@ -41,7 +41,6 @@
             android:name=".activity.MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|screenSize" />
-        
         <activity
             android:name=".activity.PostActivity"
             android:configChanges="orientation|screenSize" />

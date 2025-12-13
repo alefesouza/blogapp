@@ -37,7 +37,7 @@
 					android:id="@+id/pager"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent" />
-				
+
 				<android.support.design.widget.FloatingActionButton
 					android:id="@+id/fabrandom"
 					android:layout_width="wrap_content"
@@ -63,6 +63,15 @@
 				android:layout_below="@+id/toolbar"
 				android:background="@drawable/toolbar_dropshadow"
 				android:id="@+id/dropshadow" />
+
+			<com.gc.materialdesign.views.ProgressBarIndeterminate
+				android:id="@+id/progressBar2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/toolbar"
+				android:background="@color/colorAccent"
+				android:visibility="gone"
+			/>
 		</RelativeLayout>
 		</FrameLayout>
 

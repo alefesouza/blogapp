@@ -6,7 +6,8 @@
 	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:id="@+id/fragment" >
+		android:id="@+id/fragment"
+		android:background="#eeeeee" >
 	<RelativeLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -19,16 +20,18 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true" />
 			
-		<com.github.ksoichiro.android.observablescrollview.ObservableListView
-				android:id="@+id/scroll"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:divider="@android:color/transparent"
-				android:dividerHeight="0dp"
-				android:background="#eeeeee"
-				android:scrollbars="none"
-				android:layout_marginLeft="@dimen/list_margin"
-				android:layout_marginRight="@dimen/list_margin" />
+		<com.github.ksoichiro.android.observablescrollview.ObservableRecyclerView
+			android:id="@+id/list"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:divider="@android:color/transparent"
+			android:dividerHeight="0dp"
+			android:listSelector="@android:color/transparent"
+			android:background="#eeeeee"
+			android:scrollbars="none"
+			android:layout_marginLeft="@dimen/list_margin"
+			android:layout_marginRight="@dimen/list_margin"
+			android:visibility="gone" />
 </RelativeLayout>
 </RelativeLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

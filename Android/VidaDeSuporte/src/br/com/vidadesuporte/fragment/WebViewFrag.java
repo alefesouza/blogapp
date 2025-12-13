@@ -373,7 +373,7 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 
 		@Override
 		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-			String erro = "<html><head><style>body { background-image: url('erro.png'); background-repeat: no-repeat; background-position: center; background-color: #222222; min-height: 431px; }</style></head></html>";
+			String erro = "<html><head><style>body { background-image: url('erro.png'); background-repeat: no-repeat; background-position: center; background-color: #1b1b1b; min-height: 431px; }</style></head></html>";
 			webView.loadDataWithBaseURL("file:///android_asset/", erro, "text/html", "utf-8", null);
 			super.onReceivedError(view, errorCode, description, failingUrl);
 		}
@@ -462,11 +462,11 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 	@Override
 	public void onUpOrCancelMotionEvent(ScrollState scrollState) {
 		if (scrollState == ScrollState.UP) {
-			Other.fabShow(true, fabopen);
-			Other.fabShow(true, fabdownload);
-		} else if (scrollState == ScrollState.DOWN) {
 			Other.fabShow(false, fabopen);
 			Other.fabShow(false, fabdownload);
+		} else if (scrollState == ScrollState.DOWN) {
+			Other.fabShow(true, fabopen);
+			Other.fabShow(true, fabdownload);
 		}
 	}
 

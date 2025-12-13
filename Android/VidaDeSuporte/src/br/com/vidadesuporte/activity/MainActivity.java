@@ -82,12 +82,13 @@ public class MainActivity extends AppCompatActivity {
 
 	ArrayList<String> categoriasids = new ArrayList<String>();
 	ArrayList<String> categoriasnames = new ArrayList<String>();
+	ArrayList<String> categoriasicons = new ArrayList<String>();
 	private DrawerAdapter adapter2;
 	private TypedArray categoryIcons, socialIcons;
 	public static FloatingActionButton fabrandom;
 	SharedPreferences preferences;
 	Editor editor;
-	String titulo, suggestion, iconColor, linksname, fplaylistsname;
+	String titulo, suggestion, iconColor, linksname, fcategoriasname;
 	public static int pos;
 	int linkscount, categoriastotal, fcategoriascount;
 	boolean passed, start, home, drawerloaded;
@@ -161,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
 										if(e != null) {
 											Toast toastt = Toast.makeText(MainActivity.this, "Houve um erro ao buscar por post aleatório, tente novamente", Toast.LENGTH_SHORT);
 											toastt.show();
+											return;
 										}
 										Intent intent = new Intent(MainActivity.this, PostActivity.class);
 										intent.putExtra("id", json.get("id").getAsString());
@@ -173,6 +175,15 @@ public class MainActivity extends AppCompatActivity {
 						toast.show();
 					}
 				}
+		});
+		
+		fabrandom.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View p1) {
+				Toast toast = Toast.makeText(MainActivity.this, "Post aleatório", Toast.LENGTH_LONG);
+				toast.show();
+				return false;
+			}
 		});
 
 		if (savedInstanceState != null) {
@@ -194,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
 				public void onCompleted(Exception e, JsonObject json) {
 					if(e != null) {
 						e.printStackTrace();
+						return;
 					}
 					JsonArray links = json.get("links").getAsJsonObject().get("links").getAsJsonArray();
 					for (int i = 0; i < links.size(); i++) {
@@ -215,9 +227,11 @@ public class MainActivity extends AppCompatActivity {
 
 						String id = c.get("id").getAsString();
 						String name = c.get("titulo").getAsString();
+						String icon = c.get("icon").getAsString();
 
 						categoriasids.add(id);
 						categoriasnames.add(name);
+						categoriasicons.add(icon);
 					}
 					categoriastotal = json.get("categorias").getAsJsonObject().get("total").getAsInt();
 
@@ -233,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
 						fcategoriasnames.add(name);
 						fcategoriasicons.add(icon);
 					}
-					fplaylistsname = json.get("featuredcategorias").getAsJsonObject().get("name").getAsString();
+					fcategoriasname = json.get("featuredcategorias").getAsJsonObject().get("name").getAsString();
 					
 					drawerloaded = true;
 					initDrawer(1);
@@ -351,13 +365,13 @@ public class MainActivity extends AppCompatActivity {
 
 			icons = new ArrayList < Icons > ();
 
-			icons.add(new Icons("Início", categoryIcons.getResourceId(0, -1), false, ""));
-			icons.add(new Icons("Favoritos", categoryIcons.getResourceId(1, -1), false, ""));
-			icons.add(new Icons("Rede sociais", categoryIcons.getResourceId(0, -1), true, ""));
-			icons.add(new Icons("Facebook", socialIcons.getResourceId(0, -1), false, ""));
-			icons.add(new Icons("Instagram", socialIcons.getResourceId(1, -1), false, ""));
-			icons.add(new Icons("Twitter", socialIcons.getResourceId(2, -1), false, ""));
-			icons.add(new Icons("YouTube", socialIcons.getResourceId(3, -1), false, ""));
+			icons.add(new Icons("Início", categoryIcons.getResourceId(0, -1), 0, ""));
+			icons.add(new Icons("Favoritos", categoryIcons.getResourceId(1, -1), 0, ""));
+			icons.add(new Icons("Rede sociais", categoryIcons.getResourceId(0, -1), 5, ""));
+			icons.add(new Icons("Facebook", socialIcons.getResourceId(0, -1), 1, ""));
+			icons.add(new Icons("Instagram", socialIcons.getResourceId(1, -1), 1, ""));
+			icons.add(new Icons("Twitter", socialIcons.getResourceId(2, -1), 1, ""));
+			icons.add(new Icons("YouTube", socialIcons.getResourceId(3, -1), 1, ""));
 
 			adapter2 = new DrawerAdapter(getApplicationContext(), icons);
 			mDrawerList.setAdapter(adapter2);
@@ -367,25 +381,25 @@ public class MainActivity extends AppCompatActivity {
 			mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 		} else {
 			if(linksnames.size() > 0) {
-				icons.add(new Icons(linksname, categoryIcons.getResourceId(0, -1), true, ""));
+				icons.add(new Icons(linksname, categoryIcons.getResourceId(0, -1), 5, ""));
 				for (int i = 0; i < linksnames.size(); i++) {
-					icons.add(new Icons(linksnames.get(i), categoryIcons.getResourceId(2, (i + 1)*-1), false, linksicons.get(i)));
+					icons.add(new Icons(linksnames.get(i), categoryIcons.getResourceId(2, (i + 1)*-1), 2, linksicons.get(i)));
 				}
 				linkscount = linksnames.size() + 1;
 			}
 
 			if(fcategoriasids.size() > 0) {
-				icons.add(new Icons(fplaylistsname, categoryIcons.getResourceId(0, -1), true, ""));
+				icons.add(new Icons(fcategoriasname, categoryIcons.getResourceId(0, -1), 5, ""));
 				for (int i = 0; i < fcategoriasids.size(); i++) {
-					icons.add(new Icons(fcategoriasnames.get(i), categoryIcons.getResourceId(3, (i + 1)*-1), false, fcategoriasicons.get(i)));
+					icons.add(new Icons(fcategoriasnames.get(i), categoryIcons.getResourceId(3, (i + 1)*-1), 3, fcategoriasicons.get(i)));
 				}
 				fcategoriascount = fcategoriasids.size() + 1;
 			}
 
 			if(categoriasids.size() > 0) {
-				icons.add(new Icons("Categorias", categoryIcons.getResourceId(0, -1), true, ""));
+				icons.add(new Icons("Categorias", categoryIcons.getResourceId(0, -1), 5, ""));
 				for (int i = 0; i < categoriasids.size(); i++) {
-					icons.add(new Icons(categoriasnames.get(i), categoryIcons.getResourceId(3, (i + 1)*-1), false, ""));
+					icons.add(new Icons(categoriasnames.get(i), categoryIcons.getResourceId(3, (i + 1)*-1), 4, categoriasicons.get(i)));
 				}
 			}
 
@@ -423,6 +437,57 @@ public class MainActivity extends AppCompatActivity {
 
 	public void initNotification() {
 		boolean notification = preferences.getBoolean("prefNotification", true);
+		boolean haveTimerToDialogRate = preferences.getBoolean("haveTimerToDialog", false);
+		boolean rated = preferences.getBoolean("ratedapp", false);
+		
+		if(!haveTimerToDialogRate) {
+			editor.putLong("longToDialogRate", System.currentTimeMillis() + 3*24*60*60*1000);
+			editor.commit();
+			editor.putBoolean("haveTimerToDialog", true);
+			editor.commit();
+		}
+
+		if(!rated) {
+			if (System.currentTimeMillis() > preferences.getLong("longToDialogRate", 0)) {
+				final AlertDialog dialograte = new AlertDialog.Builder(MainActivity.this)
+					.setTitle(R.string.rateapp)
+					.setMessage(R.string.dialog_rate)
+					.setPositiveButton(R.string.later, null)
+					.setNegativeButton(R.string.rate, null)
+					.create();
+
+				dialograte.setOnShowListener(new
+					DialogInterface.OnShowListener() {
+						@Override
+						public void onShow(DialogInterface dialog) {
+							Button b = dialograte.getButton(AlertDialog.BUTTON_POSITIVE);
+							b.setOnClickListener(new
+								View.OnClickListener() {
+									@Override
+									public void onClick(View view) {
+										Intent intent = new Intent(Intent.ACTION_VIEW);
+										intent.setData(Uri.parse("market://details?id=" + getPackageName()));
+										startActivity(intent);
+										editor.putBoolean("ratedapp", true);
+										editor.commit();
+										dialograte.dismiss();
+									}
+								});
+							Button n = dialograte.getButton(AlertDialog.BUTTON_NEGATIVE);
+							n.setOnClickListener(new
+								View.OnClickListener() {
+									@Override
+									public void onClick(View view) {
+										editor.putLong("longToDialogRate", System.currentTimeMillis() + 8*24*60*60*1000);
+										dialograte.dismiss();
+									}
+								});
+						}
+					});
+				dialograte.show();
+			}
+		}
+		
 		if (!notification) {
 			if (System.currentTimeMillis() > preferences.getLong("longNotification", 0)) {
 				final AlertDialog dialogsprites = new AlertDialog.Builder(MainActivity.this)
@@ -685,6 +750,9 @@ public class MainActivity extends AppCompatActivity {
 									.setCallback(new FutureCallback<JsonObject>() {
 										@Override
 										public void onCompleted (Exception e, JsonObject json) {
+											if(e != null) {
+												return;
+											}
 											categoriaarray.clear();
 											JsonArray categorias = json.get("categorias").getAsJsonArray();
 											for (int i = 0; i < categorias.size(); i++) {

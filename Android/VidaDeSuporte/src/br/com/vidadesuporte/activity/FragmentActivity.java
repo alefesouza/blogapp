@@ -78,8 +78,8 @@ public class FragmentActivity extends AppCompatActivity {
 		case 7:
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("fromtag", true);
-				bundle.putString("label", getIntent().getStringExtra("label"));
-				bundle.putString("value", getIntent().getStringExtra("label"));
+				bundle.putString("title", getIntent().getStringExtra("title"));
+				bundle.putString("value", getIntent().getStringExtra("value"));
 				category.setArguments(bundle);
 				ft.replace(R.id.content_frame, category);
 			break;

@@ -8,17 +8,23 @@ public class Posts {
     private String description;
     private String url;
     private String comments;
+    private String category;
+	private String date;
+	private int imageheight = 0;
+	private int relativeImageHeight = 0;
 	
     public Posts() {
     }
 
-    public Posts(String id, String title, String image, String description, String url, String comments) {
+    public Posts(String id, String title, String image, String description, String url, String comments, String category, String date) {
         this.id = id;
 		this.title = title;
 		this.image = image;
         this.description = description;
         this.url = url;
         this.comments = comments;
+		this.category = category;
+		this.date = date;
     }
 
     public String getId() {
@@ -45,6 +51,22 @@ public class Posts {
         return this.comments;
     }
 
+    public String getCategory() {
+        return this.category;
+    }
+
+    public String getDate() {
+        return this.date;
+    }
+	
+	public int getImageHeight() {
+		return this.imageheight;
+	}
+
+	public int getRelativeImageHeight() {
+		return this.relativeImageHeight;
+	}
+
     public void setId(String id) {
         this.id = id;
     }
@@ -67,5 +89,21 @@ public class Posts {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setImageHeight(int height) {
+        this.imageheight = height;
+    }
+
+    public void setRelativeImageHeight(int height) {
+        this.relativeImageHeight = height;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

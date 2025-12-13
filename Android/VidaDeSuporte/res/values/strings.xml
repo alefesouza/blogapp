@@ -7,8 +7,12 @@
     <string name="sitename">dropandoideias.com</string>
     <string name="blogid">95564318</string>
     <string name="randomstart">99</string>
-    <string name="comentarios">comentários</string>
+    <string name="comentarios">COMENTÁRIOS</string>
+	<string name="nofavorites">Aqui ficam seus posts favoritos, clique nas estrelas acima dos posts para favorita-los e te-los sempre a mão.</string>
 
+    <string name="rateapp">Avalie o app</string>
+    <string name="dialog_rate">Gostou do app do blog? Avalie-o com 5 estrelas então, por favor!</string>
+	
     <string name="categ1">Animes</string>
     <string name="categ2">Blogsfera</string>
     <string name="categ3">Games</string>
@@ -54,6 +58,8 @@
     <string name="dialog_notification">Suas notificações do site estão desativadas! Deseja ativar para receber todas as novidades em primeira mão?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
+    <string name="rate">Avaliar</string>
+    <string name="later">Mais tarde</string>
     <string name="other">Outro</string>
 
     <string name="addshortcutwidget">Categoria do Dropando Ideias</string>

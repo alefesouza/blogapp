@@ -34,7 +34,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import br.com.vidadesuporte.R;
 import br.com.vidadesuporte.activity.MainActivity;
 import br.com.vidadesuporte.adapter.CardAdapter;
@@ -42,21 +41,31 @@ import br.com.vidadesuporte.other.*;
 import android.widget.Button;
 import br.com.vidadesuporte.adapter.*;
 import br.com.vidadesuporte.activity.*;
+import br.com.vidadesuporte.lib.*;
+import com.github.ksoichiro.android.observablescrollview.*;
+import android.support.v7.widget.*;
+import jp.wasabeef.recyclerview.animators.adapters.*;
+import android.content.res.*;
+import jp.wasabeef.recyclerview.animators.*;
 
 @SuppressLint("InflateParams")
-public class CategoriasFragment extends Fragment implements AbsListView.OnScrollListener, SwipeRefreshLayout.OnRefreshListener {
-	
+public class CategoriasFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+
 	Activity activity;
 	View view;
-	ObservableListView list;
+	ObservableRecyclerView list;
 	ArrayList <Categorias> categoriasarray = new ArrayList <Categorias>();
-	int more, page, firstPage, lastMore;
-	boolean ismore, block, isfirst, passed, nomore, fromtag, seted;
+	int more, page, firstPage, lastMore, anddp;
+	boolean ismore, block, isfirst, passed, nomore, fromtag;
 	String title, lastUrl;
-	ViewGroup footer3, footer4, footer5;
+	ViewGroup footer3, footer4, footer5, actualfooter;
 	ProgressBar progressBar;
 	ProgressBarCircularIndeterminate progressBarCompat;
-	SwingBottomInAnimationAdapter swingBottomInAnimationAdapter;
+
+	HeaderViewRecyclerAdapter hv;
+	private LinearLayoutManager lm;
+	private StaggeredGridLayoutManager mStaggeredGridLayoutManager;
+	private int firstVisibleItem, lastVisibleItem;;
 
 	SharedPreferences preferences;
 
@@ -86,20 +95,107 @@ public class CategoriasFragment extends Fragment implements AbsListView.OnScroll
 
 		firstPage = getActivity().getIntent().getIntExtra("page", 2);
 		firstUrl = "http://apps.aloogle.net/blogapp/wordpress/json/categorias.php?id=" + getString(R.string.blogid);
-		
+
 		url = firstUrl + "&page=" + String.valueOf(firstPage);
 
 		lastUrl = url;
-		
-		FragmentActivity.ActionBarColor(((AppCompatActivity)getActivity()), "Categorias");
 
-		list = (ObservableListView)view.findViewById(R.id.scroll);
+		FragmentActivity.ActionBarColor(((AppCompatActivity)getActivity()), "Categorias");
 
 		LayoutInflater inflatere = getActivity().getLayoutInflater();
 		footer3 = (ViewGroup)inflatere.inflate(R.layout.footer3, list, false);
-		footer4 = (ViewGroup)inflatere.inflate(R.layout.no_more, list, false);
-		footer5 = (ViewGroup)inflatere.inflate(R.layout.load_more, list, false);
-		list.addFooterView(footer3, null, false);
+		footer4 = (ViewGroup)inflatere.inflate(R.layout.message_footer, list, false);
+		CustomTextView nomore = (CustomTextView)footer4.findViewById(R.id.message);
+		nomore.setText(getString(R.string.nomore));
+		footer5 = (ViewGroup)inflatere.inflate(R.layout.message_footer, list, false);
+		CustomTextView loadmore = (CustomTextView)footer5.findViewById(R.id.message);
+		loadmore.setText(getString(R.string.loadmore));
+		footer5.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					if(Other.isConnected(getActivity())) {
+						Space(footer3, 0);
+						ismore = true;
+						getCategs(false);
+					} else {
+						Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
+						toast.show();
+					}
+				}
+			});
+
+		list = (ObservableRecyclerView)view.findViewById(R.id.list);
+		ListAdapter adapter = new ListAdapter(getActivity(), categoriasarray);
+		AlphaInAnimationAdapter alphaAdapter = new AlphaInAnimationAdapter(adapter);
+		ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(alphaAdapter);
+		hv = new HeaderViewRecyclerAdapter(scaleAdapter);
+		list.setAdapter(hv);
+		hv.addFooterView(footer3, getActivity(), 0);
+		actualfooter = footer3;
+		anddp = 0;
+
+		list.setOnScrollListener(new RecyclerView.OnScrollListener() {
+				@Override
+				public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+					super.onScrollStateChanged(recyclerView, newState);
+					if(newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == hv.getItemCount()) {
+						if(lastMore >= Other.numberPosts) {
+							if(!block) {
+								if(Other.isConnected(getActivity())) {
+									ismore = true;
+									getCategs(false);
+									block = true;
+								} else {
+									Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
+									toast.show();
+									if(!fromtag) {
+										Space(footer5, 50);
+									}
+									block = true;
+								}
+							}
+						}
+					}
+				}
+
+				@Override
+				public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+					super.onScrolled(recyclerView, dx, dy);
+					if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+						firstVisibleItem = lm.findFirstVisibleItemPosition();
+						lastVisibleItem = lm.findLastVisibleItemPosition();
+					} else {
+						int[] firstVisibleItems = mStaggeredGridLayoutManager.findFirstVisibleItemPositions(null);
+						firstVisibleItem = Math.min(firstVisibleItems[0], firstVisibleItems[1]);
+						int[] lastVisibleItems = mStaggeredGridLayoutManager.findLastVisibleItemPositions(null);
+						lastVisibleItem = Math.max(lastVisibleItems[0], lastVisibleItems[1]);
+					}
+				}
+
+			});
+
+		list.setScrollViewCallbacks(new ObservableScrollViewCallbacks() {
+				@Override
+				public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+					mSwipeLayout.setEnabled(scrollY == 0);
+				}
+
+				@Override
+				public void onDownMotionEvent() {
+				}
+
+				@Override
+				public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+				}
+			});
+
+		lm = new LinearLayoutManager(getActivity());
+		mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
+
+		list.setHasFixedSize(true);
+        list.setItemAnimator(new FadeInUpAnimator());
+		list.getItemAnimator().setAddDuration(300);
+
+		setLayoutManager(getActivity().getResources().getConfiguration());
 
 		mSwipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_container);
 		mSwipeLayout.setOnRefreshListener(this);
@@ -113,17 +209,33 @@ public class CategoriasFragment extends Fragment implements AbsListView.OnScroll
 		isfirst = true;
 		passed = false;
 
-		if (Other.isConnected(getActivity())) {
-			getCategs();
+		if(Other.isConnected(getActivity())) {
+			getCategs(false);
 		} else {
 			setError();
 		}
 		return view;
 	}
 
-	public void getCategs() {
-		if (isfirst) {
-			if (Build.VERSION.SDK_INT >= 21) {
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		setLayoutManager(newConfig);
+	}
+
+	private void setLayoutManager(Configuration configuration) {
+		if(configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+			list.setLayoutManager(lm);
+		} else if(configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			list.setLayoutManager(mStaggeredGridLayoutManager);
+		}
+		list.scrollToPosition(firstVisibleItem);
+		Space(actualfooter, anddp);
+	}
+
+	public void getCategs(final boolean fromUpdate) {
+		if(isfirst) {
+			if(Build.VERSION.SDK_INT >= 21) {
 				progressBar = (ProgressBar)view.findViewById(R.id.progressBar1);
 				progressBar.setVisibility(View.VISIBLE);
 			} else {
@@ -146,17 +258,20 @@ public class CategoriasFragment extends Fragment implements AbsListView.OnScroll
 						e.printStackTrace();
 						return;
 					}
-					if (isfirst) {
-						if (Build.VERSION.SDK_INT >= 21) {
+					if(isfirst) {
+						if(Build.VERSION.SDK_INT >= 21) {
 							progressBar.setVisibility(View.GONE);
 						} else {
 							progressBarCompat.setVisibility(View.GONE);
 						}
 					}
+					if(fromUpdate) {
+						categoriasarray.clear();
+					}
 					mSwipeLayout.setRefreshing(false);
 					JsonArray categorias = json.get("categorias").getAsJsonObject().get("categorias").getAsJsonArray();
-					if (ismore) {
-						if (passed == false) {
+					if(ismore) {
+						if(!passed) {
 							more = more + categorias.size();
 						}
 					}
@@ -165,92 +280,35 @@ public class CategoriasFragment extends Fragment implements AbsListView.OnScroll
 					lastMore = categorias.size();
 
 					if(Build.VERSION.SDK_INT > 10) {
-					if (lastMore != 15) {
-						Space(footer3, footer4);
-						nomore = true;
-					}
+						if(lastMore != 15) {
+							Space(footer4, 50);
+							nomore = true;
+						}
 					}
 
-					for (int i = 0; i < categorias.size(); i++) {
+					for(int i = 0; i < categorias.size(); i++) {
 						JsonObject c = categorias.get(i).getAsJsonObject();
 
 						String id = c.get(TAG_ID).getAsString();
 						String titulo = c.get(TAG_TITULO).getAsString();
+						String icon = c.get("icon").getAsString();
 
-						categoriasarray.add(new Categorias(id, titulo));
+						categoriasarray.add(new Categorias(id, titulo, icon));
 					}
 
-					if(!seted) {
-						swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(new ListAdapter(getActivity(), categoriasarray));
-						swingBottomInAnimationAdapter.setAbsListView(list);
-
-						assert swingBottomInAnimationAdapter.getViewAnimator() != null;
-						swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
-
-						list.setAdapter(swingBottomInAnimationAdapter);
-						list.setOnScrollListener(CategoriasFragment.this);
-						seted = true;
-					} else {
-						swingBottomInAnimationAdapter.notifyDataSetChanged(true);
-					}
+					hv.notifyDataSetChanged();
 
 					lastUrl = url;
-					
+
 					page ++;
 					url = firstUrl + "&page=" + page;
-					
+
 					isfirst = false;
 					list.setVisibility(View.VISIBLE);
 
-				}});}
-	
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {}
-
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem,
-						 int visibleItemCount, int totalItemCount) {
-		if (list.getLastVisiblePosition() == list.getAdapter().getCount() - 1 && list.getChildAt(list.getChildCount() - 1).getBottom() <= list.getHeight()) {
-			if (lastMore == 15) {
-				if (!block) {
-					if (Other.isConnected(getActivity())) {
-						ismore = true;
-						getCategs();
-						block = true;
-					} else {
-						Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
-						toast.show();
-						if (!fromtag) {
-							list.removeFooterView(footer3);
-						}
-						footer5.setOnClickListener(new OnClickListener() {
-								public void onClick(View v) {
-									if (Other.isConnected(getActivity())) {
-										Space(footer5, footer3);
-										ismore = true;
-
-										getCategs();
-									} else {
-										Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
-										toast.show();
-									}
-								}
-							});
-						if (!fromtag) {
-							list.addFooterView(footer5);
-						}
-						block = true;
-					}
 				}
-			}
+			});
 		}
-
-		if (list.getChildCount() > 0 && list.getChildAt(0).getTop() == 0 && list.getFirstVisiblePosition() == 0) {
-			mSwipeLayout.setEnabled(true);
-		} else {
-			mSwipeLayout.setEnabled(false);
-		}
-	}
 
 	public void setError() {
 		final RelativeLayout mainContent = (RelativeLayout)view.findViewById(R.id.main_content);
@@ -263,10 +321,10 @@ public class CategoriasFragment extends Fragment implements AbsListView.OnScroll
 		error.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if (Other.isConnected(getActivity())) {
+					if(Other.isConnected(getActivity())) {
 						fragment.removeView(error);
 						mainContent.setVisibility(View.VISIBLE);
-						getCategs();
+						getCategs(false);
 					} else {
 						Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
 						toast.show();
@@ -275,29 +333,28 @@ public class CategoriasFragment extends Fragment implements AbsListView.OnScroll
 			});
 		fragment.addView(error);
 	}
-	
+
 	public void onRefresh() {
-		if (Other.isConnected(getActivity())) {
-			list.setVisibility(View.GONE);
-			categoriasarray.clear();
+		if(Other.isConnected(getActivity())) {
 			url = firstUrl + "&page=" + String.valueOf(firstPage);
 			more = 0;
 			page = firstPage;
 			ismore = false;
 			block = true;
-			if (nomore) {
-				Space(footer4, footer3);
+			if(nomore) {
+				Space(footer3, 0);
 			}
-			getCategs();
+			getCategs(true);
 		} else {
 			mSwipeLayout.setRefreshing(false);
 			Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
 			toast.show();
 		}
 	}
-	
-	public void Space(ViewGroup v1, ViewGroup v2) {
-		list.removeFooterView(v1);
-		list.addFooterView(v2, null, false);
+	public void Space(ViewGroup v2, int dp) {
+		hv.removeFooterView(0);
+		hv.addFooterView(v2, getActivity(), dp);
+		actualfooter = v2;
+		anddp = dp;
 	}
 }

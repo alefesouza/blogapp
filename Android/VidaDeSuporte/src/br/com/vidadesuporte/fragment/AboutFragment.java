@@ -39,7 +39,8 @@ public class AboutFragment extends Fragment {
 		FragmentActivity.ActionBarColor(((AppCompatActivity)getActivity()), getActivity().getString(R.string.about));
 
 		String sobretext = "<h3>Site</h3>" +
-			"Todos os direitos reservados por A Casa do Cogumelo - 2015.<br><br>Caso queira entrar em contato com a equipe do site <a href=\"http://www.acasadocogumelo.com/p/contato.html\">clique aqui</a>.<br><br>Propriedade intelectual de A Casa do Cogumelo." +
+			"Todos os direitos reservados por Dropando Ideias, este blog é protegido por uma licença <a href=\"http://creativecommons.org/licenses/by-nc-nd/4.0/\">Creative Commons (CC BY-NC-ND 4.0)</a>, mais expecificações Creative Commons estão na página da <a href=\"http://dropandoideias.com/politica/\">política</a> do blog." +
+			"Para entrar em contato, <a href=\"http://dropandoideias.com/contato/\">clique aqui</a>." +
 			"<h3>Aplicativo</h3>" +
 			"Aplicativo desenvolvido por <a href=\"http://google.com/+AlefeSouza\">Alefe Souza</a>.<br><br>Quer ter uma versão desse aplicativo para seu blog, site ou canal do YouTube? Entre em contato <a href=\"mailto:blogapp@apps.aloogle.net\">clicando aqui</a>!";
 

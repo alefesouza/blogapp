@@ -44,63 +44,45 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import br.com.vidadesuporte.R;
 import br.com.vidadesuporte.activity.FragmentActivity;
 import br.com.vidadesuporte.adapter.CardAdapter;
 import br.com.vidadesuporte.other.Other;
 import br.com.vidadesuporte.other.*;
+import br.com.vidadesuporte.lib.*;
+import android.support.v7.widget.*;
+import com.github.ksoichiro.android.observablescrollview.*;
+import jp.wasabeef.recyclerview.animators.adapters.*;
+import android.content.res.*;
+import jp.wasabeef.recyclerview.animators.*;
 
 @SuppressLint({ "InflateParams", "DefaultLocale" })
-public class SearchFragment extends Fragment implements AbsListView.OnScrollListener, SwipeRefreshLayout.OnRefreshListener {
-	Activity activity;
-	SharedPreferences preferences;
-	Editor editor;
-
-	ObservableListView list;
-	ArrayList <Posts> postsarray = new ArrayList <Posts>();
-	int more, page, lastMore;
-	boolean ismore, block, isfirst, passed, nomore, seted;
-	ViewGroup footer3, footer4, footer5;
-	ProgressBar progressBar;
-	ProgressBarCircularIndeterminate progressBarCompat;
-	SwingBottomInAnimationAdapter swingBottomInAnimationAdapter;
-
-	private SwipeRefreshLayout mSwipeLayout;
-
-	String url, search, lastUrl, suggestion;
-	private static final String TAG_POSTS = "posts";
-	private static final String TAG_ID = "id";
-	private static final String TAG_TITULO = "titulo";
-	private static final String TAG_DESCRICAO = "descricao";
-	private static final String TAG_IMAGEM = "imagem";
-	private static final String TAG_URL = "url";
-	private static final String TAG_COMENTARIOS = "comentarios";
-
-	View view;
-
+public class SearchFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+	String search, suggestion;
+	
 	ArrayList <String> categoriaarray = new ArrayList <String>();
 
 	ArrayList <String> reallyarray = new ArrayList <String>();
 	private SimpleCursorAdapter mAdapter;
-
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		this.activity = getActivity();
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
-	}
-
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		view = inflater.inflate(R.layout.fragment_category, container, false);
+		view = inflater.inflate(R.layout.fragment_main, container, false);
+		
+		if (savedInstanceState != null) {
+			page = savedInstanceState.getInt("page");
+			url = savedInstanceState.getString("url");
+			search = savedInstanceState.getString("search");
+		} else {
+			search = getActivity().getIntent().getStringExtra("query");
+			page = 1;
+		}
+
+		url = "http://apps.aloogle.net/blogapp/wordpress/json/main.php?search=" + search + "&id=" + getString(R.string.blogid);
+		
+		configCreate();
+		mSwipeLayout.setOnRefreshListener(this);
 
 		final String[]from = new String[]{
 			"categoryName"
@@ -110,94 +92,35 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 		};
 		mAdapter = new SimpleCursorAdapter(getActivity(), 			R.layout.simple_list_item_1, 			null, 			from, 			to, 			CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
-		if (savedInstanceState != null) {
-			page = savedInstanceState.getInt("page");
-			lastUrl = savedInstanceState.getString("url");
-			url = lastUrl;
-			search = savedInstanceState.getString("search");
-		} else {
-			search = getActivity().getIntent().getStringExtra("query");
-			page = 1;
-			lastUrl = url;
-		}
-
-		lastMore = 10;
-
 		try {
 			FragmentActivity.ActionBarColor(((AppCompatActivity)getActivity()), "Busca: " + URLDecoder.decode(search, "UTF-8"));
 		}
 		catch (UnsupportedEncodingException e) {}
+		
+		list.setScrollViewCallbacks(new ObservableScrollViewCallbacks() {
+				@Override
+				public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+					mSwipeLayout.setEnabled(scrollY == 0);
+				}
 
-		list = (ObservableListView)view.findViewById(R.id.scroll);
+				@Override
+				public void onDownMotionEvent() {
+				}
 
-		if (Build.VERSION.SDK_INT >= 21) {
-			if (preferences.getString("prefColor", "padrao").equals("padrao")) {
-				view.findViewById(R.id.dropshadow).setVisibility(View.VISIBLE);
-			} else {
-				view.findViewById(R.id.dropshadow).setVisibility(View.GONE);
-			}
-		}
-
-		mSwipeLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipe_container);
-		mSwipeLayout.setOnRefreshListener(this);
-		mSwipeLayout.setColorSchemeResources(R.color.colorAccent,
-											 R.color.colorAccent, R.color.colorAccent,
-											 R.color.colorAccent);
-
-		LayoutInflater inflatere = getActivity().getLayoutInflater();
-		footer3 = (ViewGroup)inflater.inflate(R.layout.footer3, list, false);
-		footer4 = (ViewGroup)inflater.inflate(R.layout.no_more, list, false);
-		footer5 = (ViewGroup)inflatere.inflate(R.layout.load_more, list, false);
-		list.addFooterView(footer3, null, false);
-
-		more = 0;
-		ismore = false;
-		block = false;
-		isfirst = true;
-		passed = false;
-		page = 1;
-
-		url = "http://apps.aloogle.net/blogapp/wordpress/json/main.php?search=" + search + "&id=" + getString(R.string.blogid);
+				@Override
+				public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+				}
+			});
 
 		if (Other.isConnected(getActivity())) {
-			getPosts();
+			getPosts(false);
 		} else {
-			final RelativeLayout mainContent = (RelativeLayout)view.findViewById(R.id.main_content);
-			mainContent.setVisibility(View.GONE);
-			final RelativeLayout fragment = (RelativeLayout)view.findViewById(R.id.fragment);
-			LayoutInflater errorinflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			final View error = errorinflater.inflate(R.layout.error, null);
-			LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-			error.setLayoutParams(vp);
-			error.setOnClickListener(new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						if (Other.isConnected(getActivity())) {
-							fragment.removeView(error);
-							mainContent.setVisibility(View.VISIBLE);
-							getPosts();
-						} else {
-							Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
-							toast.show();
-						}
-					}
-				});
-			fragment.addView(error);
+			setError();
 		}
 		return view;
 	}
 
-
-	public void getPosts() {
-		if (isfirst) {
-			if (Build.VERSION.SDK_INT >= 21) {
-				progressBar = (ProgressBar)view.findViewById(R.id.progressBar1);
-				progressBar.setVisibility(View.VISIBLE);
-			} else {
-				progressBarCompat = (ProgressBarCircularIndeterminate)view.findViewById(R.id.progressBar1);
-				progressBarCompat.setVisibility(View.VISIBLE);
-			}
-		}
+	public void getPosts(final boolean fromUpdate) {
 		Ion.with(this)
 			.load(url)
 			.asJsonObject()
@@ -207,6 +130,10 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 					if (e != null) {
 						Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
 						toast.show();
+						e.printStackTrace();
+						if(isfirst) {
+							setError();
+						}
 						return;
 					}
 					if (isfirst) {
@@ -215,6 +142,9 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 						} else {
 							progressBarCompat.setVisibility(View.GONE);
 						}
+					}
+					if(fromUpdate) {
+						postsarray.clear();
 					}
 					mSwipeLayout.setRefreshing(false);
 					JsonArray posts = json.get(TAG_POSTS).getAsJsonArray();
@@ -228,8 +158,7 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 					lastMore = posts.size();
 
 					if (lastMore < 10) {
-						list.removeFooterView(footer3);
-						list.addFooterView(footer4, null, false);
+						Space(footer4, 50);
 						nomore = true;
 					}
 
@@ -242,29 +171,21 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 						String imagem = c.get(TAG_IMAGEM).getAsString();
 						String url = c.get(TAG_URL).getAsString();
 						String comentarios = c.get(TAG_COMENTARIOS).getAsString();
+						String categoria = c.get("categoriaicon").getAsString();
+						String data = c.get("data").getAsString();
 
-						postsarray.add(new Posts(id, titulo, imagem, descricao, url, comentarios));
+						postsarray.add(new Posts(id, titulo, imagem, descricao, url, comentarios, categoria, data));
 					}
 					
-					if(!seted) {
-						swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(new CardAdapter(getActivity(), postsarray));
-						swingBottomInAnimationAdapter.setAbsListView(list);
-
-						assert swingBottomInAnimationAdapter.getViewAnimator() != null;
-						swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
-
-						list.setAdapter(swingBottomInAnimationAdapter);
-						list.setOnScrollListener(SearchFragment.this);
-						seted = true;
-					} else {
-						swingBottomInAnimationAdapter.notifyDataSetChanged(true);
-					}
+					hv.notifyDataSetChanged();
 
 					page++;
 					url = "http://apps.aloogle.net/blogapp/wordpress/json/main.php?search=" + search + "&page=" + String.valueOf(page) + "&id=" + getString(R.string.blogid);
 					isfirst = false;
 					list.setVisibility(View.VISIBLE);
-				}});}
+				}
+			});
+		}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -282,8 +203,7 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 				public boolean onQueryTextSubmit(String query) {
 					try {
 						try {
-							clearAll();
-							list.setVisibility(View.GONE);
+							mSwipeLayout.setRefreshing(true);
 							more = 0;
 							ismore = false;
 							block = true;
@@ -292,12 +212,11 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 							page = 1;
 							search = URLEncoder.encode(query, "UTF-8");
 							if (nomore) {
-								list.removeFooterView(footer4);
-								list.addFooterView(footer3, null, false);
+								Space(footer3, 0);
 							}
 							FragmentActivity.ActionBarColor(((AppCompatActivity)getActivity()), "Busca: " + query);
 							url = "http://apps.aloogle.net/blogapp/wordpress/json/main.php?search=" + search + "&id=" + getString(R.string.blogid);
-							getPosts();
+							getPosts(true);
 						}
 						catch (UnsupportedEncodingException e) {}
 					}
@@ -348,8 +267,7 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 				@Override
 				public boolean onSuggestionClick(int position) {
 					try {
-						clearAll();
-						list.setVisibility(View.GONE);
+						mSwipeLayout.setRefreshing(true);
 						more = 0;
 						ismore = false;
 						block = true;
@@ -357,12 +275,11 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 						passed = true;
 						search = URLEncoder.encode(reallyarray.get(position).toString(), "UTF-8");
 						if (nomore) {
-							list.removeFooterView(footer4);
-							list.addFooterView(footer3, null, false);
+							Space(footer3, 0);
 						}
 						FragmentActivity.ActionBarColor(((AppCompatActivity)getActivity()), "Busca: " + reallyarray.get(position).toString());
 						url = "http://apps.aloogle.net/blogapp/wordpress/json/main.php?search=" + search + "&id=" + getString(R.string.blogid);
-						getPosts();
+						getPosts(true);
 					}
 					catch (UnsupportedEncodingException e) {}
 					return true;
@@ -371,8 +288,7 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 				@Override
 				public boolean onSuggestionSelect(int position) {
 					try {
-						clearAll();
-						list.setVisibility(View.GONE);
+						mSwipeLayout.setRefreshing(true);
 						more = 0;
 						ismore = false;
 						block = true;
@@ -380,12 +296,11 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 						passed = true;
 						search = URLEncoder.encode(reallyarray.get(position).toString(), "UTF-8");
 						if (nomore) {
-							list.removeFooterView(footer4);
-							list.addFooterView(footer3, null, false);
+							Space(footer3, 0);
 						}
 						FragmentActivity.ActionBarColor(((AppCompatActivity)getActivity()), "Busca: " + reallyarray.get(position).toString());
 						url = "http://apps.aloogle.net/blogapp/wordpress/json/main.php?search=" + search + "&id=" + getString(R.string.blogid);
-						getPosts();
+						getPosts(true);
 					}
 					catch (UnsupportedEncodingException e) {}
 					return true;
@@ -419,64 +334,18 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 			mAdapter.changeCursor(c);
 		}
 	}
-
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {}
-
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, 	int visibleItemCount, int totalItemCount) {
-		if (list.getLastVisiblePosition() == list.getAdapter().getCount() - 1 && list.getChildAt(list.getChildCount() - 1).getBottom() <= list.getHeight()) {
-			if (lastMore == 10) {
-				if (block == false) {
-					if (Other.isConnected(getActivity())) {
-						ismore = true;
-						getPosts();
-						block = true;
-					} else {
-						Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
-						toast.show();
-						list.removeFooterView(footer3);
-						footer5.setOnClickListener(new OnClickListener() {
-								public void onClick(View v) {
-									if (Other.isConnected(getActivity())) {
-										list.removeFooterView(footer5);
-										list.addFooterView(footer3);
-										ismore = true;
-										getPosts();
-									} else {
-										Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
-										toast.show();
-									}
-								}
-							});
-						list.addFooterView(footer5);
-						block = true;
-					}
-				}
-			}
-		}
-
-		if (list.getChildCount() > 0 && list.getChildAt(0).getTop() == 0 && list.getFirstVisiblePosition() == 0) {
-			mSwipeLayout.setEnabled(true);
-		} else {
-			mSwipeLayout.setEnabled(false);
-		}
-	}
-
+	
 	public void onRefresh() {
 		if (Other.isConnected(getActivity())) {
-			list.setVisibility(View.GONE);
-			clearAll();
 			url = "http://apps.aloogle.net/blogapp/wordpress/json/main.php?search=" + search + "&id=" + getString(R.string.blogid);
 			more = 0;
 			ismore = false;
 			block = true;
 			page = 1;
 			if (nomore) {
-				list.removeFooterView(footer4);
-				list.addFooterView(footer3, null, false);
+				Space(footer3, 0);
 			}
-			getPosts();
+			getPosts(true);
 		} else {
 			mSwipeLayout.setRefreshing(false);
 			Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
@@ -491,7 +360,7 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 	public void onSaveInstanceState(Bundle savedInstanceState) {
 		savedInstanceState.putString("search", search);
 		savedInstanceState.putInt("page", page);
-		savedInstanceState.putString("url", lastUrl);
+		savedInstanceState.putString("url", url);
 		super.onSaveInstanceState(savedInstanceState);
 	}
 }

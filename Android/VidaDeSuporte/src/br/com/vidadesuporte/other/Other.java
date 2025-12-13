@@ -6,9 +6,11 @@ import com.nineoldandroids.view.*;
 import android.view.View;
 import android.view.animation.*;
 import android.view.ViewGroup;
+import android.util.*;
 
 public class Other {
     public static final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
+	public static final int numberPosts = 16;
 	
 	public static boolean isConnected(Activity activity) {
 		@SuppressWarnings("static-access")
@@ -32,4 +34,10 @@ public class Other {
         }
         return marginBottom;
     }
+	
+	public static int dpToPx(Activity activity, int dp) {
+		DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
+		int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+		return px;
+	}
 }

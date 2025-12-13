@@ -34,7 +34,7 @@ public class DrawerAdapter extends BaseAdapter {
 
 	@Override
 	public int getItemViewType(int position) {
-		return navDrawerItems.get(position).isSection() ? TYPE_SEPARATOR : TYPE_ITEM;
+		return navDrawerItems.get(position).getType() == 5 ? TYPE_SEPARATOR : TYPE_ITEM;
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class DrawerAdapter extends BaseAdapter {
 	
 	@Override
 	public boolean isEnabled(int position) {
-		return !navDrawerItems.get(position).isSection();
+		return navDrawerItems.get(position).getType() < 5;
 	}
 
 	@SuppressLint("InflateParams")
@@ -89,7 +89,7 @@ public class DrawerAdapter extends BaseAdapter {
 		}
 		holder.textView.setText(navDrawerItems.get(position).getTitle());
 
-		if(!navDrawerItems.get(position).isSection()) {
+		if(navDrawerItems.get(position).getType() < 5) {
 			holder.imageView.setImageResource(navDrawerItems.get(position).getIcon());
 			if(!navDrawerItems.get(position).getIcon2().equals("")) {
 				Ion.with (context)
