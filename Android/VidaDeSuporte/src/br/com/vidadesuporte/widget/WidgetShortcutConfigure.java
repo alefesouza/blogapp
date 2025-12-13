@@ -26,7 +26,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import br.com.vidadesuporte.R;
-import br.com.vidadesuporte.activity.*;
 
 public class WidgetShortcutConfigure extends AppCompatActivity {
 
@@ -53,7 +52,7 @@ public class WidgetShortcutConfigure extends AppCompatActivity {
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		FragmentActivity.ActionBarColor(this, getString(R.string.addshortcutwidget));
+		getSupportActionBar().setTitle(getString(R.string.addshortcutwidget));
 
 		icons = getResources().obtainTypedArray(R.array.categories_icons);
 

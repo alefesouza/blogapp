@@ -44,13 +44,13 @@
 					android:id="@+id/titulo"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:textColor="#000000"
+					android:textColor="@color/colorAccent"
 					android:layout_marginLeft="20dp"
 					android:layout_marginRight="20dp"
 					android:layout_marginTop="10dp"
 					android:layout_marginBottom="5dp"
 					android:textSize="20sp"
-					app:fontName="Special-Elite.ttf"
+					app:fontName="Roboto-Bold.ttf"
 				/>
 			
 				<LinearLayout
@@ -111,18 +111,18 @@
 					</RelativeLayout>
 				</RelativeLayout>
 			</com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
-			
-	<android.support.design.widget.FloatingActionButton
+
+
+	<com.melnykov.fab.FloatingActionButton
 		android:id="@+id/fabcomments"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:src="@drawable/ic_comments"
-		android:layout_marginBottom="16dp"
+        android:layout_gravity="right|bottom"
 		android:layout_marginRight="16dp"
-		android:layout_alignParentBottom="true"
-		android:layout_alignParentRight="true"
-		app:fabSize="normal"
-		android:visibility="gone" />
+		android:layout_marginBottom="16dp"
+		android:src="@drawable/ic_comments"
+		app:fab_colorNormal="@color/colorAccent2"
+		app:fab_colorPressed="@color/colorAccent" />
 	
 	<RelativeLayout
 		android:layout_width="56dp"
@@ -138,7 +138,7 @@
 		android:layout_marginTop="18dp"
 		android:layout_centerHorizontal="true"
 		android:id="@+id/comentarioscount"
-		android:textColor="@color/colorAccent"
+		android:textColor="@color/colorAccent2"
 		android:textSize="12sp"
 		app:fontName="Roboto-Regular.ttf"
 	/>

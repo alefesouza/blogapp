@@ -11,35 +11,20 @@ import android.widget.ImageView;
 import br.com.vidadesuporte.R;
 import br.com.vidadesuporte.other.*;
 import java.util.ArrayList;
-import android.widget.*;
-import java.util.*;
-import com.koushikdutta.ion.*;
 
 public class DrawerAdapter extends BaseAdapter {
 
 	private Context context;
 	private ArrayList <Icons> navDrawerItems;
 
-	private static final int TYPE_ITEM = 0;
-	private static final int TYPE_SEPARATOR = 1;
-
-	private LayoutInflater mInflater;
-
 	public DrawerAdapter(Context context, ArrayList <Icons> navDrawerItems) {
 		this.context = context;
 		this.navDrawerItems = navDrawerItems;
-		mInflater = (LayoutInflater) context
-			.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
 	@Override
-	public int getItemViewType(int position) {
-		return navDrawerItems.get(position).getType() == 5 ? TYPE_SEPARATOR : TYPE_ITEM;
-	}
-
-	@Override
-	public int getViewTypeCount() {
-		return 2;
+	public boolean isEnabled(int position) {
+		return true;
 	}
 
 	@Override
@@ -48,61 +33,32 @@ public class DrawerAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public String getItem(int position) {
-		return "";
+	public Object getItem(int position) {
+		return navDrawerItems.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
 		return position;
 	}
-	
-	@Override
-	public boolean isEnabled(int position) {
-		return navDrawerItems.get(position).getType() < 5;
-	}
 
 	@SuppressLint("InflateParams")
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		ViewHolder holder = null;
-		int rowType = getItemViewType(position);
-
 		if (convertView == null) {
-			holder = new ViewHolder();
-			switch (rowType) {
-				case TYPE_ITEM:
-					convertView = mInflater.inflate(R.layout.drawer_adapter, null);
-					holder.textView = (TextView) convertView.findViewById(R.id.categoryText);
-					holder.imageView = (ImageView)convertView.findViewById(R.id.iconPicture);
-					break;
-				case TYPE_SEPARATOR:
-					convertView = mInflater.inflate(R.layout.footer, null);
-					holder.textView = (TextView) convertView.findViewById(R.id.myTextView1);
-					holder.imageView = null;
-					break;
-			}
-			convertView.setTag(holder);
-		} else {
-			holder = (ViewHolder) convertView.getTag();
+			LayoutInflater mInflater = (LayoutInflater)context
+			.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+			convertView = mInflater.inflate(
+					R.layout.drawer_adapter, null);
 		}
-		holder.textView.setText(navDrawerItems.get(position).getTitle());
 
-		if(navDrawerItems.get(position).getType() < 5) {
-			holder.imageView.setImageResource(navDrawerItems.get(position).getIcon());
-			if(!navDrawerItems.get(position).getIcon2().equals("")) {
-				Ion.with (context)
-					.load(navDrawerItems.get(position).getIcon2())
-					.withBitmap()
-					.intoImageView(holder.imageView);
-			}
-		}
+		ImageView imgIcon = (ImageView)convertView
+		.findViewById(R.id.iconPicture);
+		CustomTextView txtTitle = (CustomTextView)convertView.findViewById(R.id.categoryText);
+
+		imgIcon.setImageResource(navDrawerItems.get(position).getIcon());
+		txtTitle.setText(navDrawerItems.get(position).getTitle());
+
 		return convertView;
-	}
-
-	public static class ViewHolder {
-		public TextView textView;
-		public ImageView imageView;
 	}
 }

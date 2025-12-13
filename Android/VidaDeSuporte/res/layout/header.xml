@@ -13,7 +13,7 @@
         android:adjustViewBounds="true"
         android:fitsSystemWindows="false"
         android:scaleType="centerCrop"
-        android:src="@drawable/drawer_logo"
+        android:src="@drawable/logo"
         android:tint="#74000000" />
 
     <ImageView

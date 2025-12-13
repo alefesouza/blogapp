@@ -69,6 +69,7 @@ public class CommentsFragment extends Fragment {
 
 		if (Build.VERSION.SDK_INT >= 21) {
 			progressBar = (ProgressBar)view.findViewById(R.id.progressBar1);
+			progressBar.getIndeterminateDrawable().setColorFilter(new LightingColorFilter(0xFF336500, 0xFF336500));
 		} else {
 			progressBarCompat = (ProgressBarCircularIndeterminate)view.findViewById(R.id.progressBar1);
 		}
@@ -119,8 +120,15 @@ public class CommentsFragment extends Fragment {
 
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			if (!finished) {
-				view.loadUrl(url);
+			if (finished == false) {
+				if (url.contains("vidadesuporte.com.br") || url.contains("facebook.com") || url.contains("google.com") || url.contains("twitter.com") || url.contains("youtube.com") || url.contains(".jpg") || url.contains(".png") || url.contains(".gif")) {
+					view.loadUrl(url);
+				} else {
+					Intent i = new Intent(Intent.ACTION_VIEW);
+					i.setData(Uri.parse(url));
+					startActivity(i);
+				}
+				getActivity().supportInvalidateOptionsMenu();
 			}
 			return true;
 		}
@@ -132,7 +140,7 @@ public class CommentsFragment extends Fragment {
 
 		@Override
 		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-			String erro = "<html><head><style>body { background-image: url('erro.png'); background-repeat: no-repeat; background-position: center; background-color: #1b1b1b; min-height: 431px; }</style></head></html>";
+			String erro = "<html><head><style>body { background-image: url('erro.png'); background-repeat: no-repeat; background-position: center; background-color: #000000; min-height: 431px; }</style></head></html>";
 			webView.loadDataWithBaseURL("file:///android_asset/", erro, "text/html", "utf-8", null);
 			super.onReceivedError(view, errorCode, description, failingUrl);
 		}

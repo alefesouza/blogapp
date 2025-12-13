@@ -80,11 +80,13 @@
 					android:layout_centerHorizontal="true"
 					android:background="@color/colorAccent" />
 				
-				<WebView
+				<LinearLayout
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:id="@+id/webView"
+					android:layout_height="match_parent"
+					android:id="@+id/linear"
 					android:layout_below="@+id/autorhora"
+					android:layout_marginLeft="20dp"
+					android:layout_marginRight="20dp"
 					android:orientation="vertical" />
 
 				<HorizontalScrollView
@@ -92,7 +94,7 @@
 					android:layout_height="match_parent"
 					android:layout_marginLeft="20dp"
 					android:id="@+id/horizontal"
-					android:layout_below="@+id/webView">
+					android:layout_below="@+id/linear">
 					<LinearLayout
 						android:layout_width="wrap_content"
 						android:layout_height="match_parent"
@@ -109,18 +111,17 @@
 					</RelativeLayout>
 				</RelativeLayout>
 			</com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
-
-	<android.support.design.widget.FloatingActionButton
+			
+	<com.melnykov.fab.FloatingActionButton
 		android:id="@+id/fabcomments"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:src="@drawable/ic_comments"
-		android:layout_marginBottom="16dp"
+        android:layout_gravity="right|bottom"
 		android:layout_marginRight="16dp"
-		android:layout_alignParentBottom="true"
-		android:layout_alignParentRight="true"
-		app:fabSize="normal"
-		android:visibility="gone" />
+		android:layout_marginBottom="16dp"
+		android:src="@drawable/ic_comments"
+		app:fab_colorNormal="@color/colorAccent2"
+		app:fab_colorPressed="@color/colorAccent" />
 	
 	<RelativeLayout
 		android:layout_width="56dp"
@@ -136,7 +137,7 @@
 		android:layout_marginTop="18dp"
 		android:layout_centerHorizontal="true"
 		android:id="@+id/comentarioscount"
-		android:textColor="@color/colorAccent"
+		android:textColor="@color/colorAccent2"
 		android:textSize="12sp"
 		app:fontName="Roboto-Regular.ttf"
 	/>

@@ -11,7 +11,7 @@ public class Application extends android.app.Application {
   @Override
   public void onCreate() {
     super.onCreate();
-	Parse.initialize(this, "", "");
+	  Parse.initialize(this, "", "");
 	  PushService.setDefaultPushCallback(this, br.com.vidadesuporte.activity.SplashScreen.class);
   }
 }

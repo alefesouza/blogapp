@@ -28,16 +28,13 @@ import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.ProgressCallback;
 import uk.co.senab.photoview.PhotoViewAttacher;
 import br.com.vidadesuporte.R;
-import uk.co.senab.photoview.*;
-import android.app.*;
-import android.util.*;
 
 public class ZoomFragment extends Fragment {
 
 	ImageView mImageView;
 	PhotoViewAttacher mAttacher;
 	long enqueue;
-	String url, fileName;
+	String url;
 
 	@SuppressWarnings("unused")
 	private Activity activity;
@@ -59,35 +56,41 @@ public class ZoomFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 		Bundle savedInstanceState) {
+		view = inflater.inflate(R.layout.image_zoom, container, false);
 
-        PhotoView photoView = new PhotoView(getActivity());
-		photoView.setMaximumScale(3);
-        view = photoView;
-
+		mImageView = (ImageView)view.findViewById(R.id.image);
+		final ProgressBarDeterminate progressBar2 = (ProgressBarDeterminate)view.findViewById(R.id.progress);
 		url = getActivity().getIntent().getStringExtra("imgurl");
-		String[]parts = url.split("/");
-		fileName = parts[parts.length - 1];
-			
-        final ProgressDialog dlg = new ProgressDialog(getActivity());
-        dlg.setTitle("Carregando...");
-        dlg.setIndeterminate(false);
-        dlg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        dlg.show();
-		
-        Ion.with(this)
-        .load(url)
-        .progressDialog(dlg)
-        .withBitmap()
-        .deepZoom()
-        .intoImageView(photoView)
-        .setCallback(new FutureCallback<ImageView>() {
-            @Override
-            public void onCompleted(Exception e, ImageView result) {
-                dlg.cancel();
-            }
-        });
 
-		((AppCompatActivity)getActivity()).setTitle(fileName);
+		Ion.with (getActivity()).load(url)
+		.progress(new ProgressCallback() {
+			@Override
+			public void onProgress(final long downloaded, final long total) {
+				getActivity().runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						float p = (float)downloaded / (float)total*100;
+						progressBar2.setProgress((int)(Math.round(p)));
+
+						progressBar2.setVisibility(View.VISIBLE);
+
+					}
+				});
+			}
+		})
+		.withBitmap()
+		.intoImageView(mImageView)
+				.setCallback(new FutureCallback<ImageView>() {
+					@Override
+					public void onCompleted(Exception e, final ImageView imageView) {
+						if (e != null) return;
+			   progressBar2.setVisibility(View.GONE);
+							}
+						});
+
+		mAttacher = new PhotoViewAttacher(mImageView);
+
+		((AppCompatActivity)getActivity()).setTitle("");
 		((AppCompatActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
 		getActivity().findViewById(R.id.frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#000000")));
 		getActivity().findViewById(R.id.dropshadow).setVisibility(View.GONE);
@@ -107,6 +110,8 @@ public class ZoomFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_download:
+			String[]parts = url.split("/");
+			String fileName = parts[parts.length - 1];
 			@SuppressWarnings("static-access")
 			DownloadManager dm = (DownloadManager)getActivity().getSystemService(getActivity().DOWNLOAD_SERVICE);
 			Request request = new Request(Uri.parse(url));

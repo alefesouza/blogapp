@@ -26,7 +26,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(final Context context, Intent intent) {
 		String action = intent.getAction();
-		if (action.equals("net.aloogle.dropandoideias.UPDATE_STATUS")) {
+		if (action.equals("br.com.vidadesuporte.UPDATE_STATUS")) {
 			preferences = PreferenceManager.getDefaultSharedPreferences(context);
 			editor = preferences.edit();
 			boolean notification = preferences.getBoolean("prefNotification", true);
@@ -73,6 +73,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 							.setContentTitle(receivedTitle)
 							.setContentText(receivedText)
 							.setAutoCancel(true)
+							.setSound(Uri.parse("android.resource://br.com.vidadesuporte/raw/ringtone"))
 							.setLights(0xFFFF0000, 1500, 2500)
 							.setDefaults(NotificationCompat.DEFAULT_VIBRATE)
 							.setPriority(NotificationCompat.PRIORITY_MAX)
@@ -146,6 +147,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 				.setContentTitle(receivedTitle)
 				.setContentText(receivedText)
 				.setAutoCancel(true)
+				.setSound(Uri.parse("android.resource://br.com.vidadesuporte/raw/ringtone"))
 				.setLights(0xFFFF0000, 1500, 2500)
 				.setDefaults(NotificationCompat.DEFAULT_VIBRATE)
 				.setPriority(NotificationCompat.PRIORITY_MAX)

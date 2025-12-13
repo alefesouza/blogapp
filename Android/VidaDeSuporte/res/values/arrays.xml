@@ -4,13 +4,33 @@
     <string-array name="navigation_main_sections">
         <item>Início</item>
         <item>Favoritos</item>
+        <item>@string/categ1</item>
+        <item>@string/categ2</item>
+        <item>@string/categ3</item>
+        <item>@string/categ4</item>
+        <item>@string/categ5</item>
+        <item>@string/categ6</item>
+        <item>@string/categ7</item>
+        <item>@string/categ8</item>
+        <item>Facebook</item>
+        <item>Twitter</item>
+        <item>YouTube</item>
     </string-array>
 
     <string-array name="drawable_ids">
         <item>@drawable/ic_launcher</item>
         <item>@drawable/drawer_star</item>
-        <item>@drawable/ic_link</item>
-        <item>@drawable/ic_label</item>
+        <item>@drawable/drawer_wiiu</item>
+        <item>@drawable/drawer_3ds</item>
+        <item>@drawable/drawer_mario</item>
+        <item>@drawable/drawer_zelda</item>
+        <item>@drawable/drawer_pokemon</item>
+        <item>@drawable/drawer_dk</item>
+        <item>@drawable/drawer_metroid</item>
+        <item>@drawable/drawer_metroid</item>
+        <item>@drawable/drawer_facebook</item>
+        <item>@drawable/drawer_twitter</item>
+        <item>@drawable/drawer_youtube</item>
     </string-array>
 
     <string-array name="categories">
@@ -20,78 +40,42 @@
         <item>@string/categ4</item>
         <item>@string/categ5</item>
         <item>@string/categ6</item>
+        <item>@string/categ7</item>
+        <item>@string/categ8</item>
     </string-array>
 
     <string-array name="categories_icons">
-        <item>@drawable/widget_categ1</item>
-        <item>@drawable/widget_categ2</item>
-        <item>@drawable/widget_categ3</item>
-        <item>@drawable/widget_categ4</item>
-        <item>@drawable/widget_categ5</item>
-        <item>@drawable/widget_categ6</item>
-    </string-array>
-
-    <string-array name="colors">
-        <item>Padrão</item>
-        <item>Fundo do blog</item>
-        <item>Preto</item>
-        <item>Branco</item>
-        <item>Vermelho</item>
-        <item>Verde água</item>
-        <item>Escolher outra</item>
-    </string-array>
-
-    <string-array name="colorsValues">
-        <item>222222</item>
-        <item>fundo</item>
-        <item>1b1b1b</item>
-        <item>ffffff</item>
-        <item>c62222</item>
-        <item>009e95</item>
-        <item>outra</item>
-    </string-array>
-
-    <string-array name="iconColors">
-        <item>Preto</item>
-        <item>Branco</item>
-    </string-array>
-
-    <string-array name="iconColorsValues">
-        <item>preto</item>
-        <item>branco</item>
+        <item>@drawable/widget_wiiu</item>
+        <item>@drawable/widget_3ds</item>
+        <item>@drawable/widget_mario</item>
+        <item>@drawable/widget_zelda</item>
+        <item>@drawable/widget_pokemon</item>
+        <item>@drawable/widget_donkeykong</item>
+        <item>@drawable/widget_metroid</item>
+        <item>@drawable/widget_metroid</item>
     </string-array>
 	
 	<string-array name="allow_sites1">
-		<item>http://dropandoideias.com</item>
-		<item>http://www.dropandoideias.com</item>
-		<item>dropandoideias/?s=</item>
+		<item>http://vidadesuporte.com.br</item>
+		<item>http://www.vidadesuporte.com.br</item>
+		<item>vidadesuporte.com.br/?s=</item>
 	</string-array>
 
 	<string-array name="allow_sites2">
 		<item>facebook.com</item>
-		<item>instagram.com</item>
 		<item>twitter.com</item>
 		<item>youtube.com</item>
 	</string-array>
 
 	<string-array name="socialnetworksnames">
 		<item>Facebook</item>
-		<item>Instagram</item>
 		<item>Twitter</item>
 		<item>YouTube</item>
 	</string-array>
-
-    <string-array name="socialicons">
-        <item>@drawable/drawer_facebook</item>
-        <item>@drawable/drawer_instagram</item>
-        <item>@drawable/drawer_twitter</item>
-        <item>@drawable/drawer_youtube</item>
-    </string-array>
 	
 	<string-array name="socialnetworksusers">
-		<item>510270682353379</item>
-		<item>leticinios</item>
-		<item>leticinios</item>
-		<item>dropandoideias</item>
+		<item>215431471814256</item>
+		<item>andre_suporte</item>
+		<item>suportecanal</item>
 	</string-array>
 </resources>

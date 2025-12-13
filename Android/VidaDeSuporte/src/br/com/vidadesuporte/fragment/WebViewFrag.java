@@ -48,10 +48,8 @@ import com.gc.materialdesign.views.ProgressBarDeterminate;
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ObservableWebView;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
+import com.melnykov.fab.FloatingActionButton;
 import br.com.vidadesuporte.R;
-import android.support.design.widget.*;
-import br.com.vidadesuporte.activity.*;
-import br.com.vidadesuporte.other.*;
 
 @SuppressLint({ "NewApi", "SetJavaScriptEnabled" })
 public class WebViewFrag extends Fragment implements ObservableScrollViewCallbacks {
@@ -67,7 +65,6 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 	boolean finished;
 	
 	String[] sites1, sites2;
-	String iconColor;
 
 	FloatingActionButton fabdownload, fabopen;
 	long enqueue;
@@ -95,7 +92,6 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 		Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		iconColor = preferences.getString("prefIconColor", "branco");
 		view = inflater.inflate(R.layout.webview, container, false);
 
 		finished = false;
@@ -104,6 +100,7 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 
 		if (Build.VERSION.SDK_INT >= 21) {
 			progressBar = (ProgressBar)view.findViewById(R.id.progressBar1);
+			progressBar.getIndeterminateDrawable().setColorFilter(new LightingColorFilter(0xFF336500, 0xFF336500));
 		} else {
 			progressBarCompat = (ProgressBarCircularIndeterminate)view.findViewById(R.id.progressBar1);
 		}
@@ -136,7 +133,7 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 			}
 		});
 
-		FragmentActivity.ActionBarColor(((AppCompatActivity)getActivity()), getActivity().getIntent().getStringExtra("titulo"));
+		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getActivity().getIntent().getStringExtra("titulo"));
 
 		mContentView = (FrameLayout)view.findViewById(R.id.main_content);
 		mTargetView = (FrameLayout)view.findViewById(R.id.target_view);
@@ -171,6 +168,10 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 
 		fabdownload = (FloatingActionButton)view.findViewById(R.id.fabdownload);
 
+		if (Build.VERSION.SDK_INT <= 10) {
+			fabdownload.setShadow(false);
+		}
+
 		fabdownload.setOnClickListener(new View.OnClickListener() {
 			@Override public void onClick(View v) {
 				String[]parts = webView.getUrl().split("/");
@@ -204,6 +205,10 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 		});
 
 		fabopen = (FloatingActionButton)view.findViewById(R.id.fabopen);
+
+		if (Build.VERSION.SDK_INT <= 10) {
+			fabopen.setShadow(false);
+		}
 		
 		final String[] usernames = getResources().getStringArray(R.array.socialnetworksusers);
 		
@@ -309,9 +314,6 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
-		int shareIcon = iconColor.equals("branco") ? R.drawable.ic_share : R.drawable.ic_share_black;
-		menu.findItem(R.id.menu_share).setIcon(shareIcon);
-		
 		if (webView.canGoForward()) {
 			menu.findItem(R.id.menu_forward).setEnabled(true);
 		} else {
@@ -360,7 +362,17 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			if (!finished) {
-				view.loadUrl(url);
+				if (getActivity().getIntent().hasExtra("internalbrowser")) {
+					view.loadUrl(url);
+				} else {
+					if (url.contains("vidadesuporte.com.br") || url.contains("facebook.com") || url.contains("twitter.com") || url.contains("youtube.com") || url.contains(".jpg") || url.contains(".png") || url.contains(".gif")) {
+						view.loadUrl(url);
+					} else {
+						Intent i = new Intent(Intent.ACTION_VIEW);
+						i.setData(Uri.parse(url));
+						startActivity(i);
+					}
+				}
 				getActivity().supportInvalidateOptionsMenu();
 			}
 			return true;
@@ -373,7 +385,7 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 
 		@Override
 		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-			String erro = "<html><head><style>body { background-image: url('erro.png'); background-repeat: no-repeat; background-position: center; background-color: #1b1b1b; min-height: 431px; }</style></head></html>";
+			String erro = "<html><head><style>body { background-image: url('erro.png'); background-repeat: no-repeat; background-position: center; background-color: #000000; min-height: 431px; }</style></head></html>";
 			webView.loadDataWithBaseURL("file:///android_asset/", erro, "text/html", "utf-8", null);
 			super.onReceivedError(view, errorCode, description, failingUrl);
 		}
@@ -383,7 +395,7 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 		public void onProgressChanged(WebView view, int progress) {
 			if (!finished) {
 				if (getActivity().getIntent().hasExtra("internalbrowser")) {
-					FragmentActivity.ActionBarColor(((AppCompatActivity)getActivity()), webView.getTitle());
+					((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(webView.getTitle());
 					((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(webView.getUrl());
 				}
 				if (!finished) {
@@ -400,10 +412,6 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 						} else {
 							progressBarCompat.setVisibility(View.GONE);
 						}
-						if (!getActivity().getIntent().hasExtra("internalbrowser")) {
-							FragmentActivity.ActionBarColor(((AppCompatActivity)getActivity()), webView.getTitle());
-							((AppCompatActivity)getActivity()).getSupportActionBar().setSubtitle(webView.getUrl());
-						}
 						webView.setVisibility(View.VISIBLE);
 						
 						if (Arrays.asList(sites1).equals(webView.getUrl())) {
@@ -415,7 +423,7 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 						} else if (webView.getUrl().contains(getString(R.string.sitename))) {
 							fabdownload.setVisibility(View.GONE);
 							fabopen.setVisibility(View.GONE);
-						} else if (webView.getUrl().contains(sites2[0]) || webView.getUrl().contains(sites2[1]) || webView.getUrl().contains(sites2[2]) || webView.getUrl().contains(sites2[3])) {
+						} else if (webView.getUrl().contains(sites2[0]) || webView.getUrl().contains(sites2[1]) || webView.getUrl().contains(sites2[2])) {
 							fabdownload.setVisibility(View.GONE);
 							fabopen.setVisibility(View.VISIBLE);
 						} else {
@@ -462,11 +470,11 @@ public class WebViewFrag extends Fragment implements ObservableScrollViewCallbac
 	@Override
 	public void onUpOrCancelMotionEvent(ScrollState scrollState) {
 		if (scrollState == ScrollState.UP) {
-			Other.fabShow(false, fabopen);
-			Other.fabShow(false, fabdownload);
+			fabdownload.hide(true);
+			fabopen.hide(true);
 		} else if (scrollState == ScrollState.DOWN) {
-			Other.fabShow(true, fabopen);
-			Other.fabShow(true, fabdownload);
+			fabdownload.show(true);
+			fabopen.show(true);
 		}
 	}
 

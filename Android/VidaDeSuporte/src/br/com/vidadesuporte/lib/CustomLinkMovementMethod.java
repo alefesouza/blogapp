@@ -37,7 +37,7 @@ public boolean onTouchEvent(android.widget.TextView widget, android.text.Spannab
         URLSpan[] link = buffer.getSpans(off, off, URLSpan.class);
         if (link.length != 0) {
             String url = link[0].getURL();
-            if (url.contains(movementContext.getString(R.string.sitename))) {
+            if (url.contains("vidadesuporte.com.br")) {
 				if(url.contains("postid=")) {
 					Intent intent = new Intent(movementContext, br.com.vidadesuporte.activity.PostActivity.class);
 					String[] id = url.split("=");

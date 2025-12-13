@@ -1,25 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Dropando Ideias</string>
-    <string name="blog_description">Um blog pra deixar seu inventário cheio! Internet, nerdices, cultura pop e mais.</string>
+    <string name="app_name">Vida de Suporte</string>
 
-    <string name="sitename">dropandoideias.com</string>
-    <string name="blogid">95564318</string>
-    <string name="randomstart">99</string>
-    <string name="comentarios">COMENTÁRIOS</string>
-	<string name="nofavorites">Aqui ficam seus posts favoritos, clique nas estrelas acima dos posts para favorita-los e te-los sempre a mão.</string>
-
-    <string name="rateapp">Avalie o app</string>
-    <string name="dialog_rate">Gostou do app do blog? Avalie-o com 5 estrelas então, por favor!</string>
-	
-    <string name="categ1">Animes</string>
-    <string name="categ2">Blogsfera</string>
-    <string name="categ3">Games</string>
-    <string name="categ4">Internet</string>
-    <string name="categ5">Livros</string>
-    <string name="categ6">Nerdices</string>
-
+    <string name="blog_description">Tirinhas sobre a vida dos profissionais de TI.</string>
     <string name="search">Pesquisar</string>
     <string name="randompost">Post aleatório</string>
     <string name="refresh">Atualizar</string>
@@ -42,12 +26,16 @@
 
     <string name="settings">Configurações</string>
     <string name="about">Sobre</string>
-	
-    <string name="colors">Cores</string>
-    <string name="pref_color">Escolher cor</string>
-    <string name="pref_color_summary">Escolher a cor do aplicativo</string>
-    <string name="pref_iconcolor">Cor dos ícones</string>
-    <string name="pref_iconcolor_summary">Escolher a cor dos ícones, ideal para cores claras (reinicie o aplicativo para mudar completamente)</string>
+
+    <string name="categ1">Histórias Reais</string>
+    <string name="categ2">Estagiário</string>
+    <string name="categ3">Gérson</string>
+    <string name="categ4">Flagras de Atendimento</string>
+    <string name="categ5">Mauro</string>
+    <string name="categ6">Musas do Suporte</string>
+    <string name="categ7">Coffee Break</string>
+    <string name="categ8">Gerente</string>
+
     <string name="notifications">Notificações</string>
     <string name="pref_notification">Receber notificações</string>
     <string name="pref_notification_summary">Receber em notificações de novos posts</string>
@@ -58,15 +46,15 @@
     <string name="dialog_notification">Suas notificações do site estão desativadas! Deseja ativar para receber todas as novidades em primeira mão?</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
-    <string name="rate">Avaliar</string>
-    <string name="later">Mais tarde</string>
     <string name="other">Outro</string>
 
-    <string name="addshortcutwidget">Categoria do Dropando Ideias</string>
+    <string name="addshortcutwidget">Categoria do Vida de Suporte</string>
     <string name="widgettitle">Título do ícone</string>
     <string name="widgeticon">Categoria:</string>
     <string name="widgetcateg">Digite a categoria</string>
     <string name="createshortcut">Criar atalho</string>
+
+    <string name="sitename">vidadesuporte.com.br</string>
 	
     <string name="drawer_open">Abrir</string>
     <string name="drawer_close">Fechar</string>

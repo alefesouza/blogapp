@@ -16,14 +16,11 @@ import android.widget.TextView;
 import br.com.vidadesuporte.R;
 import br.com.vidadesuporte.adapter.TagAdapter;
 import br.com.vidadesuporte.other.CustomTextView;
-import java.util.*;
 
 @SuppressLint("InflateParams")
 public class LicensesFragment extends Fragment {
 	Activity activity;
 	View view;
-	ArrayList <String> textos = new ArrayList<String>();
-	ArrayList <String> licenses = new ArrayList<String>();
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -38,237 +35,251 @@ public class LicensesFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
+		Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		view = inflater.inflate(R.layout.license, container, false);
 
-		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Licenças de código aberto");
+			((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Licenças de código aberto");
+		((AppCompatActivity)getActivity()).getSupportActionBar().setIcon(R.drawable.ic_toolbar);
 
+		String[]textos = {
+			"<h4>Notice for file(s)</h4>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=androidsupport\">Android Support Libraries</a>" +
+			"<br><ul>" +
+			"<li>android-support-v4</li>" +
+			"<li>android-support-v7-appcompat</li>" +
+			"<li>android-support-v7-cardview</li>" +
+			"<li>android-support-v7-recyclerview</li>" +
+			"<li>google-play-services</li>" +
+			"</ul>",
+			"<h4>Notice for file(s)</h4>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=slidingtab\">Sliding Tab Layout</a>" +
+			"<br><ul>" +
+			"<li>SlidingTabStrip.java</li>" +
+			"<li>SlidingTabLayout.java</li>" +
+			"</ul>",
+			"<h4>Notice for file(s)</h4>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=parse\">Parse</a>" +
+			"<br><ul>" +
+			"<li>Parse-1.4.3.jar</li>" +
+			"</ul>",
+			"<h4>Notice for file(s)</h4>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=ion\">Ion</a>" +
+			"<br><ul>" +
+			"<li>ion-2.0.1.jar</li>" +
+			"<li>androidasync-2.0.1.jar</li>" +
+			"</ul>",
+			"<h4>Notice for file(s)</h4>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=listviewanimations\">ListViewAnimations</a>" +
+			"<br><ul>" +
+			"<li>albcore.jar</li>" +
+			"</ul>",
+			"<h4>Notice for file(s)</h4>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=observablescrollview\">ObservableScrollView</a>" +
+			"<br><ul>" +
+			"<li>ObservableScrollView</li>" +
+			"</ul>",
+			"<h4>Notice for file(s)</h4>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=nineoldandroids\">NineOldAndroids</a>" +
+			"<br><ul>" +
+			"<li>nineoldandroids-2.4.0.jar</li>" +
+			"</ul>",
+			"<h4>Notice for file(s)</h4>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=fab\">FloatingActionButton</a>" +
+			"<br><ul>" +
+			"<li>FloatingActionButton</li>" +
+			"</ul>",
+			"<h4>Notice for file(s)</h4>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=materialdesignlibrary\">MaterialDesignLibrary</a>" +
+			"<br><ul>" +
+			"<li>MaterialDesignLibrary</li>" +
+			"</ul>",
+			"<h4>Notice for file(s)</h4>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=photoview\">PhotoView</a>" +
+			"<br><ul>" +
+			"<li>PhotoView</li>" +
+			"</ul>",
+			"<h4>Notice for file(s)</h4>" +
+			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=supportv4pf\">Android Support v4 Preference Fragment</a>" +
+			"<br><ul>" +
+			"<li>android-support-v4-preferencefragment</li>" +
+			"</ul>"
+		};
 
-		textos.add("<h4>Notice for file(s)</h4>" +
-				   "<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=androidsupport\">Android Support Libraries</a>" +
-				   "<br><ul>" +
-				   "<li>android-support-v4</li>" +
-				   "<li>android-support-v7-appcompat</li>" +
-				   "<li>android-support-v7-cardview</li>" +
-				   "<li>android-support-v7-recyclerview</li>" +
-				   "<li>android-support-design</li>" +
-				   "</ul>");
-		licenses.add("<pre><code>" +
-					 " Copyright (C) 2015 The Android Open Source Project" +
-					 "<br><br>" +
-					 "   Licensed under the Apache License, Version 2.0 (the \"License\");" +
-					 "   you may not use this file except in compliance with the License." +
-					 "   You may obtain a copy of the License at" +
-					 "<br><br>" +
-					 "       http://www.apache.org/licenses/LICENSE-2.0" +
-					 "<br><br>" +
-					 "   Unless required by applicable law or agreed to in writing, software" +
-					 "   distributed under the License is distributed on an \"AS IS\" BASIS," +
-					 "   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
-					 "   See the License for the specific language governing permissions and" +
-					 "   limitations under the License." +
-					 "  </code></pre>");
-		textos.add("<h4>Notice for file(s)</h4>" +
-				   "<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=slidingtab\">Sliding Tab Layout</a>" +
-				   "<br><ul>" +
-				   "<li>gson-2.3.1.jar</li>" +
-				   "</ul>");
-		licenses.add("<pre><code>" +
-					 "   Copyright 2008 Google Inc. All rights reserved." +
-					 "<br><br>" +
-					 "   Licensed under the Apache License, Version 2.0 (the \"License\");" +
-					 "   you may not use this file except in compliance with the License." +
-					 "   You may obtain a copy of the License at" +
-					 "<br><br>" +
-					 "       http://www.apache.org/licenses/LICENSE-2.0" +
-					 "<br><br>" +
-					 "   Unless required by applicable law or agreed to in writing, software" +
-					 "   distributed under the License is distributed on an \"AS IS\" BASIS," +
-					 "   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
-					 "   See the License for the specific language governing permissions and" +
-					 "   limitations under the License." +
-					 "  </code></pre>");
-		textos.add("<h4>Notice for file(s)</h4>" +
-				   "<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=parse\">Parse</a>" +
-				   "<br><ul>" +
-				   "<li>Parse-1.4.3.jar</li>" +
-				   "</ul>");
-		licenses.add("<pre><code>" +
-					 "   Parse grants you a revocable, personal, worldwide, royalty-free," +
-					 "   non-assignable and non-exclusive license to use the software provided to you by Parse as part of the Parse Services as provided to you by Parse." +
-					 "   This license is for the sole purpose of enabling you to use and enjoy the benefit of the Parse Services as provided by Parse, in the manner permitted by the Terms." +
-					 "  </code></pre>");
-		textos.add("<h4>Notice for file(s)</h4>" +
-				   "<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=ion\">Ion</a>" +
-				   "<br><ul>" +
-				   "<li>ion-2.1.6.jar</li>" +
-				   "<li>androidasync-2.1.6.jar</li>" +
-				   "</ul>");
-		licenses.add("<pre><code>" +
-					 "Copyright 2013 Koushik Dutta (2013)" +
-					 "<br><br>" +
-					 "   Licensed under the Apache License, Version 2.0 (the \"License\");" +
-					 "   you may not use this file except in compliance with the License." +
-					 "   You may obtain a copy of the License at" +
-					 "<br><br>" +
-					 "       http://www.apache.org/licenses/LICENSE-2.0" +
-					 "<br><br>" +
-					 "   Unless required by applicable law or agreed to in writing, software" +
-					 "   distributed under the License is distributed on an \"AS IS\" BASIS," +
-					 "   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
-					 "   See the License for the specific language governing permissions and" +
-					 "   limitations under the License." +
-					 "  </code></pre>");
-		textos.add("<h4>Notice for file(s)</h4>" +
-				   "<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=observablescrollview\">ObservableScrollView</a>" +
-				   "<br><ul>" +
-				   "<li>ObservableScrollView</li>" +
-				   "</ul>");
-		licenses.add("<pre><code>" +
-					 "   Copyright 2014 Soichiro Kashima" +
-					 "<br><br>" +
-					 "   Licensed under the Apache License, Version 2.0 (the \"License\");" +
-					 "   you may not use this file except in compliance with the License." +
-					 "   You may obtain a copy of the License at" +
-					 "<br><br>" +
-					 "       http://www.apache.org/licenses/LICENSE-2.0" +
-					 "<br><br>" +
-					 "   Unless required by applicable law or agreed to in writing, software" +
-					 "   distributed under the License is distributed on an \"AS IS\" BASIS," +
-					 "   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
-					 "   See the License for the specific language governing permissions and" +
-					 "   limitations under the License." +
-					 "  </code></pre>");
-		textos.add("<h4>Notice for file(s)</h4>" +
-				   "<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=nineoldandroids\">NineOldAndroids</a>" +
-				   "<br><ul>" +
-				   "<li>nineoldandroids-2.4.0.jar</li>" +
-				   "</ul>");
-		licenses.add("<pre><code>" +
-					 "   Copyright 2012 Jake Wharton" +
-					 "<br><br>" +
-					 "   Licensed under the Apache License, Version 2.0 (the \"License\");" +
-					 "   you may not use this file except in compliance with the License." +
-					 "   You may obtain a copy of the License at" +
-					 "<br><br>" +
-					 "       http://www.apache.org/licenses/LICENSE-2.0" +
-					 "<br><br>" +
-					 "   Unless required by applicable law or agreed to in writing, software" +
-					 "   distributed under the License is distributed on an \"AS IS\" BASIS," +
-					 "   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
-					 "   See the License for the specific language governing permissions and" +
-					 "   limitations under the License." +
-					 "</code></pre>");
-		textos.add("<h4>Notice for file(s)</h4>" +
-				   "<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=materialdesignlibrary\">MaterialDesignLibrary</a>" +
-				   "<br><ul>" +
-				   "<li>MaterialDesignLibrary</li>" +
-				   "</ul>");
-		licenses.add("<pre><code>" +
-					 "Copyright 2014 Ivan Navas" +
-					 "<br><br>" +
-					 "   Licensed under the Apache License, Version 2.0 (the \"License\");" +
-					 "   you may not use this file except in compliance with the License." +
-					 "   You may obtain a copy of the License at" +
-					 "<br><br>" +
-					 "       http://www.apache.org/licenses/LICENSE-2.0" +
-					 "<br><br>" +
-					 "   Unless required by applicable law or agreed to in writing, software" +
-					 "   distributed under the License is distributed on an \"AS IS\" BASIS," +
-					 "   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
-					 "   See the License for the specific language governing permissions and" +
-					 "   limitations under the License." +
-					 "  </code></pre>");
-		textos.add("<h4>Notice for file(s)</h4>" +
-				   "<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=photoview\">PhotoView</a>" +
-				   "<br><ul>" +
-				   "<li>PhotoView</li>" +
-				   "</ul>");
-		licenses.add("<pre><code>" +
-					 "Copyright 2011, 2012 Chris Banes" +
-					 "<br><br>" +
-					 "   Licensed under the Apache License, Version 2.0 (the \"License\");" +
-					 "   you may not use this file except in compliance with the License." +
-					 "   You may obtain a copy of the License at" +
-					 "<br><br>" +
-					 "       http://www.apache.org/licenses/LICENSE-2.0" +
-					 "<br><br>" +
-					 "   Unless required by applicable law or agreed to in writing, software" +
-					 "   distributed under the License is distributed on an \"AS IS\" BASIS," +
-					 "   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
-					 "   See the License for the specific language governing permissions and" +
-					 "   limitations under the License." +
-					 "  </code></pre>");
-		textos.add("<h4>Notice for file(s)</h4>" +
-				   "<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=supportv4pf\">Android Support v4 Preference Fragment</a>" +
-				   "<br><ul>" +
-				   "<li>android-support-v4-preferencefragment</li>" +
-				   "</ul>");
-		licenses.add("<pre><code>" +
-					 "   Copyright 2014 kolavar" +
-					 "<br><br>" +
-					 "   Licensed under the Apache License, Version 2.0 (the \"License\");" +
-					 "   you may not use this file except in compliance with the License." +
-					 "   You may obtain a copy of the License at" +
-					 "<br><br>" +
-					 "       http://www.apache.org/licenses/LICENSE-2.0" +
-					 "<br><br>" +
-					 "   Unless required by applicable law or agreed to in writing, software" +
-					 "   distributed under the License is distributed on an \"AS IS\" BASIS," +
-					 "   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
-					 "   See the License for the specific language governing permissions and" +
-					 "   limitations under the License." +
-					 "  </code></pre>");
-		textos.add("<h4>Notice for file(s)</h4>" +
-				   "<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=supportv4pf\">Android Support v4 Preference Fragment</a>" +
-				   "<br><ul>" +
-				   "<li>recyclerview-animators-1.2.0.jar</li>" +
-				   "</ul>");
-		licenses.add("<pre><code>" +
-					 "   Copyright 2015 Wasabeef" +
-					 "<br><br>" +
-					 "   Licensed under the Apache License, Version 2.0 (the \"License\");" +
-					 "   you may not use this file except in compliance with the License." +
-					 "   You may obtain a copy of the License at" +
-					 "<br><br>" +
-					 "       http://www.apache.org/licenses/LICENSE-2.0" +
-					 "<br><br>" +
-					 "   Unless required by applicable law or agreed to in writing, software" +
-					 "   distributed under the License is distributed on an \"AS IS\" BASIS," +
-					 "   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
-					 "   See the License for the specific language governing permissions and" +
-					 "   limitations under the License." +
-					 "  </code></pre>");
-		textos.add("<h4>Notice for file(s)</h4>" +
-				   "<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=supportv4pf\">Android Support v4 Preference Fragment</a>" +
-				   "<br><ul>" +
-				   "<li>HeaderViewRecyclerAdapter.java</li>" +
-				   "</ul>");
-		licenses.add("<pre><code>" +
-					 "   Copyright 2014 darnmason" +
-					 "<br><br>" +
-					 "   Licensed under the Apache License, Version 2.0 (the \"License\");" +
-					 "   you may not use this file except in compliance with the License." +
-					 "   You may obtain a copy of the License at" +
-					 "<br><br>" +
-					 "       http://www.apache.org/licenses/LICENSE-2.0" +
-					 "<br><br>" +
-					 "   Unless required by applicable law or agreed to in writing, software" +
-					 "   distributed under the License is distributed on an \"AS IS\" BASIS," +
-					 "   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
-					 "   See the License for the specific language governing permissions and" +
-					 "   limitations under the License." +
-					 "  </code></pre>");
+		String[]licenses = {
+			"<pre><code>" +
+			" Copyright (C) 2014 The Android Open Source Project" +
+			"<br><br>" +
+			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
+			"   you may not use this file except in compliance with the License." +
+			"   You may obtain a copy of the License at" +
+			"<br><br>" +
+			"       http://www.apache.org/licenses/LICENSE-2.0" +
+			"<br><br>" +
+			"   Unless required by applicable law or agreed to in writing, software" +
+			"   distributed under the License is distributed on an \"AS IS\" BASIS," +
+			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
+			"   See the License for the specific language governing permissions and" +
+			"   limitations under the License." +
+			"  </code></pre>",
+			"<pre><code>" +
+			"   Copyright 2014 Google Inc. All rights reserved." +
+			"<br><br>" +
+			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
+			"   you may not use this file except in compliance with the License." +
+			"   You may obtain a copy of the License at" +
+			"<br><br>" +
+			"       http://www.apache.org/licenses/LICENSE-2.0" +
+			"<br><br>" +
+			"   Unless required by applicable law or agreed to in writing, software" +
+			"   distributed under the License is distributed on an \"AS IS\" BASIS," +
+			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
+			"   See the License for the specific language governing permissions and" +
+			"   limitations under the License." +
+			"  </code></pre>",
+			"<pre><code>" +
+			"   Parse grants you a revocable, personal, worldwide, royalty-free," +
+			"   non-assignable and non-exclusive license to use the software provided to you by Parse as part of the Parse Services as provided to you by Parse." +
+			"   This license is for the sole purpose of enabling you to use and enjoy the benefit of the Parse Services as provided by Parse, in the manner permitted by the Terms." +
+			"  </code></pre>",
+			"<pre><code>" +
+			"Copyright 2013 Koushik Dutta (2013)" +
+			"<br><br>" +
+			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
+			"   you may not use this file except in compliance with the License." +
+			"   You may obtain a copy of the License at" +
+			"<br><br>" +
+			"       http://www.apache.org/licenses/LICENSE-2.0" +
+			"<br><br>" +
+			"   Unless required by applicable law or agreed to in writing, software" +
+			"   distributed under the License is distributed on an \"AS IS\" BASIS," +
+			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
+			"   See the License for the specific language governing permissions and" +
+			"   limitations under the License." +
+			"  </code></pre>",
+			"<pre><code>" +
+			"Copyright 2014 Niek Haarman" +
+			"<br><br>" +
+			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
+			"   you may not use this file except in compliance with the License." +
+			"   You may obtain a copy of the License at" +
+			"<br><br>" +
+			"       http://www.apache.org/licenses/LICENSE-2.0" +
+			"<br><br>" +
+			"   Unless required by applicable law or agreed to in writing, software" +
+			"   distributed under the License is distributed on an \"AS IS\" BASIS," +
+			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
+			"   See the License for the specific language governing permissions and" +
+			"   limitations under the License." +
+			"</code></pre>",
+			"<pre><code>" +
+			"   Copyright 2014 Soichiro Kashima" +
+			"<br><br>" +
+			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
+			"   you may not use this file except in compliance with the License." +
+			"   You may obtain a copy of the License at" +
+			"<br><br>" +
+			"       http://www.apache.org/licenses/LICENSE-2.0" +
+			"<br><br>" +
+			"   Unless required by applicable law or agreed to in writing, software" +
+			"   distributed under the License is distributed on an \"AS IS\" BASIS," +
+			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
+			"   See the License for the specific language governing permissions and" +
+			"   limitations under the License." +
+			"  </code></pre>",
+			"<pre><code>" +
+			"   Copyright 2012 Jake Wharton" +
+			"<br><br>" +
+			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
+			"   you may not use this file except in compliance with the License." +
+			"   You may obtain a copy of the License at" +
+			"<br><br>" +
+			"       http://www.apache.org/licenses/LICENSE-2.0" +
+			"<br><br>" +
+			"   Unless required by applicable law or agreed to in writing, software" +
+			"   distributed under the License is distributed on an \"AS IS\" BASIS," +
+			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
+			"   See the License for the specific language governing permissions and" +
+			"   limitations under the License." +
+			"</code></pre>",
+			"<pre><code>" +
+			"   The MIT License (MIT)" +
+			"<br><br>" +
+			"   Copyright (c) 2014 Oleksandr Melnykov" +
+			"<br><br>" +
+			"   Permission is hereby granted, free of charge, to any person obtaining a copy" +
+			"   of this software and associated documentation files (the \"Software\"), to deal" +
+			"   in the Software without restriction, including without limitation the rights" +
+			"   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell" +
+			"   copies of the Software, and to permit persons to whom the Software is" +
+			"   furnished to do so, subject to the following conditions:" +
+			"<br><br>" +
+			"   The above copyright notice and this permission notice shall be included in all" +
+			"   copies or substantial portions of the Software." +
+			"<br><br>" +
+			"   THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR" +
+			"   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY," +
+			"   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE" +
+			"   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER" +
+			"   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM," +
+			"   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE" +
+			"   SOFTWARE." +
+			"  </code></pre>",
+			"<pre><code>" +
+			"Copyright 2014 Ivan Navas" +
+			"<br><br>" +
+			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
+			"   you may not use this file except in compliance with the License." +
+			"   You may obtain a copy of the License at" +
+			"<br><br>" +
+			"       http://www.apache.org/licenses/LICENSE-2.0" +
+			"<br><br>" +
+			"   Unless required by applicable law or agreed to in writing, software" +
+			"   distributed under the License is distributed on an \"AS IS\" BASIS," +
+			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
+			"   See the License for the specific language governing permissions and" +
+			"   limitations under the License." +
+			"  </code></pre>",
+			"<pre><code>" +
+			"Copyright 2011, 2012 Chris Banes" +
+			"<br><br>" +
+			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
+			"   you may not use this file except in compliance with the License." +
+			"   You may obtain a copy of the License at" +
+			"<br><br>" +
+			"       http://www.apache.org/licenses/LICENSE-2.0" +
+			"<br><br>" +
+			"   Unless required by applicable law or agreed to in writing, software" +
+			"   distributed under the License is distributed on an \"AS IS\" BASIS," +
+			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
+			"   See the License for the specific language governing permissions and" +
+			"   limitations under the License." +
+			"  </code></pre>",
+			"<pre><code>" +
+			"   Copyright 2014 kolavar" +
+			"<br><br>" +
+			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
+			"   you may not use this file except in compliance with the License." +
+			"   You may obtain a copy of the License at" +
+			"<br><br>" +
+			"       http://www.apache.org/licenses/LICENSE-2.0" +
+			"<br><br>" +
+			"   Unless required by applicable law or agreed to in writing, software" +
+			"   distributed under the License is distributed on an \"AS IS\" BASIS," +
+			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
+			"   See the License for the specific language governing permissions and" +
+			"   limitations under the License." +
+			"  </code></pre>"
+		};
 
-		for(int i = 0; i < textos.size(); i++) {
+		for (int i = 0; i < textos.length; i++) {
 			LayoutInflater textoinflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View textoview = textoinflater.inflate(R.layout.license_text, null);
 			TextView texto = (TextView)textoview.findViewById(R.id.text);
 			CustomTextView code = (CustomTextView)textoview.findViewById(R.id.licensetext);
 			texto.setMovementMethod(LinkMovementMethod.getInstance());
-			texto.setText(Html.fromHtml(textos.get(i), null, new TagAdapter()));
-			code.setText(Html.fromHtml(licenses.get(i), null, new TagAdapter()));
+			texto.setText(Html.fromHtml(textos[i], null, new TagAdapter()));
+			code.setText(Html.fromHtml(licenses[i], null, new TagAdapter()));
 			LinearLayout viewlicenses = (LinearLayout)view.findViewById(R.id.licenses);
 			viewlicenses.addView(textoview);
 		}

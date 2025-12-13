@@ -17,11 +17,7 @@ import android.view.MenuItem;
 import com.github.ksoichiro.android.observablescrollview.CacheFragmentStatePagerAdapter;
 import br.com.vidadesuporte.R;
 import br.com.vidadesuporte.fragment.CommentsFragment;
-import android.support.design.widget.TabLayout;
-import android.support.design.widget.TabLayout.TabLayoutOnPageChangeListener;
-import android.support.design.widget.TabLayout.OnTabSelectedListener;
-import android.graphics.*;
-import android.support.design.widget.TabLayout.*;
+import br.com.vidadesuporte.lib.SlidingTabLayout;
 
 @SuppressLint({"DefaultLocale","CutPasteId"})
 public class CommentsActivity extends AppCompatActivity {
@@ -30,7 +26,7 @@ public class CommentsActivity extends AppCompatActivity {
 	SharedPreferences preferences;
 	Editor editor;
 	String titulo;
-	public static String url, id, blogid;
+	public static String url, id;
 	FragmentStatePagerAdapter TabAdapter;
 
 	private NavigationAdapter mPagerAdapter;
@@ -40,50 +36,26 @@ public class CommentsActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		if(preferences.getString("prefIconColor", "branco").equals("preto")) {
-			setTheme(R.style.BlackOverflow);
-		}
 		setContentView(R.layout.comments);
 
 		mToolbar = (Toolbar)findViewById(R.id.toolbar);
 		setSupportActionBar(mToolbar);
 		titulo = "Comentários";
-		FragmentActivity.ActionBarColor(this, titulo);
+		getSupportActionBar().setTitle(titulo);
 
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		url = getIntent().getStringExtra("url");
 		id = getIntent().getStringExtra("id");
-		blogid = getString(R.string.blogid);
 
 		mPagerAdapter = new NavigationAdapter(getSupportFragmentManager());
 		mPager = (ViewPager)findViewById(R.id.pager);
 		mPager.setAdapter(mPagerAdapter);
 
-		TabLayout tabLayout = (TabLayout)findViewById(R.id.sliding_tabs);
-		if(preferences.getString("prefIconColor", "branco").equals("preto")) {
-			tabLayout.setTabTextColors(Color.parseColor("#000000"), Color.parseColor("#000000"));
-		} else {
-			tabLayout.setTabTextColors(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"));
-		}
-		tabLayout.setupWithViewPager(mPager);
-		tabLayout.setOnTabSelectedListener(new OnTabSelectedListener() {
-				@Override
-				public void onTabSelected(TabLayout.Tab p1) {
-					mPager.setCurrentItem(p1.getPosition());
-				}
-
-				@Override
-				public void onTabUnselected(TabLayout.Tab p1) {
-				}
-
-				@Override
-				public void onTabReselected(TabLayout.Tab p1) {
-				}
-		});
-		
-		mPager.addOnPageChangeListener(new TabLayoutOnPageChangeListener(tabLayout));
+		SlidingTabLayout slidingTabLayout = (SlidingTabLayout)findViewById(R.id.sliding_tabs);
+		slidingTabLayout.setDistributeEvenly(true);
+		slidingTabLayout.setViewPager(mPager);
 	}
 
 	@Override
@@ -135,7 +107,7 @@ public class CommentsActivity extends AppCompatActivity {
 				break;
 			case 1:
 				Bundle bundleg = new Bundle();
-				bundleg.putString("url", "http://apps.aloogle.net/blogapp/wordpress/json/comentarios.php?id=" + id + "&blogid=" + blogid);
+				bundleg.putString("url", "http://apps.aloogle.net/blogapp/vidadesuporte/json/comentarios.php?id=" + id);
 				Fragment google = new CommentsFragment();
 				google.setArguments(bundleg);
 				f = google;
@@ -163,7 +135,7 @@ public class CommentsActivity extends AppCompatActivity {
 	}
 
 	public void onResume() {
-		FragmentActivity.ActionBarColor(this, titulo);
+		getSupportActionBar().setTitle(titulo);
 		supportInvalidateOptionsMenu();
 		super.onResume();
 	}

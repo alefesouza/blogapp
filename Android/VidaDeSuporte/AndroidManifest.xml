@@ -41,6 +41,7 @@
             android:name=".activity.MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation|screenSize" />
+        
         <activity
             android:name=".activity.PostActivity"
             android:configChanges="orientation|screenSize" />
@@ -71,7 +72,7 @@
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 				<action android:name="android.intent.action.USER_PRESENT" />
-				<action android:name="net.aloogle.dropandoideias.UPDATE_STATUS" />
+				<action android:name="br.com.vidadesuporte.UPDATE_STATUS" />
 			</intent-filter>
 		</receiver>
 		<receiver android:name="com.parse.GcmBroadcastReceiver"

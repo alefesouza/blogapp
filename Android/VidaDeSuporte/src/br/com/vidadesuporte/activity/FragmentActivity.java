@@ -14,16 +14,11 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import br.com.vidadesuporte.R;
 import br.com.vidadesuporte.fragment.*;
-import android.text.*;
-import android.graphics.drawable.*;
-import android.graphics.*;
 
 public class FragmentActivity extends AppCompatActivity {
 	public Toolbar mToolbar;
 	PreferenceFragment settings = new SettingsFragment();
-	Fragment color = new ColorFragment();
 	Fragment about = new AboutFragment();
-	Fragment categorias = new CategoriasFragment();
 	Fragment search = new SearchFragment();
 	Fragment webview = new WebViewFrag();
 	Fragment licenses = new LicensesFragment();
@@ -35,9 +30,6 @@ public class FragmentActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		if(preferences.getString("prefIconColor", "branco").equals("preto")) {
-			setTheme(R.style.BlackOverflow);
-		}
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.toolbar);
@@ -57,14 +49,10 @@ public class FragmentActivity extends AppCompatActivity {
 		case 0:
 			ft.replace(R.id.content_frame, settings);
 			break;
-		case 1:
-			ft.replace(R.id.content_frame, color);
-			break;
 		case 2:
 			ft.replace(R.id.content_frame, about);
 			break;
 		case 3:
-			ft.replace(R.id.content_frame, categorias);
 			break;
 		case 4:
 			ft.replace(R.id.content_frame, search);
@@ -78,8 +66,7 @@ public class FragmentActivity extends AppCompatActivity {
 		case 7:
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("fromtag", true);
-				bundle.putString("title", getIntent().getStringExtra("title"));
-				bundle.putString("value", getIntent().getStringExtra("value"));
+				bundle.putString("label", getIntent().getStringExtra("label"));
 				category.setArguments(bundle);
 				ft.replace(R.id.content_frame, category);
 			break;
@@ -88,26 +75,6 @@ public class FragmentActivity extends AppCompatActivity {
 			break;
 		}
 		ft.commit();
-	}
-
-	public static void ActionBarColor(AppCompatActivity activity, String titulo) {
-		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-		String bw = preferences.getString("prefIconColor", "branco");
-		
-		int indicator = bw.equals("branco") ? R.drawable.ic_arrow_white : R.drawable.ic_arrow_black;
-		String title = bw.equals("branco") ? "ffffff" : "000000";
-		
-		activity.getSupportActionBar().setTitle(Html.fromHtml("<font color=\"#" + title + "\">" + titulo + "</font>"));
-		activity.getSupportActionBar().setHomeAsUpIndicator(indicator);
-
-		String userColor = preferences.getString("prefColor", "222222");
-		if (userColor.equals("fundo")) {
-			activity.getSupportActionBar().setBackgroundDrawable(activity.getResources().getDrawable(R.drawable.toolbar_bg));
-			activity.findViewById(R.id.frame).setBackgroundResource(R.drawable.toolbar_bg);
-		} else {
-			activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
-			activity.findViewById(R.id.frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
-		}
 	}
 
 	@Override

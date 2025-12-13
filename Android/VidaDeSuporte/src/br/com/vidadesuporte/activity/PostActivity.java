@@ -36,9 +36,9 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.text.ParseException;
@@ -59,6 +59,7 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.ProgressCallback;
+import com.melnykov.fab.FloatingActionButton;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 import br.com.vidadesuporte.R;
@@ -66,19 +67,6 @@ import br.com.vidadesuporte.activity.FragmentActivity;
 import br.com.vidadesuporte.adapter.TagAdapter;
 import br.com.vidadesuporte.lib.CustomLinkMovementMethod;
 import br.com.vidadesuporte.other.CustomTextView;
-import android.support.design.widget.*;
-import android.graphics.drawable.*;
-import br.com.vidadesuporte.other.*;
-import android.view.View.*;
-import android.view.*;
-import java.util.*;
-import java.net.*;
-import java.io.*;
-import android.webkit.*;
-import android.webkit.WebChromeClient.CustomViewCallback;
-import com.google.gson.*;
-import br.com.vidadesuporte.database.helper.*;
-import br.com.vidadesuporte.database.model.*;
 
 @SuppressLint({ "NewApi", "InflateParams", "SetJavaScriptEnabled", "SimpleDateFormat", "CutPasteId" })
 @SuppressWarnings("deprecation")
@@ -87,17 +75,10 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 	CustomTextView titulo, autorhora, comentarios;
 	ImageView imagem;
 
-
+    private final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
+	
 	private static final float MAX_TEXT_SCALE_DELTA = 0.3f;
 	private static final boolean TOOLBAR_IS_STICKY = true;
-
-	private FrameLayout mTargetView;
-	private FrameLayout mContentView;
-	private CustomViewCallback mCustomViewCallback;
-	private View mCustomView;
-	private WebChromeClient mClient;
-
-	DatabaseHelper db;
 
 	private View mToolbar;
 	private View mImageView;
@@ -109,37 +90,42 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 
 	int statusBar;
 
+	private static final String TAG_TEXTO = "texto";
+	private static final String TAG_IMAGEM = "imagem";
+	private static final String TAG_IFRAME = "iframe";
+	private static final String TAG_TAG = "tag";
+
+	ArrayList <String> textoarray = new ArrayList <String>();
+	ArrayList <String> imagemarray = new ArrayList <String>();
+	ArrayList <String> iframearray = new ArrayList <String>();
+	ArrayList <String> tagarray = new ArrayList <String>();
+
 	ProgressBar progressBar;
 	ProgressBarCircularIndeterminate progressBarCompat;
 	ProgressBarDeterminate progressBar2;
-	WebView webView;
+	LinearLayout linear;
 	boolean favorite, finished, pressed, fromrni;
-	String sjson, sid, stitulo, sdescricao, simagem, surl, scategoria, content;
-	Favorites favorites;
+	String sjson, sid, stitulo, sdescricao, simagem, surl;
 
 	FloatingActionButton fabcomment;
 
 	SharedPreferences preferences;
 	Editor editor;
-	String userColor, iconColor;
+	String userColor;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		preferences = PreferenceManager.getDefaultSharedPreferences(this);
-		if(preferences.getString("prefIconColor", "branco").equals("preto")) {
-			setTheme(R.style.BlackOverflow);
-		}
 		editor = preferences.edit();
 		setContentView(R.layout.post);
-		db = new DatabaseHelper(this);
 
 		setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
 
 		fromrni = getIntent().hasExtra("fromrandom") || getIntent().hasExtra("fromnotification") || getIntent().hasExtra("frompostid");
 		progressBar2 = (ProgressBarDeterminate)findViewById(R.id.progress);
 
-		if(Build.VERSION.SDK_INT >= 19) {
+		if (Build.VERSION.SDK_INT >= 19) {
 			statusBar = getStatusBarHeight();
 		} else {
 			statusBar = 0;
@@ -147,32 +133,18 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 		mActionBarSize = getActionBarSize(this);
 
 		mToolbar = findViewById(R.id.toolbar);
-		if(!TOOLBAR_IS_STICKY) {
+		if (!TOOLBAR_IS_STICKY) {
 			mToolbar.setBackgroundColor(Color.TRANSPARENT);
 		}
-
-		userColor = preferences.getString("prefColor", "222222");
-		iconColor = preferences.getString("prefIconColor", "branco");
-		if(userColor.equals("fundo")) {
-			mToolbarColor = Color.parseColor("#000000");
-			findViewById(R.id.frame).setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_bg));
-			findViewById(R.id.overlay).setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_bg));
-		} else {
-			mToolbarColor = Color.parseColor("#" + userColor);
-			findViewById(R.id.frame).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
-			findViewById(R.id.overlay).setBackgroundDrawable(new ColorDrawable(Color.parseColor("#" + userColor)));
-		}
-
-		int indicator = iconColor.equals("branco") ? R.drawable.ic_arrow_white : R.drawable.ic_arrow_black;
-		getSupportActionBar().setHomeAsUpIndicator(indicator);
-
+		mToolbarColor = getResources().getColor(R.color.colorPrimary);
+		findViewById(R.id.overlay).setBackgroundColor(getResources().getColor(R.color.colorPrimary));
 		mImageView = findViewById(R.id.image);
 		mOverlayView = findViewById(R.id.overlay);
 		mScrollView = (ObservableScrollView)findViewById(R.id.scroll);
 		mScrollView.setScrollViewCallbacks(this);
 		mTitleView = (TextView)findViewById(R.id.title);
 
-		if(!fromrni) {
+		if (!fromrni) {
 			progressBar2.setVisibility(View.GONE);
 			ScrollUtils.addOnGlobalLayoutListener(mScrollView, new Runnable() {
 					@Override
@@ -188,53 +160,14 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 		finished = false;
 		pressed = false;
 
-		webView = (WebView)findViewById(R.id.webView);
-		webView.getSettings().setJavaScriptEnabled(true);
-		webView.getSettings().setSupportZoom(false);
-		webView.getSettings().setBuiltInZoomControls(false);
-		webView.getSettings().setDefaultTextEncodingName("utf-8");
-		webView.setScrollContainer(false);
-		webView.getSettings().setLoadWithOverviewMode(true);
-		webView.getSettings().setUseWideViewPort(true);
-		webView.setOnTouchListener(new OnTouchListener() {
-				public boolean onTouch(View v, MotionEvent event) {
-					if(event.getAction() == MotionEvent.ACTION_MOVE) return true;
-					return false;
-				}
-			});
-
-		mContentView = (FrameLayout)findViewById(R.id.main_content);
-		mTargetView = (FrameLayout)findViewById(R.id.target_view);
-		mClient = new webChromeClient();
-		webView.setWebChromeClient(mClient);
-
-		webView.setOnKeyListener(new OnKeyListener() {
-				@SuppressWarnings("static-access")
-				public boolean onKey(View view, int keyCode, KeyEvent event) {
-					if(event.getAction() == event.ACTION_DOWN) {
-						if(keyCode == KeyEvent.KEYCODE_BACK) {
-							if(mCustomView != null) {
-								mClient.onHideCustomView();
-							} else {
-								if(webView.canGoBack()) {
-									webView.goBack();
-								} else {
-									finish();
-								}
-							}
-							return true;
-						}
-					}
-					return true;
-				}
-			});
+		linear = (LinearLayout)findViewById(R.id.linear);
 
 		autorhora = (CustomTextView)findViewById(R.id.autor);
 		titulo = (CustomTextView)findViewById(R.id.titulo);
 		imagem = (ImageView)findViewById(R.id.image);
 		comentarios = (CustomTextView)findViewById(R.id.comentarioscount);
 
-		if(getIntent().hasExtra("extraJson")) {
+		if (getIntent().hasExtra("extraJson")) {
 			sjson = getIntent().getStringExtra("extraJson");
 			try {
 				JSONObject extraJson = new JSONObject(sjson);
@@ -243,20 +176,14 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 				sdescricao = extraJson.getString("descricao");
 				simagem = extraJson.getString("imagem");
 				surl = extraJson.getString("url");
-				scategoria = extraJson.getString("categoriaicon");
+				
+				String[] comments = extraJson.getString("comentarios").split(" ");
+				comentarios.setText(comments[0]);
 
-				String comments = getIntent().getStringExtra("comentarios");
-				comentarios.setText(comments);
-				
-				if(db.getFavorite(sid) != null) {
-					favorites = db.getFavorite(sid);
-				}
-				
-				favorite = favorites != null;
-				db.closeDB();
-				supportInvalidateOptionsMenu();
+				String favorites = preferences.getString("favoritesPosts", "");
+				favorite = favorites.contains(sid);
 			}
-			catch(JSONException e) {}
+			catch (JSONException e) {}
 
 			Ion.with(PostActivity.this)
 				.load(simagem)
@@ -265,14 +192,14 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 				.setCallback(new FutureCallback<ImageView>() {
 					@Override
 					public void onCompleted(Exception e, final ImageView imageView) {
-						if(e != null) return;
-						if(imagem.getHeight() > mActionBarSize + statusBar) {
+						if (e != null) return;
+						if (imagem.getHeight() > mActionBarSize + statusBar) {
 							new Handler().postDelayed(new Runnable() {
 									@Override
 									public void run() {
 										mOverlayView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, imagem.getHeight()));
 										findViewById(R.id.placeholder).setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, imagem.getHeight()));
-									}}, 100);
+								}}, 100);
 						}}
 				});
 			findViewById(R.id.placeholder).setOnClickListener(new OnClickListener() {
@@ -292,6 +219,10 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 		getSupportActionBar().setTitle("");
 
 		fabcomment = (FloatingActionButton)findViewById(R.id.fabcomments);
+
+		if (Build.VERSION.SDK_INT <= 10) {
+			fabcomment.setShadow(false);
+		}
 
 		fabcomment.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -313,22 +244,7 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 				}
 			});
 
-		if(Build.VERSION.SDK_INT >= 21) {
-			progressBar = (ProgressBar)findViewById(R.id.progressBar1);
-			progressBar.setVisibility(View.VISIBLE);
-		} else {
-			progressBarCompat = (ProgressBarCircularIndeterminate)findViewById(R.id.progressBar1);
-			progressBarCompat.setVisibility(View.VISIBLE);
-		}
-
 		setPost();
-		if(favorite && favorites.getContent() != null) {
-			content = favorites.getContent();
-			JsonParser parse = new JsonParser();
-			JsonObject parsed = (JsonObject)parse.parse(content);
-
-			makePost(parsed);
-		}
 	}
 
 	public static int getActionBarSize(Activity activity) {
@@ -346,35 +262,10 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 	public int getStatusBarHeight() {
 		int result = 0;
 		int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-		if(resourceId > 0) {
+		if (resourceId > 0) {
 			result = getResources().getDimensionPixelSize(resourceId);
 		}
 		return result;
-	}
-
-	public class webChromeClient extends WebChromeClient {
-		@Override
-		public void onShowCustomView(View view, CustomViewCallback callback) {
-			mCustomViewCallback = callback;
-			mTargetView.addView(view);
-			mCustomView = view;
-			mContentView.setVisibility(View.GONE);
-			mTargetView.setVisibility(View.VISIBLE);
-			mTargetView.bringToFront();
-		}
-
-		@Override
-		public void onHideCustomView() {
-			if(mCustomView == null)
-				return;
-
-			mCustomView.setVisibility(View.GONE);
-			mTargetView.removeView(mCustomView);
-			mCustomView = null;
-			mTargetView.setVisibility(View.GONE);
-			mCustomViewCallback.onCustomViewHidden();
-			mContentView.setVisibility(View.VISIBLE);
-		}
 	}
 
 	@Override
@@ -398,19 +289,15 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 		// Translate title text
 		int maxTitleTranslationY = (int)(imagem.getHeight() - mTitleView.getHeight() * scale);
 		int titleTranslationY = maxTitleTranslationY - scrollY;
-		if(TOOLBAR_IS_STICKY) {
+		if (TOOLBAR_IS_STICKY) {
 			titleTranslationY = Math.max(0, titleTranslationY);
 		}
 		ViewHelper.setTranslationY(mTitleView, titleTranslationY);
 
-		if(TOOLBAR_IS_STICKY) {
+		if (TOOLBAR_IS_STICKY) {
 			// Change alpha of toolbar background
-			if(-scrollY + imagem.getHeight() - statusBar <= mActionBarSize) {
-				if(userColor.equals("fundo")) {
-					mToolbar.setBackgroundDrawable(getResources().getDrawable(R.drawable.toolbar_bg));
-				} else {
-					mToolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(1, mToolbarColor));
-				}
+			if (-scrollY + imagem.getHeight() - statusBar <= mActionBarSize) {
+				mToolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(1, mToolbarColor));
 				findViewById(R.id.dropshadow).setVisibility(View.VISIBLE);
 			} else {
 				mToolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, mToolbarColor));
@@ -418,7 +305,7 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 			}
 		} else {
 			// Translate Toolbar
-			if(scrollY < imagem.getHeight()) {
+			if (scrollY < imagem.getHeight()) {
 				ViewHelper.setTranslationY(mToolbar, 0);
 			} else {
 				ViewHelper.setTranslationY(mToolbar, -scrollY);
@@ -431,75 +318,71 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 
 	@Override
 	public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-		if(scrollState == ScrollState.DOWN) {
-			Other.fabShow(true, fabcomment);
-			Other.fabShow(true, findViewById(R.id.relat));
-		} else if(scrollState == ScrollState.UP) {
+		if (scrollState == ScrollState.DOWN) {
+			fabcomment.show(true);
+			numberComment(true);
+		} else if (scrollState == ScrollState.UP) {
 			int toolbarHeight = mToolbar.getHeight();
 			int scrollY = mScrollView.getCurrentScrollY();
-			if(toolbarHeight <= scrollY) {
-				Other.fabShow(false, fabcomment);
-				Other.fabShow(false, findViewById(R.id.relat));
+			if (toolbarHeight <= scrollY) {
+				fabcomment.hide(true);
+				numberComment(false);
 			} else {
-				Other.fabShow(true, fabcomment);
-				Other.fabShow(true, findViewById(R.id.relat));
+				fabcomment.show(true);
+				numberComment(true);
 			}
 		} else {
-			Other.fabShow(true, fabcomment);
-			Other.fabShow(true, findViewById(R.id.relat));
+			fabcomment.show(true);
+			numberComment(true);
 		}
 	}
+	
+	public void numberComment(boolean toShow) {
+		int translationY = toShow ? 0 : findViewById(R.id.relat).getHeight() + getMarginBottom();
+		ViewPropertyAnimator.animate(findViewById(R.id.relat)).setInterpolator(mInterpolator)
+			.setDuration(200)
+			.translationY(translationY);
+	}
+
+    private int getMarginBottom() {
+        int marginBottom = 0;
+        final ViewGroup.LayoutParams layoutParams = findViewById(R.id.relat).getLayoutParams();
+        if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
+            marginBottom = ((ViewGroup.MarginLayoutParams) layoutParams).bottomMargin;
+        }
+        return marginBottom;
+    }
 
 	@SuppressLint("DefaultLocale")
 	public void setPost() {
+		if (Build.VERSION.SDK_INT >= 21) {
+			progressBar = (ProgressBar)findViewById(R.id.progressBar1);
+			progressBar.getIndeterminateDrawable().setColorFilter(new LightingColorFilter(0xFF336500, 0xFF336500));
+			progressBar.setVisibility(View.VISIBLE);
+		} else {
+			progressBarCompat = (ProgressBarCircularIndeterminate)findViewById(R.id.progressBar1);
+			progressBarCompat.setVisibility(View.VISIBLE);
+		}
 		Ion.with(this)
-			.load("http://apps.aloogle.net/blogapp/wordpress/json/post.php?id=" + sid + "&blogid=" + getString(R.string.blogid))
+			.load("http://apps.aloogle.net/blogapp/vidadesuporte/json/post.php?id=" + sid)
 			.asJsonObject()
 			.setCallback(new FutureCallback<JsonObject>() {
 				@Override
 				public void onCompleted(Exception e, JsonObject json) {
-					if(e != null) {
-						if(favorites == null || favorites.getContent() == null) {
-							Toast toast = Toast.makeText(PostActivity.this, "Houve um erro, " + getString(R.string.needinternet).toLowerCase(), Toast.LENGTH_LONG);
-							toast.show();
-							if(Build.VERSION.SDK_INT >= 21) {
-								progressBar.setVisibility(View.GONE);
-							} else {
-								progressBarCompat.setVisibility(View.GONE);
-							}
-							final RelativeLayout rl = (RelativeLayout)findViewById(R.id.rl);
-							LayoutInflater inflater = PostActivity.this.getLayoutInflater();
-							final ViewGroup tryagain = (ViewGroup)inflater.inflate(R.layout.message_footer, null, false);
-							LayoutParams vg = new LayoutParams(LayoutParams.MATCH_PARENT, Other.dpToPx(PostActivity.this, 50));
-							vg.addRule(RelativeLayout.BELOW, R.id.autorhora);
-							tryagain.setLayoutParams(vg);
-							CustomTextView loadmore = (CustomTextView)tryagain.findViewById(R.id.message);
-							loadmore.setText("Tentar novamente");
-							tryagain.setOnClickListener(new OnClickListener() {
-									public void onClick(View v) {
-										if(Other.isConnected(PostActivity.this)) {
-											setPost();
-											rl.removeView(tryagain);
-											if(Build.VERSION.SDK_INT >= 21) {
-												progressBar.setVisibility(View.VISIBLE);
-											} else {
-												progressBarCompat.setVisibility(View.VISIBLE);
-											}
-										} else {
-											Toast toast = Toast.makeText(PostActivity.this, getString(R.string.needinternet), Toast.LENGTH_LONG);
-											toast.show();
-										}
-									}
-								});
-							rl.addView(tryagain);
-						}
-						e.printStackTrace();
+					if (e != null) {
+						Toast toast = Toast.makeText(PostActivity.this, "Houve um erro, " + getString(R.string.needinternet).toLowerCase(), Toast.LENGTH_LONG);
+						toast.show();
 						return;
 					}
-					if(!finished) {
-						if(!getIntent().hasExtra("extraJson")) {
+					if (!finished) {
+						if (Build.VERSION.SDK_INT >= 21) {
+							progressBar.setVisibility(View.GONE);
+						} else {
+							progressBarCompat.setVisibility(View.GONE);
+						}
+						if (!getIntent().hasExtra("extraJson")) {
 
-							sjson = "{ \"id\": \"" + sid + "\", \"titulo\": \"" + json.get("titulo").getAsString() + "\", \"descricao\": \"" + json.get("descricao").getAsString() + "\", \"imagem\": \"" + json.get("imagem").getAsString() + "\", \"url\": \"" + json.get("url").getAsString() + "\", \"categoriaicon\": \"" + json.get("categoriaicon").getAsString() + "\" }";
+							sjson = "{ \"id\": \"" + sid + "\", \"titulo\": \"" + json.get("titulo").getAsString() + "\", \"descricao\": \"" + json.get("descricao").getAsString() + "\", \"imagem\": \"" + json.get("imagem").getAsString() + "\", \"url\": \"" + json.get("url").getAsString() + "\" }";
 							try {
 								JSONObject extraJson = new JSONObject(sjson);
 								sid = extraJson.getString("id");
@@ -507,250 +390,353 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 								sdescricao = extraJson.getString("descricao");
 								simagem = extraJson.getString("imagem");
 								surl = extraJson.getString("url");
-								scategoria = extraJson.getString("categoriaicon");
 
-								if(db.getFavorite(sid) != null) {
-									favorites = db.getFavorite(sid);
-								}
-
-								favorite = favorites != null;
-								db.closeDB();
+								String favorites = preferences.getString("favoritesPosts", "");
+								favorite = favorites.contains(sid);
 								supportInvalidateOptionsMenu();
 							}
-							catch(JSONException i) {}
+							catch (JSONException i) {}
 
 							if(simagem.equals("")) {
 								progressBar.setVisibility(View.GONE);
 							} else {
-								Ion.with(PostActivity.this)
-									.load(simagem)
-									.progress(new ProgressCallback() {
-										@Override
-										public void onProgress(final long downloaded, final long total) {
-											runOnUiThread(new Runnable() {
-													@Override
-													public void run() {
-														float p = (float)downloaded / (float)total * 100;
-														progressBar2.setProgress((int)(Math.round(p)));
+							Ion.with(PostActivity.this)
+								.load(simagem)
+								.progress(new ProgressCallback() {
+									@Override
+									public void onProgress(final long downloaded, final long total) {
+										runOnUiThread(new Runnable() {
+												@Override
+												public void run() {
+													float p = (float)downloaded / (float)total * 100;
+													progressBar2.setProgress((int)(Math.round(p)));
 
-														progressBar2.setVisibility(View.VISIBLE);
-													}
-												});
-										}
-									})
-									.withBitmap()
-									.intoImageView(imagem)
-									.setCallback(new FutureCallback<ImageView>() {
-										@Override
-										public void onCompleted(Exception e, final ImageView imageView) {
-											if(e != null) return;
-											new Handler().postDelayed(new Runnable() {
-													@Override
-													public void run() {
-														mOverlayView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, imagem.getHeight()));
-														findViewById(R.id.placeholder).setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, imagem.getHeight()));
-														progressBar2.setVisibility(View.GONE);
-														ScrollUtils.addOnGlobalLayoutListener(mScrollView, new Runnable() {
-																@Override
-																public void run() {
-																	onScrollChanged(0, false, false);
-																}
-															});
-													}
-												}, 100);
-										}});
-
-								findViewById(R.id.placeholder).setOnClickListener(new OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											Intent intent = new Intent(PostActivity.this, FragmentActivity.class);
-											intent.putExtra("fragment", 8);
-											intent.putExtra("imgurl", simagem);
-											startActivity(intent);
-										}
-									});}
+													progressBar2.setVisibility(View.VISIBLE);
+												}
+											});
+									}
+								})
+								.withBitmap()
+								.intoImageView(imagem)
+								.setCallback(new FutureCallback<ImageView>() {
+									@Override
+									public void onCompleted(Exception e, final ImageView imageView) {
+										if (e != null) return;
+										new Handler().postDelayed(new Runnable() {
+												@Override
+												public void run() {
+													mOverlayView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, imagem.getHeight()));
+													findViewById(R.id.placeholder).setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, imagem.getHeight()));
+													progressBar2.setVisibility(View.GONE);
+													ScrollUtils.addOnGlobalLayoutListener(mScrollView, new Runnable() {
+															@Override
+															public void run() {
+																onScrollChanged(0, false, false);
+															}
+														});
+												}
+											}, 100);
+									}});
+							
+							findViewById(R.id.placeholder).setOnClickListener(new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Intent intent = new Intent(PostActivity.this, FragmentActivity.class);
+										intent.putExtra("fragment", 8);
+										intent.putExtra("imgurl", simagem);
+										startActivity(intent);
+									}
+								});}
 							titulo.setText(stitulo);
 						}
-						if(imagem.getHeight() > mActionBarSize + statusBar) {
+						if (imagem.getHeight() > mActionBarSize + statusBar) {
 							mOverlayView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, imagem.getHeight()));
 							findViewById(R.id.placeholder).setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, imagem.getHeight()));
 						}
 
-						comentarios.setText(json.get("comentarios").getAsString());
+						String postData = json.get("data").getAsString();
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-						if(favorites == null || favorites.getContent() == null) {
-							content = json.toString();
-							makePost(json);
-						}
-					}}
-			});}
-
-	public void makePost(JsonObject json) {
-
-		String postData = json.get("data").getAsString();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-		try {
-			Date postDate = dateFormat.parse(postData);
-			Date currentDate = new Date();
-
-			long diff = currentDate.getTime() - postDate.getTime();
-			long seconds = diff / 1000;
-			long minutes = seconds / 60;
-			long hours = minutes / 60;
-			long days = hours / 24;
-
-			if(seconds < 0) {
-				autorhora.setText("Por " + json.get("autor").getAsString());
-			} else {
-				String what = "";
-
-				if(seconds < 60) {
-					String plural = null;
-					if(seconds <= 1) {
-						plural = "segundo";
-					} else {
-						plural = "segundos";
-					}
-					what = String.valueOf(seconds) + " " + plural;
-				} else if(minutes < 60) {
-					String plural = null;
-					if(minutes <= 1) {
-						plural = "minuto";
-					} else {
-						plural = "minutos";
-					}
-					what = String.valueOf(minutes) + " " + plural;
-				} else if(hours < 24) {
-					String plural = null;
-					if(hours <= 1) {
-						plural = "hora";
-					} else {
-						plural = "horas";
-					}
-					what = String.valueOf(hours) + " " + plural;
-				} else if(days < 31) {
-					String plural = null;
-					if(days <= 1) {
-						plural = "dia";
-					} else {
-						plural = "dias";
-					}
-					what = String.valueOf(days) + " " + plural;
-				}
-
-				if(what.equals("")) {
-					Calendar c = Calendar.getInstance();
-					int year = c.get(Calendar.YEAR);
-					String withyear = "";
-					if(json.get("data2").getAsString().contains(String.valueOf(year))) {
-						withyear = json.get("data2").getAsString().replace(" " + String.valueOf(year), "");
-					} else {
-						withyear = json.get("data2").getAsString();
-					}
-					autorhora.setText("Por " + json.get("autor").getAsString() + " - " + withyear);
-				} else {
-					autorhora.setText("Por " + json.get("autor").getAsString() + " - Há " + what);
-				}
-			}
-
-		}
-		catch(ParseException o) {
-			o.printStackTrace();
-		}
-
-		webView.loadData(json.get("content").getAsString(), "text/html; charset=utf-8", "utf-8");
-		webView.setWebViewClient(new WebViewClient() {
-				@Override
-				public boolean shouldOverrideUrlLoading(WebView view, String url) {
-					if(url.contains("apps.aloogle.net/blogapp/start")) {
-						URL qURL = null;
 						try {
-							qURL = new URL(url);
-						}
-						catch(MalformedURLException e) { e.printStackTrace(); }
-						String query = null;
-						if(url.contains("image")) {
-							try {
-								query = URLDecoder.decode(getQueryMap(qURL.getQuery()).get("image"), "UTF-8");
-							}
-							catch(UnsupportedEncodingException e) { e.printStackTrace(); }
-							Intent intent = new Intent(PostActivity.this, FragmentActivity.class);
-							intent.putExtra("fragment", 8);
-							intent.putExtra("imgurl", query);
-							startActivity(intent);
-						} else if(url.contains("tag")) {
-							String title = null;
-							try {
-								query = getQueryMap(qURL.getQuery()).get("tag");
-								title = URLDecoder.decode(getQueryMap(qURL.getQuery()).get("title"), "UTF-8");
-							}
-							catch(UnsupportedEncodingException e) { e.printStackTrace(); }
-							Intent intent = new Intent(PostActivity.this, br.com.vidadesuporte.activity.FragmentActivity.class);
-							intent.putExtra("fragment", 7);
-							intent.putExtra("label", query);
-							intent.putExtra("title", title);
-							startActivity(intent);
-						}
-					} else if(url.contains(getString(R.string.sitename))) {
-						if(url.contains("postid=")) {
-							URL idURL = null;
-							try {
-								idURL = new URL(url);
-							}
-							catch(MalformedURLException e) { e.printStackTrace(); }
-							String vID = null;
-							try {
-								vID = URLDecoder.decode(getQueryMap(idURL.getQuery()).get("postid"), "UTF-8");
-							}
-							catch(UnsupportedEncodingException e) { e.printStackTrace(); }
+							Date postDate = dateFormat.parse(postData);
+							Date currentDate = new Date();
 
-							Intent intent = new Intent(PostActivity.this, br.com.vidadesuporte.activity.PostActivity.class);
-							intent.putExtra("frompostid", true);
-							intent.putExtra("id", vID);
-							startActivity(intent);
-						} else {
-							Intent intent = new Intent(PostActivity.this, br.com.vidadesuporte.activity.FragmentActivity.class);
-							intent.putExtra("fragment", 5);
-							intent.putExtra("titulo", getString(R.string.app_name));
-							intent.putExtra("url", url);
-							startActivity(intent);
+							long diff = currentDate.getTime() - postDate.getTime();
+							long seconds = diff / 1000;
+							long minutes = seconds / 60;
+							long hours = minutes / 60;
+							long days = hours / 24;
+
+							if (seconds < 0) {
+								autorhora.setText("Por " + json.get("autor").getAsString());
+							} else {
+								String what = "";
+
+								if (seconds < 60) {
+									String plural = null;
+									if (seconds <= 1) {
+										plural = "segundo";
+									} else {
+										plural = "segundos";
+									}
+									what = String.valueOf(seconds) + " " + plural;
+								} else if (minutes < 60) {
+									String plural = null;
+									if (minutes <= 1) {
+										plural = "minuto";
+									} else {
+										plural = "minutos";
+									}
+									what = String.valueOf(minutes) + " " + plural;
+								} else if (hours < 24) {
+									String plural = null;
+									if (hours <= 1) {
+										plural = "hora";
+									} else {
+										plural = "horas";
+									}
+									what = String.valueOf(hours) + " " + plural;
+								} else if (days < 31) {
+									String plural = null;
+									if (days <= 1) {
+										plural = "dia";
+									} else {
+										plural = "dias";
+									}
+									what = String.valueOf(days) + " " + plural;
+								}
+
+								if (what.equals("")) {
+									Calendar c = Calendar.getInstance();
+									int year = c.get(Calendar.YEAR);
+									String withyear = "";
+									if (json.get("data2").getAsString().contains(String.valueOf(year))) {
+										withyear = json.get("data2").getAsString().replace(" " + String.valueOf(year), "");
+									} else {
+										withyear = json.get("data2").getAsString();
+									}
+									autorhora.setText("Por " + json.get("autor").getAsString() + " - " + withyear);
+								} else {
+									autorhora.setText("Por " + json.get("autor").getAsString() + " - Há " + what);
+								}
+							}
+
 						}
-					} else {
-						Intent intent = new Intent(PostActivity.this, br.com.vidadesuporte.activity.FragmentActivity.class);
-						intent.putExtra("fragment", 5);
-						intent.putExtra("titulo", getString(R.string.app_name));
-						intent.putExtra("url", url);
-						intent.putExtra("internalbrowser", true);
-						startActivity(intent);
+						catch (ParseException o) {
+							o.printStackTrace();
+						}
+						
+						comentarios.setText(json.get("comentarios").getAsString());
+						
+						JsonArray textos = json.get("textos").getAsJsonArray();
+						for (int i = 0; i < textos.size(); i++) {
+							JsonObject c = textos.get(i).getAsJsonObject();
+
+							String texto = c.get(TAG_TEXTO).getAsString();
+							textoarray.add(texto);
+						}
+
+						JsonArray imagens = json.get("imagens").getAsJsonArray();
+						for (int i = 0; i < imagens.size(); i++) {
+							JsonObject c = imagens.get(i).getAsJsonObject();
+
+							String imagem = c.get(TAG_IMAGEM).getAsString();
+							imagemarray.add(imagem);
+						}
+
+						JsonArray iframes = json.get("iframes").getAsJsonArray();
+						for (int i = 0; i < iframes.size(); i++) {
+							JsonObject c = iframes.get(i).getAsJsonObject();
+
+							String iframe = c.get(TAG_IFRAME).getAsString();
+							iframearray.add(iframe);
+						}
+
+						for (int i = 0; i < textos.size(); i++) {
+							if (!textoarray.get(i).toString().equals("")) {
+								LayoutInflater textoinflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+								View texto = textoinflater.inflate(R.layout.post_text, null);
+								CustomTextView text = (CustomTextView)texto.findViewById(R.id.texto);
+								text.setMovementMethod(CustomLinkMovementMethod.getInstance(PostActivity.this));
+								text.setText(Html.fromHtml(textoarray.get(i).toString(), null, new TagAdapter()));
+								linear.addView(texto);
+							}
+							if (i < imagemarray.size()) {
+								if (imagemarray.get(i).toString().equals("")) {
+									if (iframearray.get(i).toString().contains("youtube.com/embed")) {
+										LayoutInflater videoinflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+										View video = videoinflater.inflate(R.layout.post_video, null);
+										String[]parts = iframearray.get(i).toString().split("/");
+										final String videoId = parts[parts.length - 1];
+										ImageView imageView = (ImageView)video.findViewById(R.id.thumbnail);
+										final ProgressBarDeterminate progressBar2 = (ProgressBarDeterminate)video.findViewById(R.id.progress);
+										Ion.with(PostActivity.this)
+											.load("http://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg")
+											.progress(new ProgressCallback() {
+												@Override
+												public void onProgress(final long downloaded, final long total) {
+													runOnUiThread(new Runnable() {
+															@Override
+															public void run() {
+																float p = (float)downloaded / (float)total * 100;
+																progressBar2.setProgress((int)(Math.round(p)));
+
+																progressBar2.setVisibility(View.VISIBLE);
+
+																if (downloaded == total) {
+																	progressBar2.setVisibility(View.GONE);
+																}
+															}
+														});
+												}
+											})
+											.withBitmap()
+											.error(R.drawable.logo)
+											.intoImageView(imageView);
+
+										imageView.setOnClickListener(new OnClickListener() {
+												@Override
+												public void onClick(View v) {
+													Intent intent = new Intent(Intent.ACTION_VIEW);
+													intent.setData(Uri.parse("http://youtube.com/watch?v=" + videoId));
+													startActivity(intent);
+												}
+											});
+										linear.addView(video);
+									} else {
+										LayoutInflater webviewinflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+										View webview = webviewinflater.inflate(R.layout.post_webview, null);
+										final ProgressBarDeterminate progressBar2 = (ProgressBarDeterminate)webview.findViewById(R.id.progressBar2);
+										final WebView webView = (WebView)webview.findViewById(R.id.webview01);
+										webView.getSettings().setJavaScriptEnabled(true);
+										webView.setWebViewClient(new WebViewClient() {
+												@Override
+												public boolean shouldOverrideUrlLoading(WebView view, String url) {
+													if (url.contains("imgur")) {
+														view.loadUrl(url);
+													} else {
+														Intent i = new Intent(Intent.ACTION_VIEW);
+														i.setData(Uri.parse(url));
+														startActivity(i);
+													}
+													return true;
+												}
+											});
+										webView.setWebChromeClient(new WebChromeClient() {
+												public void onProgressChanged(WebView view, int progress) {
+													progressBar2.setProgress(progress);
+													progressBar2.setVisibility(View.VISIBLE);
+
+													if (progress == 100) {
+														progressBar2.setVisibility(View.GONE);
+													}
+
+													if (progress >= 50) {
+														webView.setVisibility(View.VISIBLE);
+													}
+												}
+											});
+										webView.loadUrl(iframearray.get(i).toString());
+										linear.addView(webview);
+									}
+								} else {
+									if (i != 0) {
+										LayoutInflater imageminflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+										final View imagem = imageminflater.inflate(R.layout.post_image, null);
+										ImageView imageView = (ImageView)imagem.findViewById(R.id.imagem);
+										final ProgressBarDeterminate progressBar2 = (ProgressBarDeterminate)imagem.findViewById(R.id.progress);
+										Ion.with(PostActivity.this)
+											.load(imagemarray.get(i).toString())
+											.progress(new ProgressCallback() {
+												@Override
+												public void onProgress(final long downloaded, final long total) {
+													runOnUiThread(new Runnable() {
+															@Override
+															public void run() {
+																float p = (float)downloaded / (float)total * 100;
+																progressBar2.setProgress((int)(Math.round(p)));
+
+																progressBar2.setVisibility(View.VISIBLE);
+
+																if (downloaded == total) {
+																	progressBar2.setVisibility(View.GONE);
+																}
+															}
+														});
+												}
+											})
+											.withBitmap()
+											.error(R.drawable.logo)
+											.intoImageView(imageView);
+										final int a = i;
+										imageView.setOnClickListener(new OnClickListener() {
+												@Override
+												public void onClick(View v) {
+													Intent intent = new Intent(PostActivity.this, FragmentActivity.class);
+													intent.putExtra("fragment", 8);
+													intent.putExtra("imgurl", imagemarray.get(a).toString());
+													startActivity(intent);
+												}
+											});
+										linear.addView(imagem);
+									}
+								}
+							}
+						}
+
+						JsonArray tags = json.get("tags").getAsJsonArray();
+						if (tags.size() > 0) {
+							for (int i = 0; i < tags.size(); i++) {
+								JsonObject c = tags.get(i).getAsJsonObject();
+
+								String tag = c.get(TAG_TAG).getAsString();
+								tagarray.add(tag);
+							}
+
+							LinearLayout tagslayout = (LinearLayout)findViewById(R.id.tags);
+							LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+							TextView tagscall = new TextView(PostActivity.this);
+							tagscall.setLayoutParams(vp);
+							tagscall.setText("Tags: ");
+							tagscall.setTextSize(16);
+							tagscall.setTextColor(Color.parseColor("#000000"));
+							tagslayout.addView(tagscall);
+
+							for (int i = 0; i < tagarray.size(); i++) {
+								if (i == 0 || i == tagarray.size()) {} else {
+									TextView space = new TextView(PostActivity.this);
+									space.setLayoutParams(vp);
+									space.setText(", ");
+									space.setTextSize(16);
+									space.setTextColor(Color.parseColor("#000000"));
+									tagslayout.addView(space);
+								}
+
+								TextView tagtext = new TextView(PostActivity.this);
+								tagtext.setLayoutParams(vp);
+								tagtext.setText(tagarray.get(i).toString());
+								tagtext.setTextSize(16);
+								tagtext.setTextColor(getResources().getColor(R.color.colorAccent));
+								tagslayout.addView(tagtext);
+
+								final int u = i;
+
+								tagtext.setOnClickListener(new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											Intent intent = new Intent(PostActivity.this, br.com.vidadesuporte.activity.FragmentActivity.class);
+											intent.putExtra("fragment", 7);
+											intent.putExtra("label", tagarray.get(u).toString());
+											startActivity(intent);
+										}
+									});
+							}
+						}
 					}
-					return true;
-				}
 
-				@Override
-				public void onPageFinished(WebView view, String url) {
-					if(Build.VERSION.SDK_INT >= 21) {
-						progressBar.setVisibility(View.GONE);
-					} else {
-						progressBarCompat.setVisibility(View.GONE);
-					}
-					webView.setVisibility(View.VISIBLE);
-					super.onPageFinished(view, url);
-				}
-			});
-	}
 
-	public static Map < String, String > getQueryMap(String query) {
-		String a = query.replace("?", "&");
-		String[]params = a.split("&");
-		Map < String, String > map = new HashMap < String, String >();
-		for(String param : params) {
-			String name = param.split("=")[0];
-			String value = param.split("=")[1];
-			map.put(name, value);
-		}
-		return map;
-	}
+				}});}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -771,13 +757,11 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		int normal = iconColor.equals("branco") ? R.drawable.ic_star : R.drawable.ic_star_black;
-		int outline = iconColor.equals("branco") ? R.drawable.ic_star_outline : R.drawable.ic_star_black_outline;
-		if(favorite) {
-			menu.findItem(R.id.menu_favorite).setIcon(normal);
+		if (favorite) {
+			menu.findItem(R.id.menu_favorite).setIcon(R.drawable.ic_star);
 			menu.findItem(R.id.menu_favorite).setTitle("Desmarcar como favorito");
 		} else {
-			menu.findItem(R.id.menu_favorite).setIcon(outline);
+			menu.findItem(R.id.menu_favorite).setIcon(R.drawable.ic_star_outline);
 			menu.findItem(R.id.menu_favorite).setTitle("Marcar como favorito");
 		}
 		return super.onPrepareOptionsMenu(menu);
@@ -785,30 +769,31 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
+		switch (item.getItemId()) {
 			case android.R.id.home:
-				if(getIntent().hasExtra("fromnotification")) {
+				if (getIntent().hasExtra("fromnotification")) {
 					Intent intent = new Intent(PostActivity.this, MainActivity.class);
 					startActivity(intent);
 				}
 				PostActivity.this.finish();
 				return true;
 			case R.id.menu_favorite:
-				if(!sjson.equals(null)) {
-					if(favorite) {
-						db.deleteFavorite(sid);
+				if (!sjson.equals(null)) {
+					if (favorite) {
+						editor.putString("favoritesPosts", preferences.getString("favoritesPosts", "").replace(sjson + "$%#", ""));
+						editor.commit();
 						favorite = false;
 					} else {
-						db.createFavorite(new Favorites(sid, sjson, content));
+						editor.putString("favoritesPosts", sjson + "$%#" + preferences.getString("favoritesPosts", ""));
+						editor.commit();
 						favorite = true;
 					}
 					supportInvalidateOptionsMenu();
 				}
-				db.closeDB();
 				return true;
 			case R.id.menu_copylink:
-				if(!sjson.equals(null)) {
-					if(Build.VERSION.SDK_INT >= 11) {
+				if (!sjson.equals(null)) {
+					if (Build.VERSION.SDK_INT >= 11) {
 						final android.content.ClipboardManager clipboardManager = (android.content.ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 						final android.content.ClipData clipData = android.content.ClipData.newPlainText(surl, surl);
 						clipboardManager.setPrimaryClip(clipData);
@@ -821,7 +806,7 @@ public class PostActivity extends AppCompatActivity implements ObservableScrollV
 				}
 				return true;
 			case R.id.menu_openinbrowser:
-				if(!sjson.equals(null)) {
+				if (!sjson.equals(null)) {
 					Intent intent = new Intent(Intent.ACTION_VIEW);
 					intent.setData(Uri.parse(surl));
 					startActivity(intent);
