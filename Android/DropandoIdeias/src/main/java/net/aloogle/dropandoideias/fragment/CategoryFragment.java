@@ -52,7 +52,7 @@ public class CategoryFragment extends BaseFragment implements SwipeRefreshLayout
 
 		if (!fromtag) {
 			MainActivity.ActionBarColor(((AppCompatActivity)getActivity()), getArguments().getString("label"));
-			MainActivity.mDrawerList.setItemChecked(getArguments().getInt("pos"), true);
+			MainActivity.navigationView.getMenu().findItem(getArguments().getInt("pos")).setChecked(true);
 			MainActivity.pos = getArguments().getInt("pos");
 		} else {
 			FragmentActivity.ActionBarColor(((AppCompatActivity)getActivity()), getActivity().getIntent().getStringExtra("title"));

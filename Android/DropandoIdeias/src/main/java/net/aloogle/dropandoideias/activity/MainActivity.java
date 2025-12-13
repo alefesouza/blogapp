@@ -68,14 +68,14 @@ import net.aloogle.dropandoideias.other.Categorias;
 import net.aloogle.dropandoideias.other.CustomTextView;
 import net.aloogle.dropandoideias.other.Icons;
 import net.aloogle.dropandoideias.other.Other;
+import android.support.v4.view.*;
+import android.support.design.widget.*;
+import android.view.*;
 
 @SuppressLint({ "DefaultLocale", "CutPasteId", "Recycle"})
 public class MainActivity extends AppCompatActivity {
 	final Context context = this;
 	public Toolbar mToolbar;
-	private DrawerLayout mDrawerLayout;
-	public static ListView mDrawerList;
-	private ActionBarDrawerToggle mDrawerToggle;
 	private ArrayList <Icons> icons = new ArrayList < Icons > ();
 
 	ArrayList <Categorias> listlinks = new ArrayList <Categorias> ();
@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
 	ArrayList <Categorias> listcategorias = new ArrayList <Categorias> ();
 
 	String[]sitenames;
-	private DrawerAdapter adapter2;
 	private TypedArray categoryIcons, socialIcons;
 	public static FloatingActionButton fabrandom;
 	SharedPreferences preferences;
@@ -95,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
 
 	ViewGroup footer, footer2, footer3, footer4, footer5;
 
+	public static NavigationView navigationView;
+	
+    private DrawerLayout drawerLayout;
 	private View mToolbarView;
 	private ViewPager mPager;
 	private NavigationAdapter mPagerAdapter;
@@ -122,12 +124,37 @@ public class MainActivity extends AppCompatActivity {
 		setSupportActionBar(mToolbar);
 		titulo = getString(R.string.app_name);
 
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		ActionBarColor(this, titulo);
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+		navigationView.setItemIconTintList(null);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+				@Override
+				public boolean onNavigationItemSelected(MenuItem menuItem) {
+					Toast toast = Toast.makeText(MainActivity.this, String.valueOf(menuItem.getItemId()), Toast.LENGTH_LONG);
+					toast.show();
+					selectItem(menuItem.getItemId());
+					menuItem.setChecked(true);
+					drawerLayout.closeDrawers();
+					return true;
+				}
+			});
+			
+		navigationView.findViewById(R.id.drawerHeader).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View p1) {
+				selectItem(0);
+			}
+		});
+			
 		initDrawer(0);
 		new CompareIfExists().execute();
 		initNotification();
-
-		ActionBarColor(this, titulo);
-
+		
 		final String[]from = new String[]{
 			"categoryName"
 		};
@@ -143,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
 		ViewCompat.setElevation(mToolbarView, R.dimen.toolbar_elevation);
 
-		pos = 1;
+		pos = 0;
 		storedPos = 0;
 		passed = false;
 		start = false;
@@ -207,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
 		if (Other.isConnected(this)) {
 			loadDrawer();
 		}
-		selectItem(1);
+		selectItem(0);
 
 		loadCategs();
 	}
@@ -277,14 +304,6 @@ public class MainActivity extends AppCompatActivity {
 					listlinks.clear();
 					listfcategorias.clear();
 					listcategorias.clear();
-					if (footer5 != null) {
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								mDrawerList.removeFooterView(footer5);
-							}
-						});
-					}
 					headerIcons();
 					return drawer;
 				}
@@ -333,31 +352,6 @@ public class MainActivity extends AppCompatActivity {
 					if (!drawerloaded) {
 						CustomTextView text = (CustomTextView)footer4.findViewById(R.id.myTextView4);
 						text.setText("Tentar novamente");
-
-						footer4.setOnClickListener(new View.OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								if (Other.isConnected(MainActivity.this)) {
-									mDrawerList.removeFooterView(footer);
-									mDrawerList.removeFooterView(footer2);
-									mDrawerList.removeFooterView(footer4);
-									mDrawerList.addFooterView(footer3, null, false);
-									mDrawerList.addFooterView(footer, null, false);
-									mDrawerList.addFooterView(footer2, null, false);
-									footer4 = null;
-									loadDrawer();
-								} else {
-									Toast toast = Toast.makeText(MainActivity.this, getString(R.string.needinternet), Toast.LENGTH_SHORT);
-									toast.show();
-								}
-							}
-						});
-						mDrawerList.removeFooterView(footer3);
-						mDrawerList.removeFooterView(footer);
-						mDrawerList.removeFooterView(footer2);
-						mDrawerList.addFooterView(footer4, null, false);
-						mDrawerList.addFooterView(footer, null, false);
-						mDrawerList.addFooterView(footer2, null, false);
 					}
 					e.printStackTrace();
 					return;
@@ -408,13 +402,8 @@ public class MainActivity extends AppCompatActivity {
 
 		drawerloaded = true;
 		initDrawer(1);
-		if (pos < 2) {
-			mDrawerList.setItemChecked(1, true);
-		}
-
-		if (storedPos > 1) {
-			selectItem(storedPos);
-		}
+		
+		selectItem(storedPos);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -441,257 +430,104 @@ public class MainActivity extends AppCompatActivity {
 	public void initDrawer(int fase) {
 		LayoutInflater inflater = getLayoutInflater();
 		if (fase == 0) {
-			mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+			
+			footer = (ViewGroup)inflater.inflate(R.layout.footer, null);
+			footer2 = (ViewGroup)inflater.inflate(R.layout.footer2, null);
+			footer3 = (ViewGroup)inflater.inflate(R.layout.footer3, null);
+			footer4 = (ViewGroup)inflater.inflate(R.layout.footer4, null);
 
-			mDrawerList = (ListView)findViewById(R.id.left_drawer);
-
-			mDrawerToggle = new ActionBarDrawerToggle(
-					this, 				mDrawerLayout, 				mToolbar, 				R.string.drawer_open, 				R.string.drawer_close) {
-
-				public void onDrawerClosed(View view) {
-					supportInvalidateOptionsMenu();
-				}
-
-				public void onDrawerOpened(View drawerView) {
-					supportInvalidateOptionsMenu();
-				}
-			};
-
-			mDrawerToggle.syncState();
-
-			mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-			final ViewGroup header = (ViewGroup)inflater.inflate(R.layout.header, 			mDrawerList, false);
-			footer = (ViewGroup)inflater.inflate(R.layout.footer, 			mDrawerList, false);
-			footer2 = (ViewGroup)inflater.inflate(R.layout.footer2, 			mDrawerList, false);
-			footer3 = (ViewGroup)inflater.inflate(R.layout.footer3, 			mDrawerList, false);
-			footer4 = (ViewGroup)inflater.inflate(R.layout.footer4, 			mDrawerList, false);
-
-			mDrawerList.addHeaderView(header, null, true);
-			mDrawerList.addFooterView(footer3, null, false);
-			mDrawerList.addFooterView(footer, null, false);
-			footer.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent settings = new Intent(MainActivity.this, FragmentActivity.class);
-					settings.putExtra("fragment", 0);
-					startActivity(settings);
-				}
-			});
-			mDrawerList.addFooterView(footer2, null, false);
-			footer2.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Intent about = new Intent(MainActivity.this, FragmentActivity.class);
-					about.putExtra("fragment", 2);
-					startActivity(about);
-				}
-			});
 			categoryIcons = getResources().obtainTypedArray(R.array.drawable_ids);
 			socialIcons = getResources().obtainTypedArray(R.array.socialicons);
 
 			headerIcons();
-
-			adapter2 = new DrawerAdapter(getApplicationContext(), icons);
-			mDrawerList.setAdapter(adapter2);
-
-			mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-			mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 		} else {
 			if (footer4 != null) {
-				mDrawerList.removeFooterView(footer4);
 			}
 
 			if (listlinks.size() > 0) {
-				icons.add(new Icons(linksname, categoryIcons.getResourceId(0, -1), 5, ""));
+				SubMenu links = navigationView.getMenu().addSubMenu(0, 102, Menu.NONE, linksname);
+
 				for (int i = 0; i < listlinks.size(); i++) {
-					icons.add(new Icons(listlinks.get(i).getTitle(), categoryIcons.getResourceId(2, (i + 1)*-1), 2, listlinks.get(i).getIcon()));
+					MenuItem lnk = links.add(0, i + sitenames.length + 2, 0, listlinks.get(i).getTitle());
+					lnk.setIcon(R.drawable.ic_link);
 				}
-				linkscount = listlinks.size() + 1;
 			}
+			linkscount = listlinks.size();
 
 			if (listfcategorias.size() > 0) {
-				icons.add(new Icons(fcategoriasname, categoryIcons.getResourceId(0, -1), 5, ""));
+				SubMenu fcategs = navigationView.getMenu().addSubMenu(0, 103, Menu.NONE, fcategoriasname);
+
 				for (int i = 0; i < listfcategorias.size(); i++) {
-					icons.add(new Icons(listfcategorias.get(i).getTitle(), categoryIcons.getResourceId(3, (i + 1)*-1), 3, listfcategorias.get(i).getIcon()));
+					MenuItem fctg = fcategs.add(0, i + linkscount + sitenames.length + 2, 0, listfcategorias.get(i).getTitle());
+					fctg.setIcon(socialIcons.getResourceId(0, -1));
+					fctg.setCheckable(true);
 				}
-				fcategoriascount = listfcategorias.size() + 1;
 			}
+			fcategoriascount = listfcategorias.size();
 
 			if (listcategorias.size() > 0) {
-				icons.add(new Icons("Categorias", categoryIcons.getResourceId(0, -1), 5, ""));
+				SubMenu categs = navigationView.getMenu().addSubMenu(0, 104, Menu.NONE, "Categorias");
+
 				for (int i = 0; i < listcategorias.size(); i++) {
-					icons.add(new Icons(listcategorias.get(i).getTitle(), categoryIcons.getResourceId(3, (i + 1)*-1), 4, listcategorias.get(i).getIcon()));
+					MenuItem ctg = categs.add(0, i + linkscount + fcategoriascount + sitenames.length + 2, 0, listcategorias.get(i).getTitle());
+					ctg.setIcon(R.drawable.ic_label);
+					ctg.setCheckable(true);
 				}
 			}
 
 			if (categoriastotal > 15) {
-				footer5 = (ViewGroup)inflater.inflate(R.layout.footer4, 				mDrawerList, false);
-				CustomTextView text = (CustomTextView)footer5.findViewById(R.id.myTextView4);
-				text.setText("Carregar mais");
-				footer5.findViewById(R.id.divider).setVisibility(View.GONE);
-				footer5.findViewById(R.id.divider2).setVisibility(View.GONE);
-
-				footer5.setOnClickListener(new View.OnClickListener() {
+				SubMenu loadmore = navigationView.getMenu().addSubMenu(0, 104, Menu.NONE, null);
+			
+				MenuItem loadmorem = loadmore.add(R.string.loadmore);
+				loadmorem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
 					@Override
-					public void onClick(View v) {
+					public boolean onMenuItemClick(MenuItem p1) {
 						Intent categorias = new Intent(MainActivity.this, FragmentActivity.class);
 						categorias.putExtra("fragment", 3);
 						startActivity(categorias);
+						return false;
+					}
+			});
+			}
+			
+			SubMenu footermenu = navigationView.getMenu().addSubMenu(0, 104, Menu.NONE, "");
+			
+			MenuItem settingsm = footermenu.add(R.string.settings);
+			settingsm.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem p1) {
+						Intent settings = new Intent(MainActivity.this, FragmentActivity.class);
+						settings.putExtra("fragment", 0);
+						startActivity(settings);
+						return false;
 					}
 				});
-				mDrawerList.removeFooterView(footer);
-				mDrawerList.removeFooterView(footer2);
-				mDrawerList.addFooterView(footer5, null, false);
-				mDrawerList.addFooterView(footer, null, false);
-				mDrawerList.addFooterView(footer2, null, false);
-			}
-
-			adapter2 = new DrawerAdapter(getApplicationContext(), icons);
-			mDrawerList.setAdapter(adapter2);
-
-			mDrawerList.removeFooterView(footer3);
+			
+			MenuItem aboutm = footermenu.add(R.string.about);
+			aboutm.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+					@Override
+					public boolean onMenuItemClick(MenuItem p1) {
+						Intent about = new Intent(MainActivity.this, FragmentActivity.class);
+						about.putExtra("fragment", 2);
+						startActivity(about);
+						return false;
+					}
+			});
 		}
 	}
 
 	public void headerIcons() {
-		icons.add(new Icons("Início", categoryIcons.getResourceId(0, -1), 0, ""));
-		icons.add(new Icons("Favoritos", categoryIcons.getResourceId(1, -1), 0, ""));
-		icons.add(new Icons("Rede sociais", categoryIcons.getResourceId(0, -1), 5, ""));
+		MenuItem home = navigationView.getMenu().add(0, 0, 0, "Início");
+		home.setIcon(categoryIcons.getResourceId(0, -1));
+		home.setCheckable(true);
+		MenuItem favorites = navigationView.getMenu().add(0, 1, 0, "Favoritos");
+		favorites.setIcon(categoryIcons.getResourceId(1, -1));
+		favorites.setCheckable(true);
+		SubMenu socials = navigationView.getMenu().addSubMenu(0, 101, Menu.NONE, "Redes sociais");
+		
 		for (int i = 0; i < sitenames.length; i++) {
-			icons.add(new Icons(sitenames[i], socialIcons.getResourceId(i, -1), 1, ""));
-		}
-	}
-
-	public void initNotification() {
-		boolean notification = preferences.getBoolean("prefNotification", true);
-		boolean haveTimerToDialogRate = preferences.getBoolean("haveTimerToDialog", false);
-		boolean rated = preferences.getBoolean("ratedapp", false);
-
-		if (!haveTimerToDialogRate) {
-			editor.putLong("longToDialogRate", System.currentTimeMillis() + 3*24*60*60*1000);
-			editor.commit();
-			editor.putBoolean("haveTimerToDialog", true);
-			editor.commit();
-		}
-
-		if (!rated) {
-			if (System.currentTimeMillis() > preferences.getLong("longToDialogRate", 0)) {
-				final AlertDialog dialograte = new AlertDialog.Builder(MainActivity.this)
-					.setTitle(R.string.rateapp)
-					.setMessage(R.string.dialog_rate)
-					.setPositiveButton(R.string.rate, null)
-					.setNegativeButton(R.string.later, null)
-					.create();
-
-				dialograte.setOnShowListener(new
-					DialogInterface.OnShowListener() {
-					@Override
-					public void onShow(DialogInterface dialog) {
-						Button b = dialograte.getButton(AlertDialog.BUTTON_POSITIVE);
-						b.setOnClickListener(new
-							View.OnClickListener() {
-							@Override
-							public void onClick(View view) {
-								Intent intent = new Intent(Intent.ACTION_VIEW);
-								intent.setData(Uri.parse("market://details?id=" + getPackageName()));
-								startActivity(intent);
-								editor.putBoolean("ratedapp", true);
-								editor.commit();
-								dialograte.dismiss();
-							}
-						});
-						Button n = dialograte.getButton(AlertDialog.BUTTON_NEGATIVE);
-						n.setOnClickListener(new
-							View.OnClickListener() {
-							@Override
-							public void onClick(View view) {
-								editor.putLong("longToDialogRate", System.currentTimeMillis() + 8*24*60*60*1000);
-								editor.commit();
-								dialograte.dismiss();
-							}
-						});
-					}
-				});
-				dialograte.show();
-			}
-		}
-
-		if (!notification) {
-			if (System.currentTimeMillis() > preferences.getLong("longNotification", 0)) {
-				final AlertDialog dialognotif = new AlertDialog.Builder(MainActivity.this)
-					.setTitle(R.string.notifications)
-					.setMessage(R.string.dialog_notification)
-					.setPositiveButton(R.string.yes, null)
-					.setNegativeButton(R.string.no, null)
-					.create();
-
-				dialognotif.setOnShowListener(new
-					DialogInterface.OnShowListener() {
-					@Override
-					public void onShow(DialogInterface dialog) {
-						Button b = dialognotif.getButton(AlertDialog.BUTTON_POSITIVE);
-						b.setOnClickListener(new
-							View.OnClickListener() {
-							@Override
-							public void onClick(View view) {
-								editor.putBoolean("prefNotification", true);
-								editor.commit();
-								editor.putLong("longNotification", 0);
-								editor.commit();
-								dialognotif.dismiss();
-							}
-						});
-						Button n = dialognotif.getButton(AlertDialog.BUTTON_NEGATIVE);
-						n.setOnClickListener(new
-							View.OnClickListener() {
-							@Override
-							public void onClick(View view) {
-								editor.putLong("longNotification", System.currentTimeMillis() + 15*24*60*60*1000);
-								editor.commit();
-								dialognotif.dismiss();
-							}
-						});
-					}
-				});
-				dialognotif.show();
-			}
-		}
-	}
-
-	@Override
-	protected void onPostCreate(Bundle savedInstanceState) {
-
-		super.onPostCreate(savedInstanceState);
-
-		mDrawerToggle.syncState();
-	}
-
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-
-		super.onConfigurationChanged(newConfig);
-		mDrawerToggle.onConfigurationChanged(newConfig);
-	}
-
-	private class DrawerItemClickListener implements ListView.OnItemClickListener {
-		@Override
-		public void onItemClick(AdapterView <  ?  > parent, View view, int position, long id) {
-			int posi;
-
-			if (position == 0) {
-				posi = 1;
-				mDrawerList.setItemChecked(1, true);
-			} else {
-				posi = position;
-			}
-
-			if (posi != pos) {
-				selectItem(posi);
-			}
+			MenuItem soc = socials.add(0, i + 2, 0, sitenames[i]);
+			soc.setIcon(socialIcons.getResourceId(i, -1));
 		}
 	}
 
@@ -715,7 +551,7 @@ public class MainActivity extends AppCompatActivity {
 		start = false;
 		home = true;
 		pos = 1;
-		mDrawerList.setItemChecked(1, true);
+		navigationView.getMenu().findItem(0).setChecked(true);
 		mPager.setVisibility(View.VISIBLE);
 		FrameLayout content = (FrameLayout)findViewById(R.id.content_frame);
 		content.setVisibility(View.GONE);
@@ -772,18 +608,15 @@ public class MainActivity extends AppCompatActivity {
 			Home();
 			break;
 		case 1:
-			Home();
-			break;
-		case 2:
 			Favs();
 			break;
 		}
 
 		String[]socialnetworks = getResources().getStringArray(R.array.allow_sites2);
-		int n = socialnetworks.length + 5;
-		int n2 = position - socialnetworks.length;
+		int n = socialnetworks.length + 2;
+		int n2 = position - socialnetworks.length + 1;
 
-		if (position > 2 && position < n) {
+		if (position > 1 && position < n) {
 			String[]usernames = getResources().getStringArray(R.array.socialnetworksusers);
 			Intent intent = new Intent(MainActivity.this, FragmentActivity.class);
 			intent.putExtra("fragment", 5);
@@ -808,13 +641,7 @@ public class MainActivity extends AppCompatActivity {
 			Clear(listcategorias.get(position - n - linkscount - fcategoriascount).getId(), listcategorias.get(position - n - linkscount - fcategoriascount).getTitle(), position);
 		}
 
-		if (position > 2 && position <= n + linkscount) {
-			mDrawerList.setItemChecked(pos, true);
-		}
-
 		supportInvalidateOptionsMenu();
-
-		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 
 	@Override
@@ -924,10 +751,10 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
-			return true;
-		}
 		switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
 		case R.id.menu_opensite:
 			Intent intent = new Intent(Intent.ACTION_VIEW);
 			intent.setData(Uri.parse("http://" + getString(R.string.sitename)));
@@ -993,9 +820,8 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+			boolean drawerOpen = drawerLayout.isDrawerOpen(navigationView);
 			if (drawerOpen) {
-				mDrawerLayout.closeDrawer(mDrawerList);
 				return true;
 			} else {
 				if (home) {
@@ -1013,9 +839,100 @@ public class MainActivity extends AppCompatActivity {
 		return super.onKeyDown(keyCode, event);
 	}
 
-	public void onSaveInstanceState(Bundle savedInstanceState) {
-		savedInstanceState.putInt("position", pos);
-		super.onSaveInstanceState(savedInstanceState);
+	public void initNotification() {
+		boolean notification = preferences.getBoolean("prefNotification", true);
+		boolean haveTimerToDialogRate = preferences.getBoolean("haveTimerToDialog", false);
+		boolean rated = preferences.getBoolean("ratedapp", false);
+
+		if (!haveTimerToDialogRate) {
+			editor.putLong("longToDialogRate", System.currentTimeMillis() + 3*24*60*60*1000);
+			editor.commit();
+			editor.putBoolean("haveTimerToDialog", true);
+			editor.commit();
+		}
+
+		if (!rated) {
+			if (System.currentTimeMillis() > preferences.getLong("longToDialogRate", 0)) {
+				final AlertDialog dialograte = new AlertDialog.Builder(MainActivity.this)
+					.setTitle(R.string.rateapp)
+					.setMessage(R.string.dialog_rate)
+					.setPositiveButton(R.string.rate, null)
+					.setNegativeButton(R.string.later, null)
+					.create();
+
+				dialograte.setOnShowListener(new
+					DialogInterface.OnShowListener() {
+						@Override
+						public void onShow(DialogInterface dialog) {
+							Button b = dialograte.getButton(AlertDialog.BUTTON_POSITIVE);
+							b.setOnClickListener(new
+								View.OnClickListener() {
+									@Override
+									public void onClick(View view) {
+										Intent intent = new Intent(Intent.ACTION_VIEW);
+										intent.setData(Uri.parse("market://details?id=" + getPackageName()));
+										startActivity(intent);
+										editor.putBoolean("ratedapp", true);
+										editor.commit();
+										dialograte.dismiss();
+									}
+								});
+							Button n = dialograte.getButton(AlertDialog.BUTTON_NEGATIVE);
+							n.setOnClickListener(new
+								View.OnClickListener() {
+									@Override
+									public void onClick(View view) {
+										editor.putLong("longToDialogRate", System.currentTimeMillis() + 8*24*60*60*1000);
+										editor.commit();
+										dialograte.dismiss();
+									}
+								});
+						}
+					});
+				dialograte.show();
+			}
+		}
+
+		if (!notification) {
+			if (System.currentTimeMillis() > preferences.getLong("longNotification", 0)) {
+				final AlertDialog dialognotif = new AlertDialog.Builder(MainActivity.this)
+					.setTitle(R.string.notifications)
+					.setMessage(R.string.dialog_notification)
+					.setPositiveButton(R.string.yes, null)
+					.setNegativeButton(R.string.no, null)
+					.create();
+
+				dialognotif.setOnShowListener(new
+					DialogInterface.OnShowListener() {
+						@Override
+						public void onShow(DialogInterface dialog) {
+							Button b = dialognotif.getButton(AlertDialog.BUTTON_POSITIVE);
+							b.setOnClickListener(new
+								View.OnClickListener() {
+									@Override
+									public void onClick(View view) {
+										editor.putBoolean("prefNotification", true);
+										editor.commit();
+										editor.putLong("longNotification", 0);
+										editor.commit();
+										dialognotif.dismiss();
+									}
+								});
+							Button n = dialognotif.getButton(AlertDialog.BUTTON_NEGATIVE);
+							n.setOnClickListener(new
+								View.OnClickListener() {
+									@Override
+									public void onClick(View view) {
+										editor.putLong("longNotification", System.currentTimeMillis() + 15*24*60*60*1000);
+										editor.commit();
+										dialognotif.dismiss();
+									}
+								});
+						}
+					});
+				dialognotif.show();
+			}
+		}
 	}
 
 	public void onResume() {
@@ -1025,5 +942,10 @@ public class MainActivity extends AppCompatActivity {
 		ActionBarColor(this, titulo);
 		supportInvalidateOptionsMenu();
 		super.onResume();
+	}
+
+	public void onSaveInstanceState(Bundle savedInstanceState) {
+		savedInstanceState.putInt("position", pos);
+		super.onSaveInstanceState(savedInstanceState);
 	}
 }

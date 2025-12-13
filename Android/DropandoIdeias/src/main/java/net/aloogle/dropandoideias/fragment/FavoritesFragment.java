@@ -80,7 +80,7 @@ public class FavoritesFragment extends Fragment implements SwipeRefreshLayout.On
 		view = inflater.inflate(R.layout.fragment_main, container, false);
 
 		MainActivity.ActionBarColor(((AppCompatActivity)getActivity()), "Favoritos");
-		MainActivity.mDrawerList.setItemChecked(2, true);
+		MainActivity.navigationView.getMenu().findItem(1).setChecked(true);
 		MainActivity.pos = 2;
 
 		list = (ObservableRecyclerView)view.findViewById(R.id.list);

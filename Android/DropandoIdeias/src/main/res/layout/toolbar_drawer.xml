@@ -76,21 +76,12 @@
 		</RelativeLayout>
 		</FrameLayout>
 
-			<ListView
-				android:id="@+id/left_drawer"
-				android:layout_width="240dp"
-				android:layout_height="match_parent"
-				android:layout_gravity="start"
-				android:layout_marginRight="96dp"
-				android:background="@android:color/white"
-				android:choiceMode="singleChoice"
-				android:divider="#00000000"
-				android:dividerHeight="1.00dp"
-				android:listSelector="@drawable/drawer"
-				android:longClickable="false"
-				android:orientation="vertical"
-				android:overScrollMode="never"
-				android:scrollbars="none" />
+		<android.support.design.widget.NavigationView
+			android:id="@+id/navigation_view"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:layout_gravity="start"
+			app:headerLayout="@layout/header" />
 
 	</android.support.v4.widget.DrawerLayout>
 </FrameLayout>
