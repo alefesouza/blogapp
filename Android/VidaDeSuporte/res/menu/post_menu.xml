@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_favorite"
+		android:icon="@drawable/ic_star_white_outline"
+        app:showAsAction="always" />
+    <item android:id="@+id/menu_share"
+        android:title="@string/share"
+        app:showAsAction="always"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider" />
+    <item
+        android:id="@+id/menu_copylink"
+        android:title="@string/copylink"
+		app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_openinbrowser"
+        android:title="@string/openinbrowser"
+		app:showAsAction="never" />
+</menu>

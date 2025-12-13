@@ -1,0 +1,34 @@
+<resources>
+    <style name="VidaDeSuporte.Theme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="colorAccent">@color/logo_red</item>
+        <item name="homeAsUpIndicator">@drawable/ic_arrow_white</item>
+    	<item name="android:textSelectHandleLeft">@drawable/apptheme_text_select_handle_left</item>
+    	<item name="android:textSelectHandleRight">@drawable/apptheme_text_select_handle_right</item>
+    	<item name="android:textSelectHandle">@drawable/apptheme_text_select_handle_middle</item>
+   		<item name="dropDownListViewStyle">@style/DropDownListViewStyle</item>
+		<item name="actionModeShareDrawable">@drawable/ic_share_white</item>
+        <item name="android:scrollingCache">false</item>
+		<item name="android:overScrollMode">never</item>
+    </style>
+
+    <style name="DropDownListViewStyle" parent="Widget.AppCompat.ListView.DropDown">
+        <item name="android:listSelector">@drawable/apptheme_item_background_holo_light</item>
+    </style>
+    
+	<style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    	<item name="actionBarItemBackground">@drawable/apptheme_item_background_holo_light</item>
+		<item name="selectableItemBackground">@drawable/apptheme_item_background_holo_light</item>
+    </style>
+
+	<style name="BlackOverflow" parent="VidaDeSuporte.Theme">
+		<item name="actionOverflowButtonStyle">@style/MyActionButtonOverFlow</item>
+        <item name="homeAsUpIndicator">@drawable/ic_arrow_black</item>
+		<item name="actionModeShareDrawable">@drawable/ic_share_black</item>
+	</style>
+
+    <style name="MyActionButtonOverFlow" parent="Widget.AppCompat.Light.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_more_black</item>
+    </style>
+</resources>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	android:id="@+id/frame">
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/flexible_space_image_height"
+		android:scaleType="fitXY"
+        android:src="@drawable/drawer_logo" />
+
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/flexible_space_image_height" />
+
+			<com.github.ksoichiro.android.observablescrollview.ObservableScrollView
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:id="@+id/scroll"
+				android:orientation="vertical"
+				android:fillViewport="true">
+
+				<RelativeLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_below="@+id/placeholder">
+					
+					<View
+						android:layout_width="match_parent"
+						android:layout_height="@dimen/flexible_space_image_height"
+						android:id="@+id/placeholder"
+						android:background="@android:color/transparent" />
+
+					<RelativeLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:layout_below="@+id/placeholder"
+						android:background="#ffffff">
+						<com.vidadesuporte.other.CustomTextView
+					android:id="@+id/titulo"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:textColor="#000000"
+					android:layout_marginLeft="20dp"
+					android:layout_marginRight="20dp"
+					android:layout_marginTop="10dp"
+					android:layout_marginBottom="5dp"
+					android:textSize="20sp"
+					app:fontName="RobotoSlab-Bold.ttf"
+				/>
+			
+				<LinearLayout
+					android:id="@+id/autorhora"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/titulo"
+					android:layout_marginLeft="20dp"
+					android:layout_marginRight="20dp"
+					android:layout_marginBottom="10dp"
+					android:orientation="vertical" >
+					<com.vidadesuporte.other.CustomTextView
+						android:id="@+id/autor"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textColor="#000000"
+						android:textSize="12sp"
+						app:fontName="Roboto-Regular.ttf"
+					/>
+				</LinearLayout>
+
+				<ProgressBar
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_below="@+id/autorhora"
+					android:id="@+id/progressBar1"
+					android:layout_centerHorizontal="true" />
+				
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:id="@+id/linear"
+					android:layout_below="@+id/autorhora"
+					android:layout_marginLeft="20dp"
+					android:layout_marginRight="20dp"
+					android:orientation="vertical" />
+
+				<HorizontalScrollView
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_marginLeft="20dp"
+					android:id="@+id/horizontal"
+					android:layout_below="@+id/linear">
+					<LinearLayout
+						android:layout_width="wrap_content"
+						android:layout_height="match_parent"
+						android:id="@+id/tags"
+						android:layout_marginTop="20dp"
+						android:layout_marginBottom="20dp"
+						android:orientation="horizontal" />
+				</HorizontalScrollView>
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="?attr/actionBarSize"
+					android:layout_below="@+id/horizontal"
+				/>
+					</RelativeLayout>
+				</RelativeLayout>
+			</com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
+			
+	<com.melnykov.fab.FloatingActionButton
+		android:id="@+id/fabcomments"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+		android:layout_marginRight="16dp"
+		android:layout_marginBottom="16dp"
+		android:src="@drawable/ic_comments"
+		app:fab_colorNormal="#f44336"
+		app:fab_colorPressed="#e53935" />
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+		<android.support.v7.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:maxHeight="?attr/actionBarSize"
+			android:fitsSystemWindows="true"
+			app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+			app:theme="@style/Toolbar" />
+		<View
+			android:layout_width="match_parent"
+			android:layout_height="4dp"
+			android:id="@+id/dropshadow"
+			android:background="@drawable/toolbar_dropshadow"
+			android:layout_below="@+id/toolbar" />
+	</RelativeLayout>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical"
+			android:paddingLeft="@dimen/margin_standard">
+
+			<TextView
+				android:id="@+id/title"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:ellipsize="end"
+				android:gravity="center_vertical"
+				android:maxLines="1"
+				android:minHeight="?attr/actionBarSize"
+				android:textColor="@android:color/white"
+				android:textSize="20sp" />
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/flexible_space_image_height"
+				android:background="@android:color/transparent" />
+		</LinearLayout>
+</FrameLayout>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.vidadesuporte"
+    android:versionCode="26"
+    android:versionName="3.5.5">
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="19" />
+
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.VIBRATE" />
+	<uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+	<permission android:name="com.vidadesuporte.permission.C2D_MESSAGE"
+		android:protectionLevel="signature" />
+	<uses-permission android:name="com.vidadesuporte.permission.C2D_MESSAGE" />
+
+    <application
+        android:name=".Application"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/VidaDeSuporte.Theme">
+        <activity
+            android:name=".activity.SplashScreen"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.MainActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|screenSize" />
+        
+        <activity
+            android:name=".activity.PostActivity"
+            android:configChanges="orientation|screenSize" />
+			
+		<activity
+			android:label="@string/settings"
+			android:name=".activity.FragmentActivity"
+            android:configChanges="orientation|screenSize">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.NOTIFICATION_PREFERENCES" />
+			</intent-filter>
+		</activity>
+
+        <activity
+            android:name=".activity.CommentsActivity"
+            android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+
+   <service android:name="com.parse.PushService" />
+		<receiver android:name="com.parse.ParseBroadcastReceiver">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+				<action android:name="android.intent.action.USER_PRESENT" />
+			</intent-filter>
+		</receiver>
+		<receiver android:name="com.vidadesuporte.receiver.NotificationReceiver" >
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+				<action android:name="android.intent.action.USER_PRESENT" />
+				<action android:name="com.vidadesuporte.UPDATE_STATUS" />
+			</intent-filter>
+		</receiver>
+		<receiver android:name="com.parse.GcmBroadcastReceiver"
+			android:permission="com.google.android.c2dm.permission.SEND">
+			<intent-filter>
+				<action android:name="com.google.android.c2dm.intent.RECEIVE" />
+				<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+				<category android:name="com.vidadesuporte" />
+			</intent-filter>
+		</receiver>
+		<receiver android:name=".receiver.CancelReceiver">
+			<intent-filter>
+				<action android:name="notification_cancelled"/>
+			</intent-filter>
+		</receiver>
+		
+		<activity android:name=".widget.WidgetShortcutConfigure"
+		    android:label="@string/addshortcutwidget"
+		    android:windowSoftInputMode="stateHidden">
+			<intent-filter>
+				<action android:name="android.intent.action.CREATE_SHORTCUT" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+    </application>
+
+</manifest>

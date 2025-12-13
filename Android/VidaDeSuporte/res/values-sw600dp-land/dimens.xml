@@ -1,0 +1,5 @@
+<resources>
+    <dimen name="space">30dp</dimen>
+    <dimen name="tab_height">48dp</dimen>
+    <dimen name="toolbar_elevation">4dp</dimen>
+</resources>
