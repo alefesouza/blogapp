@@ -1,4 +1,4 @@
-## ZeldaComBr
+## VidaDeSuporte
 
 Vida de Suporte is humor website for IT professionals.
 

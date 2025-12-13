@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:id="@+id/frame">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:background="#eeeeee"
+		android:id="@+id/linear">
+
+		<FrameLayout
+			android:id="@+id/main_content"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="#eeeeee" >
+			<RelativeLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical"
+				android:fitsSystemWindows="true" >
+
+				<ProgressBar
+					android:id="@+id/progressBar1"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_centerInParent="true" />
+
+				<com.github.ksoichiro.android.observablescrollview.ObservableWebView
+					android:id="@+id/webview01"
+					android:layout_height="match_parent"
+					android:layout_width="match_parent"
+					android:layout_above="@+id/progressBar2"
+					android:visibility="gone" />
+
+				<ProgressBar
+					android:id="@+id/progressBar2"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_alignParentTop="true"
+					android:visibility="gone"
+					style="@style/ProgressBarAppTheme"
+					/>
+
+				<android.support.design.widget.FloatingActionButton
+					android:id="@+id/fabdownload"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:src="@drawable/ic_file_download_white_24dp"
+					android:layout_marginBottom="16dp"
+					android:layout_marginRight="16dp"
+					android:layout_alignParentBottom="true"
+					android:layout_alignParentRight="true"
+					app:fabSize="normal"
+					android:visibility="gone" />
+
+				<android.support.design.widget.FloatingActionButton
+					android:id="@+id/fabopen"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:src="@drawable/ic_launch_white_24dp"
+					android:layout_marginBottom="16dp"
+					android:layout_marginRight="16dp"
+					android:layout_alignParentBottom="true"
+					android:layout_alignParentRight="true"
+					app:fabSize="normal"
+					android:visibility="gone" />
+
+				<View
+					android:layout_width="match_parent"
+					android:layout_height="4dp"
+					android:background="@drawable/toolbar_dropshadow"
+					android:layout_alignParentTop="true"
+					android:layout_above="@+id/progressBar2" />
+			</RelativeLayout>
+		</FrameLayout>
+
+		<FrameLayout
+			android:id="@+id/target_view"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:visibility="gone">
+		</FrameLayout>
+	</LinearLayout>
+</FrameLayout>

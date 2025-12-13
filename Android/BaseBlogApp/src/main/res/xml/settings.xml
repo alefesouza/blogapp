@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/colors">
+    <ListPreference
+            android:key="prefColor"
+            android:defaultValue="222222"
+            android:entries="@array/colors"
+            android:entryValues="@array/colorsValues"
+            android:title="@string/pref_color"
+            android:summary="@string/pref_color_summary" />
+    <ListPreference
+            android:key="prefIconColor"
+            android:defaultValue="branco"
+            android:entries="@array/iconColors"
+            android:entryValues="@array/iconColorsValues"
+            android:title="@string/pref_iconcolor"
+            android:summary="@string/pref_iconcolor_summary" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/content">
+        <ListPreference
+            android:key="prefImageQuality"
+            android:defaultValue="s400"
+            android:entries="@array/images"
+            android:entryValues="@array/imagesValues"
+            android:title="@string/pref_imagequality"
+            android:summary="@string/pref_imagequality_summary" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/notifications">
+        <CheckBoxPreference
+            android:key="prefNotification"
+            android:defaultValue="true"
+            android:title="@string/pref_notification"
+            android:summary="@string/pref_notification_summary" />
+    </PreferenceCategory>
+</PreferenceScreen>

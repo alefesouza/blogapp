@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="navigation_main_sections">
+        <item>Início</item>
+        <item>Favoritos</item>
+    </string-array>
+
+    <string-array name="drawable_ids">
+        <item>@drawable/ic_toolbar</item>
+        <item>@drawable/drawer_star</item>
+        <item>@drawable/ic_link_black_24dp</item>
+        <item>@drawable/ic_label_black_24dp</item>
+    </string-array>
+
+    <string-array name="categories">
+        <item>@string/categ1</item>
+        <item>@string/categ2</item>
+        <item>@string/categ3</item>
+        <item>@string/categ4</item>
+        <item>@string/categ5</item>
+        <item>@string/categ6</item>
+        <item>@string/categ7</item>
+    </string-array>
+
+    <string-array name="categories_icons">
+        <item>@drawable/widget_categ1</item>
+        <item>@drawable/widget_categ2</item>
+        <item>@drawable/widget_categ3</item>
+        <item>@drawable/widget_categ4</item>
+        <item>@drawable/widget_categ5</item>
+        <item>@drawable/widget_categ6</item>
+        <item>@drawable/widget_categ7</item>
+    </string-array>
+
+    <string-array name="colors">
+        <item>Padrão</item>
+        <item>Branco</item>
+        <item>Vermelho</item>
+        <item>Verde</item>
+        <item>Bege claro</item>
+        <item>Marrom</item>
+        <item>Escolher outra</item>
+    </string-array>
+
+    <string-array name="colorsValues">
+        <item>padrao</item>
+        <item>ffffffff</item>
+        <item>ffd92525</item>
+        <item>ff197343</item>
+        <item>fffadd93</item>
+        <item>ff3d0305</item>
+        <item>outra</item>
+    </string-array>
+
+    <string-array name="iconColors">
+        <item>Preto</item>
+        <item>Branco</item>
+    </string-array>
+
+    <string-array name="iconColorsValues">
+        <item>preto</item>
+        <item>branco</item>
+    </string-array>
+
+    <string-array name="images">
+        <item>Baixa</item>
+        <item>Média</item>
+        <item>Alta</item>
+    </string-array>
+
+    <string-array name="imagesValues">
+        <item>s400</item>
+        <item>s1000</item>
+        <item>s1600</item>
+    </string-array>
+	
+	<string-array name="allow_sites1">
+		<item>http://acasadocogumelo.com</item>
+		<item>http://www.acasadocogumelo.com</item>
+		<item>acasadocogumelo.com/search</item>
+	</string-array>
+
+	<string-array name="allow_sites2">
+		<item>facebook.com</item>
+		<item>plus.google.com</item>
+		<item>twitter.com</item>
+		<item>youtube.com</item>
+	</string-array>
+
+	<string-array name="socialnetworksnames">
+		<item>Facebook</item>
+		<item>Google+</item>
+		<item>Twitter</item>
+		<item>YouTube</item>
+	</string-array>
+
+    <string-array name="socialicons">
+        <item>@drawable/drawer_facebook</item>
+        <item>@drawable/drawer_googleplus</item>
+        <item>@drawable/drawer_twitter</item>
+        <item>@drawable/drawer_youtube</item>
+    </string-array>
+	
+	<string-array name="socialnetworksusers">
+		<item>137869276285719</item>
+		<item>+Acasadocogumelo</item>
+		<item>ACasadoCogumelo</item>
+		<item>UCEHol_7LxomGTVIKopJfQXA</item>
+	</string-array>
+</resources>

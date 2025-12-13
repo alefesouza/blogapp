@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	android:id="@+id/frame"
+	android:background="@color/colorPrimary"
+	android:fitsSystemWindows="true" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+			android:elevation="@dimen/toolbar_elevation"
+			android:background="@color/colorPrimary"
+			app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+			app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/relative"
+		android:background="#eeeeee">
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_marginBottom="56dp">
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<EditText
+				android:id="@+id/editText1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentTop="true"
+				android:layout_centerHorizontal="true"
+				android:hint="@string/widgettitle"
+				android:ems="10" >
+			</EditText>
+			
+			<TextView
+				android:id="@+id/textWidget1"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/editText1"
+				android:layout_marginTop="10dp"
+				android:textColor="#000000"
+				android:text="@string/widgeticon" />
+			
+			<RadioGroup
+				android:id="@+id/radioCategory"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_below="@+id/textWidget1">
+			</RadioGroup>
+			
+			<AutoCompleteTextView
+				android:id="@+id/editText2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:hint="@string/widgetcateg"
+				android:ems="10"
+				android:layout_below="@+id/radioCategory"
+				android:visibility="gone" />
+		</RelativeLayout>
+	</ScrollView>
+	<Button
+		android:id="@+id/button1"
+		android:layout_width="match_parent"
+		android:layout_height="56dp"
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:text="@string/createshortcut" />
+	<View
+		android:layout_width="match_parent"
+		android:layout_height="4dp"
+		android:background="@drawable/toolbar_dropshadow"
+		android:layout_alignParentTop="true"
+		android:id="@+id/dropshadow" />
+	</RelativeLayout>
+	</LinearLayout>
+</FrameLayout>
