@@ -1,0 +1,20 @@
+<resources>
+    <style name="YouTuber.Theme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBar">false</item>
+		<item name="android:selectableItemBackgroundBorderless">@drawable/toolbar_ripple</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:windowActionBarOverlay">true</item>
+		<item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+		<item name="actionModeShareDrawable">@drawable/ic_share</item>
+        <item name="android:scrollingCache">false</item>
+    </style>
+	
+	<style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    	<item name="actionBarItemBackground">@drawable/toolbar_ripple</item>
+		<item name="selectableItemBackground">@drawable/toolbar_ripple</item>
+		<item name="background">@color/colorPrimary</item>
+    </style>
+</resources>

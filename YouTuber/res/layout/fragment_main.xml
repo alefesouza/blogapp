@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/swipe_container" >
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/fragment" >
+	<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="#eeeeee"
+			android:id="@+id/main_content" >
+			
+			<com.gc.materialdesign.views.ProgressBarCircularIndeterminate
+                android:id="@+id/progressBar1"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_centerInParent="true"
+                android:background="@color/colorAccent" />
+			
+		<com.github.ksoichiro.android.observablescrollview.ObservableListView
+				android:id="@+id/list"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:divider="@android:color/transparent"
+				android:dividerHeight="0dp"
+				android:background="#eeeeee"
+				android:scrollbars="none"
+				android:layout_marginLeft="@dimen/list_margin"
+				android:layout_marginRight="@dimen/list_margin" />
+</RelativeLayout>
+</RelativeLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

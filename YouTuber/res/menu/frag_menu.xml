@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_open"
+        android:title="@string/openplaylist"
+        android:icon="@drawable/ic_open"
+		app:showAsAction="always" />
+</menu>

@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_share"
+        android:title="@string/share"
+		android:icon="@drawable/ic_share"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_open"
+        android:title="@string/openinbrowser" />
+    <item
+        android:id="@+id/menu_copylink"
+        android:title="@string/copylink" />
+    <item
+        android:id="@+id/menu_forward"
+        android:title="@string/forward" />
+    <item
+        android:id="@+id/menu_reload"
+        android:title="@string/reload" />
+    <item
+        android:id="@+id/menu_cache"
+        android:title="@string/cache" />
+</menu>

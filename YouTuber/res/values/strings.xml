@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mr. Lupa Plays</string>
+    <string name="blog_description">Canal com vídeos de gameplay de jogos de Wii U e Nintendo 3DS!</string>
+
+    <string name="developerkey"></string>
+    <string name="channeluser">mrlupaplays</string>
+    <string name="channelid">UCNB_E3hyB7tVo4cEPNJuLGw</string>
+    <string name="homeid">UUNB_E3hyB7tVo4cEPNJuLGw</string>
+
+    <string name="search">Pesquisar</string>
+    <string name="refresh">Atualizar</string>
+    <string name="needinternet">Verifique sua conexão de internet</string>
+    <string name="open">Abrir app do YouTube</string>
+    <string name="openplaylist">Abrir playlist no app do YouTube</string>
+    <string name="share">Compartilhar</string>
+    <string name="back">Voltar</string>
+    <string name="forward">Avançar</string>
+    <string name="home">Início</string>
+    <string name="reload">Recarregar</string>
+    <string name="cache">Limpar cache</string>
+    <string name="cache2">Cache limpo!</string>
+    <string name="download">Baixar imagem</string>
+    <string name="copylink">Copiar link</string>
+    <string name="openinbrowser">Abrir no navegador</string>
+    <string name="nomore">Não há mais resultados</string>
+    <string name="loadmore">Carregar mais</string>
+    <string name="sourcecodelicenses">Licenças de código aberto</string>
+
+    <string name="settings">Configurações</string>
+    <string name="about">Sobre</string>
+
+    <string name="notifications">Notificações</string>
+    <string name="pref_notification">Receber notificações</string>
+    <string name="pref_notification_summary">Receber em notificações de novos posts</string>
+
+    <string name="set">Aplicar</string>
+    <string name="save">Salvar</string>
+
+    <string name="dialog_notification">Suas notificações do site estão desativadas! Deseja ativar para receber todas as novidades em primeira mão?</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="other">Outro</string>
+	
+    <string name="drawer_open">Abrir</string>
+    <string name="drawer_close">Fechar</string>
+</resources>
