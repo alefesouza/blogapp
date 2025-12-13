@@ -62,10 +62,11 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 	ObservableListView list;
 	ArrayList <Videos> videosarray = new ArrayList <Videos>();
 	int more;
-	boolean ismore, block, isfirst, passed, nomore;
+	boolean ismore, block, isfirst, passed, nomore, seted;
 	ViewGroup footer3, footer4, footer5;
 	ProgressBar progressBar;
 	ProgressBarCircularIndeterminate progressBarCompat;
+	SwingBottomInAnimationAdapter swingBottomInAnimationAdapter;
 
 	private SwipeRefreshLayout mSwipeLayout;
 
@@ -200,15 +201,19 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 						videosarray.add(new Videos(id, titulo, likes, visualizacoes));
 					}
 
-					SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(new CardAdapter(getActivity(), videosarray));
-					swingBottomInAnimationAdapter.setAbsListView(list);
+					if(!seted) {
+						swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(new CardAdapter(getActivity(), videosarray));
+						swingBottomInAnimationAdapter.setAbsListView(list);
 
-					assert swingBottomInAnimationAdapter.getViewAnimator() != null;
-					swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
+						assert swingBottomInAnimationAdapter.getViewAnimator() != null;
+						swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
 
-					list.setAdapter(swingBottomInAnimationAdapter);
-					list.setOnScrollListener(SearchFragment.this);
-					list.setSelection(more);
+						list.setAdapter(swingBottomInAnimationAdapter);
+						list.setOnScrollListener(SearchFragment.this);
+						seted = true;
+					} else {
+						swingBottomInAnimationAdapter.notifyDataSetChanged(true);
+					}
 					
 					url = "http://apps.aloogle.net/blogapp/youtuber/json/search.php?id=" + getString(R.string.channelid) + "&key=" + getString(R.string.developerkey) + "&q=" + search + "&token=" + lastToken;
 					isfirst = false;

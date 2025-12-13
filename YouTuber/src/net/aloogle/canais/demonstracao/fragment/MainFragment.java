@@ -44,20 +44,23 @@ import com.google.gson.*;
 import net.aloogle.canais.demonstracao.other.*;
 import net.aloogle.canais.demonstracao.activity.*;
 import android.support.v7.app.*;
+import android.support.design.widget.*;
+import android.support.v7.widget.*;
 
 @SuppressLint("InflateParams")
 public class MainFragment extends Fragment implements AbsListView.OnScrollListener, SwipeRefreshLayout.OnRefreshListener {
 	Activity activity;
 	View view;
-	public static ObservableListView list;
+	public static ObservableRecyclerView list;
 	ArrayList <Videos> videosarray = new ArrayList <Videos>();
 	int more, mLastFirstVisibleItem;
-	boolean ismore, block, isfirst, passed, nomore, lastisfromoff;
-	String title, lastUrl, lastToken;
+	boolean ismore, block, isfirst, passed, nomore, lastisfromoff, seted;
+	String title, lastToken;
 	ViewGroup footer3, footer4, footer5;
 	ProgressBar progressBar;
 	ProgressBarCircularIndeterminate progressBarCompat;
 	private SwipeRefreshLayout mSwipeLayout;
+	SwingBottomInAnimationAdapter swingBottomInAnimationAdapter;
 
 	SharedPreferences preferences;
 	Editor editor;
@@ -93,17 +96,16 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 		
 		url = firstUrl;
 		lastToken = "aloogle";
-		
-		lastUrl = url;
 
-		list = (ObservableListView)view.findViewById(R.id.list);
-		list.setScrollViewCallbacks((ObservableScrollViewCallbacks)getActivity());
+        list = (ObservableRecyclerView)view.findViewById(R.id.list);
+        list.setScrollViewCallbacks((ObservableScrollViewCallbacks)getActivity());
+        list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        list.setHasFixedSize(false);
 		
 		LayoutInflater inflatere = getActivity().getLayoutInflater();
 		footer3 = (ViewGroup)inflatere.inflate(R.layout.footer3, list, false);
 		footer4 = (ViewGroup)inflatere.inflate(R.layout.no_more, list, false);
 		footer5 = (ViewGroup)inflatere.inflate(R.layout.load_more, list, false);
-		list.addFooterView(footer3, null, false);
 		
 		more = 0;
 		ismore = false;
@@ -162,7 +164,7 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 			.asJsonObject()
 			.setCallback(new FutureCallback<JsonObject>() {
 				@Override
-				public void onCompleted(Exception e, JsonObject json) {
+				public void onCompleted(Exception e, final JsonObject json) {
 					if(e != null) {
 						if(isfirst && !preferences.contains("homeJson")) {
 							setError();
@@ -171,19 +173,30 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 						toast.show();
 						return;
 					}
+
 					if (isfirst) {
+						isfirst = false;
+					}
+					
 						if(url.equals(firstUrl)) {
 							if(!preferences.getString("homeJson", "").equals(json.toString())) {
+								Snackbar
+									.make(getActivity().findViewById(R.id.coordinatorLayout), "Há novos vídeos!", Snackbar.LENGTH_LONG)
+									.setAction("Atualizar", new OnClickListener() {
+										@Override
+										public void onClick(View p1) {
+											makeList(json, false, fromUpdate);
+										}
+									})
+									.show();
 								editor.putString("homeJson",json.toString());
 								editor.commit();
 								update(false);
-								makeList(json, false, fromUpdate);
 							}
+						} else {
+							makeList(json, false, fromUpdate);
 						}
-						isfirst = false;
-					} else {
-						makeList(json, false, fromUpdate);
-					}
+					
 					mSwipeLayout.setRefreshing(false);
 					getActivity().findViewById(R.id.progressBar2).setVisibility(View.GONE);
 				}});}
@@ -201,12 +214,12 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 		block = false;
 		passed = false;
 
-		lastToken = json.get("token").getAsString();
+		if(!fromOff) {
+			lastToken = json.get("token").getAsString();
+		}
 
 		if (Build.VERSION.SDK_INT > 10) {
 			if (lastToken.equals("")) {
-				list.removeFooterView(footer3);
-				list.addFooterView(footer4, null, false);
 				nomore = true;
 			}
 		}
@@ -222,19 +235,15 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 			videosarray.add(new Videos(id, titulo, likes, visualizacoes));
 		}
 
-		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(new CardAdapter(getActivity(), videosarray));
-		swingBottomInAnimationAdapter.setAbsListView(list);
-
-		assert swingBottomInAnimationAdapter.getViewAnimator() != null;
-		swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
-
-		list.setAdapter(swingBottomInAnimationAdapter);
-		list.setOnScrollListener(MainFragment.this);
-		list.setSelection(more);
-
-		lastUrl = url;
-
+		if(!seted) {
+			seted = true;
+		} else {
+			swingBottomInAnimationAdapter.notifyDataSetChanged(true);
+		}
+		
+		if(!fromOff) {
 		url = firstUrl + "&token=" + lastToken;
+		}
 		if (Build.VERSION.SDK_INT >= 21) {
 			progressBar.setVisibility(View.GONE);
 		} else {
@@ -273,7 +282,7 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 		switch (item.getItemId()) {
 			case R.id.menu_refresh:
 				mSwipeLayout.setRefreshing(true);
-				update(true);
+				update(false);
 				return true;
 			default:
 				return
@@ -344,6 +353,6 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 	}
 
 	public void onRefresh() {
-		update(true);
+		update(false);
 	}
 }

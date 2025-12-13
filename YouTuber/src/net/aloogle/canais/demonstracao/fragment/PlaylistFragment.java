@@ -43,6 +43,7 @@ import net.aloogle.canais.demonstracao.other.Other;
 import net.aloogle.canais.demonstracao.other.Videos;
 import android.widget.*;
 import android.view.*;
+import android.support.design.widget.*;
 
 @SuppressLint("InflateParams")
 public class PlaylistFragment extends Fragment implements AbsListView.OnScrollListener, SwipeRefreshLayout.OnRefreshListener, ObservableScrollViewCallbacks {
@@ -52,11 +53,12 @@ public class PlaylistFragment extends Fragment implements AbsListView.OnScrollLi
 	ObservableListView list;
 	ArrayList <Videos> videosarray = new ArrayList <Videos>();
 	int more;
-	boolean ismore, block, isfirst, passed, nomore, fromtag, tofrag;
+	boolean ismore, block, isfirst, passed, nomore, fromtag, tofrag, seted;
 	String id, title, lastUrl, lastToken;
 	ViewGroup footer3, footer4, footer5;
 	ProgressBar progressBar;
 	ProgressBarCircularIndeterminate progressBarCompat;
+	SwingBottomInAnimationAdapter swingBottomInAnimationAdapter;
 
 	SharedPreferences preferences;
 
@@ -114,7 +116,7 @@ public class PlaylistFragment extends Fragment implements AbsListView.OnScrollLi
 			MainActivity.pos = getArguments().getInt("pos");
 			}
 		}
-
+			
 		if(!tofrag) {
 		MainActivity.fabopen.setOnClickListener(new OnClickListener() {
 				@Override
@@ -224,15 +226,19 @@ public class PlaylistFragment extends Fragment implements AbsListView.OnScrollLi
 						videosarray.add(new Videos(id, titulo, likes, visualizacoes));
 					}
 
-					SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(new CardAdapter(getActivity(), videosarray));
-					swingBottomInAnimationAdapter.setAbsListView(list);
+					if(!seted) {
+						swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(new CardAdapter(getActivity(), videosarray));
+						swingBottomInAnimationAdapter.setAbsListView(list);
 
-					assert swingBottomInAnimationAdapter.getViewAnimator() != null;
-					swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
+						assert swingBottomInAnimationAdapter.getViewAnimator() != null;
+						swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
 
-					list.setAdapter(swingBottomInAnimationAdapter);
-					list.setOnScrollListener(PlaylistFragment.this);
-					list.setSelection(more);
+						list.setAdapter(swingBottomInAnimationAdapter);
+						list.setOnScrollListener(PlaylistFragment.this);
+						seted = true;
+					} else {
+						swingBottomInAnimationAdapter.notifyDataSetChanged(true);
+					}
 
 					lastUrl = url;
 					

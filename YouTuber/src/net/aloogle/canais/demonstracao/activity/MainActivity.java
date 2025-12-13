@@ -79,9 +79,11 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
 	private ArrayList <Icons> icons;
 	ArrayList<String> linksnames = new ArrayList<String>();
 	ArrayList<String> linksurls = new ArrayList<String>();
+	ArrayList<String> linksicons = new ArrayList<String>();
 	
 	ArrayList<String> fplaylistsids = new ArrayList<String>();
 	ArrayList<String> fplaylistsnames = new ArrayList<String>();
+	ArrayList<String> fplaylistsicons = new ArrayList<String>();
 	
 	ArrayList<String> playlistsids = new ArrayList<String>();
 	ArrayList<String> playlistsnames = new ArrayList<String>();
@@ -91,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
 	public static FloatingActionButton fabopen;
 	SharedPreferences preferences;
 	Editor editor;
-	String titulo, suggestion, lastBanner, playliststoken;
+	String titulo, suggestion, lastBanner, playliststoken, fplaylistsname, linksname;
 	ImageView imagem, imagem2;
 	public static int pos;
 	int linkscount, fplaylistscount, playliststotal;
@@ -107,9 +109,11 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
     private View mToolbar;
     private View mImageView;
     private View mOverlayView;
-    private View mListBackgroundView;
+    private View mRecyclerViewBackground;
+    private ObservableRecyclerView mRecyclerView;
     private TextView mTitleView;
     private int mActionBarSize;
+    private int mFlexibleSpaceImageHeight;
     private int mToolbarColor;
 
 	private View mToolbarView;
@@ -133,24 +137,48 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
 		}
 		
 		titulo = getString(R.string.app_name);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
+        mFlexibleSpaceImageHeight = getResources().getDimensionPixelSize(R.dimen.flexible_space_image_height);
         mActionBarSize = getActionBarSize(this);
         mToolbarColor = getResources().getColor(R.color.colorPrimary);
 
         mToolbar = findViewById(R.id.toolbar);
-		mDropShadow = findViewById(R.id.dropshadow);
         if (!TOOLBAR_IS_STICKY) {
             mToolbar.setBackgroundColor(Color.TRANSPARENT);
         }
         mImageView = findViewById(R.id.image);
         mOverlayView = findViewById(R.id.overlay);
 
-        mTitleView = (TextView)findViewById(R.id.title);
-        mTitleView.setText("");
+        mTitleView = (TextView) findViewById(R.id.title);
+        mTitleView.setText(getTitle());
         setTitle(null);
 
-        // mListBackgroundView makes ListView's background except header view.
-        mListBackgroundView = findViewById(R.id.list_background);
-		
+        // mRecyclerViewBackground makes RecyclerView's background except header view.
+        mRecyclerViewBackground = findViewById(R.id.list_background);
+
+        //since you cannot programatically add a headerview to a recyclerview we added an empty view as the header
+        // in the adapter and then are shifting the views OnCreateView to compensate
+        final float scale = 1 + MAX_TEXT_SCALE_DELTA;
+        mRecyclerViewBackground.post(new Runnable() {
+				@Override
+				public void run() {
+					ViewHelper.setTranslationY(mRecyclerViewBackground, mFlexibleSpaceImageHeight);
+				}
+			});
+        ViewHelper.setTranslationY(mOverlayView, mFlexibleSpaceImageHeight);
+        mTitleView.post(new Runnable() {
+				@Override
+				public void run() {
+					ViewHelper.setTranslationY(mTitleView, (int) (mFlexibleSpaceImageHeight - mTitleView.getHeight() * scale));
+					ViewHelper.setPivotX(mTitleView, 0);
+					ViewHelper.setPivotY(mTitleView, 0);
+					ViewHelper.setScaleX(mTitleView, scale);
+					ViewHelper.setScaleY(mTitleView, scale);
+				}
+			});
+			
 		initDrawer(0);
 		initNotification();
 		
@@ -254,10 +282,13 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
 
 						String name = c.get("name").getAsString();
 						String url = c.get("url").getAsString();
+						String icon = c.get("icon").getAsString();
 
 						linksnames.add(name);
 						linksurls.add(url);
+						linksicons.add(icon);
 					}
+					linksname = json.get("links").getAsJsonObject().get("name").getAsString();
 
 					JsonArray playlists = json.get("playlists").getAsJsonObject().get("playlists").getAsJsonArray();
 					for (int i = 0; i < playlists.size(); i++) {
@@ -278,13 +309,16 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
 
 						String id = c.get("id").getAsString();
 						String name = c.get("name").getAsString();
+						String icon = c.get("icon").getAsString();
 
 						fplaylistsids.add(id);
 						fplaylistsnames.add(name);
+						fplaylistsicons.add(icon);
 					}
+					fplaylistsname = json.get("featuredplaylists").getAsJsonObject().get("name").getAsString();
+					
 					drawerloaded = true;
 					initDrawer(1);
-					mDrawerList.setItemChecked(1, true);
 				}
 			});
 
@@ -308,13 +342,13 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
         // Translate overlay and image
-        float flexibleRange = mImageView.getHeight() - mActionBarSize;
+        float flexibleRange = mFlexibleSpaceImageHeight - mActionBarSize;
         int minOverlayTransitionY = mActionBarSize - mOverlayView.getHeight();
         ViewHelper.setTranslationY(mOverlayView, ScrollUtils.getFloat(-scrollY, minOverlayTransitionY, 0));
         ViewHelper.setTranslationY(mImageView, ScrollUtils.getFloat(-scrollY / 2, minOverlayTransitionY, 0));
 
         // Translate list background
-        ViewHelper.setTranslationY(mListBackgroundView, Math.max(0, -scrollY + mImageView.getHeight()));
+        ViewHelper.setTranslationY(mRecyclerViewBackground, Math.max(0, -scrollY + mFlexibleSpaceImageHeight));
 
         // Change alpha of overlay
         ViewHelper.setAlpha(mOverlayView, ScrollUtils.getFloat((float) scrollY / flexibleRange, 0, 1));
@@ -327,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
         ViewHelper.setScaleY(mTitleView, scale);
 
         // Translate title text
-        int maxTitleTranslationY = (int) (mImageView.getHeight() - mTitleView.getHeight() * scale);
+        int maxTitleTranslationY = (int) (mFlexibleSpaceImageHeight - mTitleView.getHeight() * scale);
         int titleTranslationY = maxTitleTranslationY - scrollY;
         if (TOOLBAR_IS_STICKY) {
             titleTranslationY = Math.max(0, titleTranslationY);
@@ -337,18 +371,14 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
 
         if (TOOLBAR_IS_STICKY) {
             // Change alpha of toolbar background
-            if (-scrollY + mImageView.getHeight() <= mActionBarSize) {
+            if (-scrollY + mFlexibleSpaceImageHeight <= mActionBarSize) {
                 mToolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(1, mToolbarColor));
-				mDropShadow.setVisibility(View.VISIBLE);
-				getSupportActionBar().setTitle(getString(R.string.app_name));
             } else {
                 mToolbar.setBackgroundColor(ScrollUtils.getColorWithAlpha(0, mToolbarColor));
-				mDropShadow.setVisibility(View.GONE);
-				getSupportActionBar().setTitle("");
             }
         } else {
             // Translate Toolbar
-            if (scrollY < mImageView.getHeight()) {
+            if (scrollY < mFlexibleSpaceImageHeight) {
                 ViewHelper.setTranslationY(mToolbar, 0);
             } else {
                 ViewHelper.setTranslationY(mToolbar, -scrollY);
@@ -359,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
     @Override
     public void onDownMotionEvent() {
     }
-
+	
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
 		if(scrollState == ScrollState.DOWN) {
@@ -391,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
         }
         return marginBottom;
     }
-	
+
     private void setPivotXToTitle() {
         Configuration config = getResources().getConfiguration();
         if (Build.VERSION_CODES.JELLY_BEAN_MR1 <= Build.VERSION.SDK_INT
@@ -490,10 +520,10 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
 
 			icons = new ArrayList < Icons > ();
 
-			icons.add(new Icons("Início", categoryIcons.getResourceId(0, -1), false));
-			icons.add(new Icons("Rede sociais", categoryIcons.getResourceId(0, -1), true));
-			icons.add(new Icons("Facebook", categoryIcons.getResourceId(1, -1), false));
-			icons.add(new Icons("Twitter", categoryIcons.getResourceId(2, -1), false));
+			icons.add(new Icons("Início", categoryIcons.getResourceId(0, -1), false, ""));
+			icons.add(new Icons("Rede sociais", categoryIcons.getResourceId(0, -1), true, ""));
+			icons.add(new Icons("Facebook", categoryIcons.getResourceId(1, -1), false, ""));
+			icons.add(new Icons("Twitter", categoryIcons.getResourceId(2, -1), false, ""));
 			
 			adapter2 = new DrawerAdapter(getApplicationContext(), icons);
 			mDrawerList.setAdapter(adapter2);
@@ -503,25 +533,25 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
 			mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 		} else {
 			if(linksnames.size() > 0) {
-				icons.add(new Icons("Links", categoryIcons.getResourceId(0, -1), true));
+				icons.add(new Icons(linksname, categoryIcons.getResourceId(0, -1), true, ""));
 			for (int i = 0; i < linksnames.size(); i++) {
-				icons.add(new Icons(linksnames.get(i), categoryIcons.getResourceId(4, (i + 1)*-1), false));
+				icons.add(new Icons(linksnames.get(i), categoryIcons.getResourceId(4, (i + 1)*-1), false, linksicons.get(i)));
 			}
 			linkscount = linksnames.size() + 1;
 			}
 
 			if(fplaylistsids.size() > 0) {
-				icons.add(new Icons("Playlists principais", categoryIcons.getResourceId(0, -1), true));
+				icons.add(new Icons(fplaylistsname, categoryIcons.getResourceId(0, -1), true, ""));
 			for (int i = 0; i < fplaylistsids.size(); i++) {
-				icons.add(new Icons(fplaylistsnames.get(i), categoryIcons.getResourceId(3, (i + 1)*-1), false));
+				icons.add(new Icons(fplaylistsnames.get(i), categoryIcons.getResourceId(3, (i + 1)*-1), false, fplaylistsicons.get(i)));
 			}
 			fplaylistscount = fplaylistsids.size() + 1;
 			}
 
 			if(playlistsids.size() > 0) {
-				icons.add(new Icons("Playlists", categoryIcons.getResourceId(0, -1), true));
+				icons.add(new Icons("Playlists", categoryIcons.getResourceId(0, -1), true, ""));
 				for (int i = 0; i < playlistsids.size(); i++) {
-					icons.add(new Icons(playlistsnames.get(i), categoryIcons.getResourceId(3, (i + 1)*-1), false));
+					icons.add(new Icons(playlistsnames.get(i), categoryIcons.getResourceId(3, (i + 1)*-1), false, ""));
 				}
 			}
 			
@@ -549,8 +579,7 @@ public class MainActivity extends AppCompatActivity implements ObservableScrollV
 				mDrawerList.addFooterView(footer2, null, false);
 			}
 			
-			adapter2 = new DrawerAdapter(getApplicationContext(), icons);
-			mDrawerList.setAdapter(adapter2);
+			adapter2.notifyDataSetChanged();
 			
 			categoryIcons.recycle();
 			

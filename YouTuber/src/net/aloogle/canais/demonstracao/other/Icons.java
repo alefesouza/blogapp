@@ -4,6 +4,7 @@ public class Icons {
 
     private String title;
     private int icon;
+	private String icon2;
 	private boolean isSection;
     private String count = "13";
 
@@ -12,15 +13,18 @@ public class Icons {
     public Icons() {
     }
 
-    public Icons(String title, int icon, boolean isSection) {
+    public Icons(String title, int icon, boolean isSection, String icon2) {
         this.title = title;
         this.icon = icon;
+        this.icon2 = icon2;
 		this.isSection = isSection;
+		
     }
 
-    public Icons(String title, int icon, boolean isSection, boolean isCounterVisible, String count) {
+    public Icons(String title, int icon, boolean isSection, String icon2, boolean isCounterVisible, String count) {
         this.title = title;
         this.icon = icon;
+        this.icon2 = icon2;
 		this.isSection = isSection;
         this.isCounterVisible = isCounterVisible;
         this.count = count;
@@ -36,6 +40,10 @@ public class Icons {
 
     public int getIcon() {
         return this.icon;
+    }
+
+    public String getIcon2() {
+        return this.icon2;
     }
 
     public void setIcon(int icon) {

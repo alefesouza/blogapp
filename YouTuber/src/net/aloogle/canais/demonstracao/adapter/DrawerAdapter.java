@@ -13,6 +13,7 @@ import net.aloogle.canais.demonstracao.other.*;
 import java.util.ArrayList;
 import android.widget.*;
 import java.util.*;
+import com.koushikdutta.ion.*;
 
 public class DrawerAdapter extends BaseAdapter {
 
@@ -90,6 +91,12 @@ public class DrawerAdapter extends BaseAdapter {
 
 		if(!navDrawerItems.get(position).isSection()) {
 			holder.imageView.setImageResource(navDrawerItems.get(position).getIcon());
+			if(!navDrawerItems.get(position).getIcon2().equals("")) {
+				Ion.with (context)
+					.load(navDrawerItems.get(position).getIcon2())
+					.withBitmap()
+					.intoImageView(holder.imageView);
+			}
 		}
 		return convertView;
 	}

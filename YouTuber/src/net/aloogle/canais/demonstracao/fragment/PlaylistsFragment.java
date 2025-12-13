@@ -51,12 +51,13 @@ public class PlaylistsFragment extends Fragment implements AbsListView.OnScrollL
 	View view;
 	ObservableListView list;
 	ArrayList <Playlists> playlistsarray = new ArrayList <Playlists>();
-	int more, page;
-	boolean ismore, block, isfirst, passed, nomore, fromtag;
+	int more;
+	boolean ismore, block, isfirst, passed, nomore, fromtag, seted;
 	String title, lastUrl, firstToken, lastToken;
 	ViewGroup footer3, footer4, footer5;
 	ProgressBar progressBar;
 	ProgressBarCircularIndeterminate progressBarCompat;
+	SwingBottomInAnimationAdapter swingBottomInAnimationAdapter;
 
 	SharedPreferences preferences;
 
@@ -91,7 +92,7 @@ public class PlaylistsFragment extends Fragment implements AbsListView.OnScrollL
 
 		lastUrl = url;
 		
-		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Categorias");
+		((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Playlists");
 
 		list = (ObservableListView)view.findViewById(R.id.scroll);
 
@@ -184,20 +185,23 @@ public class PlaylistsFragment extends Fragment implements AbsListView.OnScrollL
 						playlistsarray.add(new Playlists(id, titulo));
 					}
 
-					SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(new ListAdapter(getActivity(), playlistsarray));
-					swingBottomInAnimationAdapter.setAbsListView(list);
+					if(!seted) {
+						swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(new ListAdapter(getActivity(), playlistsarray));
+						swingBottomInAnimationAdapter.setAbsListView(list);
 
-					assert swingBottomInAnimationAdapter.getViewAnimator() != null;
-					swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
+						assert swingBottomInAnimationAdapter.getViewAnimator() != null;
+						swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
 
-					list.setAdapter(swingBottomInAnimationAdapter);
-					list.setOnScrollListener(PlaylistsFragment.this);
-					list.setSelection(more);
+						list.setAdapter(swingBottomInAnimationAdapter);
+						list.setOnScrollListener(PlaylistsFragment.this);
+						seted = true;
+					} else {
+						swingBottomInAnimationAdapter.notifyDataSetChanged(true);
+					}
 
 					lastUrl = url;
 					
-					page ++;
-					url = firstUrl + "&token=" + page;
+					url = firstUrl + "&token=" + lastToken;
 					
 					isfirst = false;
 					list.setVisibility(View.VISIBLE);
@@ -211,7 +215,7 @@ public class PlaylistsFragment extends Fragment implements AbsListView.OnScrollL
 	public void onScroll(AbsListView view, int firstVisibleItem,
 						 int visibleItemCount, int totalItemCount) {
 		if (list.getLastVisiblePosition() == list.getAdapter().getCount() - 1 && list.getChildAt(list.getChildCount() - 1).getBottom() <= list.getHeight()) {
-			if (lastToken.equals("")) {
+			if (!lastToken.equals("")) {
 				if (!block) {
 					if (Other.isConnected(getActivity())) {
 						ismore = true;

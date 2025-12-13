@@ -16,11 +16,14 @@ import android.widget.TextView;
 import net.aloogle.canais.demonstracao.R;
 import net.aloogle.canais.demonstracao.adapter.TagAdapter;
 import net.aloogle.canais.demonstracao.other.CustomTextView;
+import java.util.*;
 
 @SuppressLint("InflateParams")
 public class LicensesFragment extends Fragment {
 	Activity activity;
 	View view;
+	ArrayList <String> textos = new ArrayList<String>();
+	ArrayList <String> licenses = new ArrayList<String>();
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -41,8 +44,8 @@ public class LicensesFragment extends Fragment {
 
 			((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Licenças de código aberto");
 
-		String[]textos = {
-			"<h4>Notice for file(s)</h4>" +
+		
+			textos.add("<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=androidsupport\">Android Support Libraries</a>" +
 			"<br><ul>" +
 			"<li>android-support-v4</li>" +
@@ -50,63 +53,61 @@ public class LicensesFragment extends Fragment {
 			"<li>android-support-v7-cardview</li>" +
 			"<li>android-support-v7-recyclerview</li>" +
 			"<li>google-play-services</li>" +
-			"</ul>",
-			"<h4>Notice for file(s)</h4>" +
+			"</ul>");
+			textos.add("<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=slidingtab\">Sliding Tab Layout</a>" +
 			"<br><ul>" +
 			"<li>SlidingTabStrip.java</li>" +
 			"<li>SlidingTabLayout.java</li>" +
-			"</ul>",
-			"<h4>Notice for file(s)</h4>" +
+			"</ul>");
+			textos.add("<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=parse\">Parse</a>" +
 			"<br><ul>" +
 			"<li>Parse-1.4.3.jar</li>" +
-			"</ul>",
-			"<h4>Notice for file(s)</h4>" +
+			"</ul>");
+			textos.add("<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=ion\">Ion</a>" +
 			"<br><ul>" +
 			"<li>ion-2.0.1.jar</li>" +
 			"<li>androidasync-2.0.1.jar</li>" +
-			"</ul>",
-			"<h4>Notice for file(s)</h4>" +
+			"</ul>");
+			textos.add("<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=listviewanimations\">ListViewAnimations</a>" +
 			"<br><ul>" +
 			"<li>albcore.jar</li>" +
-			"</ul>",
-			"<h4>Notice for file(s)</h4>" +
+			"</ul>");
+			textos.add("<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=observablescrollview\">ObservableScrollView</a>" +
 			"<br><ul>" +
 			"<li>ObservableScrollView</li>" +
-			"</ul>",
-			"<h4>Notice for file(s)</h4>" +
+			"</ul>");
+			textos.add("<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=nineoldandroids\">NineOldAndroids</a>" +
 			"<br><ul>" +
 			"<li>nineoldandroids-2.4.0.jar</li>" +
-			"</ul>",
-			"<h4>Notice for file(s)</h4>" +
+			"</ul>");
+			textos.add("<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=fab\">FloatingActionButton</a>" +
 			"<br><ul>" +
 			"<li>FloatingActionButton</li>" +
-			"</ul>",
-			"<h4>Notice for file(s)</h4>" +
+			"</ul>");
+			textos.add("<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=materialdesignlibrary\">MaterialDesignLibrary</a>" +
 			"<br><ul>" +
 			"<li>MaterialDesignLibrary</li>" +
-			"</ul>",
-			"<h4>Notice for file(s)</h4>" +
+			"</ul>");
+			textos.add("<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=photoview\">PhotoView</a>" +
 			"<br><ul>" +
 			"<li>PhotoView</li>" +
-			"</ul>",
-			"<h4>Notice for file(s)</h4>" +
+			"</ul>");
+			textos.add("<h4>Notice for file(s)</h4>" +
 			"<a href=\"http://apps.aloogle.net/blogapp/redirect.php?to=supportv4pf\">Android Support v4 Preference Fragment</a>" +
 			"<br><ul>" +
 			"<li>android-support-v4-preferencefragment</li>" +
-			"</ul>"
-		};
+			"</ul>");
 
-		String[]licenses = {
-			"<pre><code>" +
+		licenses.add("<pre><code>" +
 			" Copyright (C) 2014 The Android Open Source Project" +
 			"<br><br>" +
 			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
@@ -120,8 +121,8 @@ public class LicensesFragment extends Fragment {
 			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
 			"   See the License for the specific language governing permissions and" +
 			"   limitations under the License." +
-			"  </code></pre>",
-			"<pre><code>" +
+			"  </code></pre>");
+			licenses.add("<pre><code>" +
 			"   Copyright 2014 Google Inc. All rights reserved." +
 			"<br><br>" +
 			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
@@ -135,13 +136,13 @@ public class LicensesFragment extends Fragment {
 			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
 			"   See the License for the specific language governing permissions and" +
 			"   limitations under the License." +
-			"  </code></pre>",
-			"<pre><code>" +
+			"  </code></pre>");
+			licenses.add("<pre><code>" +
 			"   Parse grants you a revocable, personal, worldwide, royalty-free," +
 			"   non-assignable and non-exclusive license to use the software provided to you by Parse as part of the Parse Services as provided to you by Parse." +
 			"   This license is for the sole purpose of enabling you to use and enjoy the benefit of the Parse Services as provided by Parse, in the manner permitted by the Terms." +
-			"  </code></pre>",
-			"<pre><code>" +
+			"  </code></pre>");
+			licenses.add("<pre><code>" +
 			"Copyright 2013 Koushik Dutta (2013)" +
 			"<br><br>" +
 			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
@@ -155,8 +156,8 @@ public class LicensesFragment extends Fragment {
 			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
 			"   See the License for the specific language governing permissions and" +
 			"   limitations under the License." +
-			"  </code></pre>",
-			"<pre><code>" +
+			"  </code></pre>");
+			licenses.add("<pre><code>" +
 			"Copyright 2014 Niek Haarman" +
 			"<br><br>" +
 			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
@@ -170,8 +171,8 @@ public class LicensesFragment extends Fragment {
 			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
 			"   See the License for the specific language governing permissions and" +
 			"   limitations under the License." +
-			"</code></pre>",
-			"<pre><code>" +
+			"</code></pre>");
+			licenses.add("<pre><code>" +
 			"   Copyright 2014 Soichiro Kashima" +
 			"<br><br>" +
 			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
@@ -185,8 +186,8 @@ public class LicensesFragment extends Fragment {
 			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
 			"   See the License for the specific language governing permissions and" +
 			"   limitations under the License." +
-			"  </code></pre>",
-			"<pre><code>" +
+			"  </code></pre>");
+			licenses.add("<pre><code>" +
 			"   Copyright 2012 Jake Wharton" +
 			"<br><br>" +
 			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
@@ -200,8 +201,8 @@ public class LicensesFragment extends Fragment {
 			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
 			"   See the License for the specific language governing permissions and" +
 			"   limitations under the License." +
-			"</code></pre>",
-			"<pre><code>" +
+			"</code></pre>");
+			licenses.add("<pre><code>" +
 			"   The MIT License (MIT)" +
 			"<br><br>" +
 			"   Copyright (c) 2014 Oleksandr Melnykov" +
@@ -223,8 +224,8 @@ public class LicensesFragment extends Fragment {
 			"   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM," +
 			"   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE" +
 			"   SOFTWARE." +
-			"  </code></pre>",
-			"<pre><code>" +
+			"  </code></pre>");
+licenses.add("<pre><code>" +
 			"Copyright 2014 Ivan Navas" +
 			"<br><br>" +
 			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
@@ -238,8 +239,8 @@ public class LicensesFragment extends Fragment {
 			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
 			"   See the License for the specific language governing permissions and" +
 			"   limitations under the License." +
-			"  </code></pre>",
-			"<pre><code>" +
+			"  </code></pre>");
+			licenses.add("<pre><code>" +
 			"Copyright 2011, 2012 Chris Banes" +
 			"<br><br>" +
 			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
@@ -253,8 +254,8 @@ public class LicensesFragment extends Fragment {
 			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
 			"   See the License for the specific language governing permissions and" +
 			"   limitations under the License." +
-			"  </code></pre>",
-			"<pre><code>" +
+			"  </code></pre>");
+			licenses.add("<pre><code>" +
 			"   Copyright 2014 kolavar" +
 			"<br><br>" +
 			"   Licensed under the Apache License, Version 2.0 (the \"License\");" +
@@ -268,17 +269,16 @@ public class LicensesFragment extends Fragment {
 			"   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied." +
 			"   See the License for the specific language governing permissions and" +
 			"   limitations under the License." +
-			"  </code></pre>"
-		};
+			"  </code></pre>");
 
-		for (int i = 0; i < textos.length; i++) {
+		for (int i = 0; i < textos.size(); i++) {
 			LayoutInflater textoinflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			View textoview = textoinflater.inflate(R.layout.license_text, null);
 			TextView texto = (TextView)textoview.findViewById(R.id.text);
 			CustomTextView code = (CustomTextView)textoview.findViewById(R.id.licensetext);
 			texto.setMovementMethod(LinkMovementMethod.getInstance());
-			texto.setText(Html.fromHtml(textos[i], null, new TagAdapter()));
-			code.setText(Html.fromHtml(licenses[i], null, new TagAdapter()));
+			texto.setText(Html.fromHtml(textos.get(i), null, new TagAdapter()));
+			code.setText(Html.fromHtml(licenses.get(i), null, new TagAdapter()));
 			LinearLayout viewlicenses = (LinearLayout)view.findViewById(R.id.licenses);
 			viewlicenses.addView(textoview);
 		}
