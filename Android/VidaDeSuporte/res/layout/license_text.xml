@@ -14,7 +14,7 @@
 		android:textSize="16sp"
 	/>
 	
-	<com.vidadesuporte.other.CustomTextView
+	<br.com.vidadesuporte.other.CustomTextView
 		android:id="@+id/licensetext"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

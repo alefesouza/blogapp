@@ -29,7 +29,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:textIsSelectable="true"
-			android:textColorLink="#0000ff"
+			android:textColorLink="@color/colorAccent"
 			android:textColor="#000000"
 			android:textSize="16sp"
 		/>
@@ -49,7 +49,7 @@
 			android:background="@drawable/drawer"
 			android:orientation="vertical" >
 
-			<com.vidadesuporte.other.CustomTextView
+			<br.com.vidadesuporte.other.CustomTextView
 				android:id="@+id/sourcecodelicenses"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"

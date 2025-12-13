@@ -21,7 +21,7 @@
 		android:layout_width="32dp"
 		android:layout_height="32dp"
 		android:layout_centerInParent="true"
-		android:background="#d92525" />
+		android:background="@color/colorAccent" />
 
    <com.github.ksoichiro.android.observablescrollview.ObservableWebView
         android:id="@+id/webview01"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
 		android:visibility="gone"
-		android:background="#d92525"
+		android:background="@color/colorAccent"
 	/>
 
 	<View

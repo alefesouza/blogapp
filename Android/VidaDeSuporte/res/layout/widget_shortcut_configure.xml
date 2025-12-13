@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 	android:id="@+id/frame"
+	android:background="@color/colorPrimary"
 	android:fitsSystemWindows="true" >
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
 			android:elevation="@dimen/toolbar_elevation"
+			android:background="@color/colorPrimary"
 			app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
 			app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 	<RelativeLayout
@@ -54,46 +56,6 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_below="@+id/textWidget1">
-				<RadioButton
-					android:id="@+id/radio1"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/wiiu" />
-				<RadioButton
-					android:id="@+id/radio2"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/tresds" />
-				<RadioButton
-					android:id="@+id/radio3"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/mario" />
-				<RadioButton
-					android:id="@+id/radio4"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/zelda" />
-				<RadioButton
-					android:id="@+id/radio5"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/pokemon" />
-				<RadioButton
-					android:id="@+id/radio6"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/donkeykong" />
-				<RadioButton
-					android:id="@+id/radio7"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/metroid" />
-				<RadioButton
-					android:id="@+id/radio8"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/other" />
 			</RadioGroup>
 			
 			<AutoCompleteTextView

@@ -1,0 +1,35 @@
+package br.com.vidadesuporte.other;
+
+import android.app.Activity;
+import android.net.ConnectivityManager;
+import com.nineoldandroids.view.*;
+import android.view.View;
+import android.view.animation.*;
+import android.view.ViewGroup;
+
+public class Other {
+    public static final Interpolator mInterpolator = new AccelerateDecelerateInterpolator();
+	
+	public static boolean isConnected(Activity activity) {
+		@SuppressWarnings("static-access")
+		ConnectivityManager cm = (ConnectivityManager)activity.getSystemService(activity.CONNECTIVITY_SERVICE);
+		boolean connected = cm != null && cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+		return connected;
+	}
+	
+	public static void fabShow(boolean toShow, View v) {
+		int translationY = toShow ? 0 : v.getHeight() + getMarginBottom(v);
+		ViewPropertyAnimator.animate(v).setInterpolator(mInterpolator)
+			.setDuration(200)
+			.translationY(translationY);
+	}
+
+    public static int getMarginBottom(View v) {
+        int marginBottom = 0;
+        final ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
+        if (layoutParams instanceof ViewGroup.MarginLayoutParams) {
+            marginBottom = ((ViewGroup.MarginLayoutParams) layoutParams).bottomMargin;
+        }
+        return marginBottom;
+    }
+}

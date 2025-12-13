@@ -17,6 +17,6 @@
 			android:layout_height="wrap_content"
 			android:layout_alignParentTop="true"
 			android:visibility="gone"
-			android:background="#d92525"
+			android:background="@color/colorAccent"
 		/>
 </RelativeLayout>

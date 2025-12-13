@@ -1,4 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/colorframe">
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -6,7 +11,7 @@
         android:background="#CCFFFFFF"
         android:orientation="vertical" >
 
-	<com.vidadesuporte.lib.ColorPicker
+        <br.com.vidadesuporte.lib.ColorPicker
             android:id="@+id/color_picker"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
@@ -24,4 +29,6 @@
             android:layout_height="wrap_content"
          android:layout_gravity="center_horizontal"
             android:text="@string/save" />
-</LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

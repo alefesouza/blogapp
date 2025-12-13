@@ -14,7 +14,7 @@
         android:fitsSystemWindows="false"
         android:scaleType="centerCrop"
         android:src="@drawable/drawer_logo"
-        android:tint="#73000000" />
+        android:tint="#74000000" />
 
     <ImageView
         android:id="@+id/circularImageView1"
@@ -27,7 +27,7 @@
         android:layout_alignParentStart="true"
         android:src="@drawable/ic_launcher" />
 	
-	<com.vidadesuporte.other.CustomTextView
+	<br.com.vidadesuporte.other.CustomTextView
         android:id="@+id/myTextView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
         android:textSize="14.0sp"
         app:fontName="Roboto-Medium.ttf" />
 
-	<com.vidadesuporte.other.CustomTextView
+	<br.com.vidadesuporte.other.CustomTextView
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/myTextView1"

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+	android:background="@color/colorPrimary"
     android:id="@+id/frame"
     tools:context=".MainActivity" >
 
@@ -10,65 +11,74 @@
 		android:id="@+id/drawer_layout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
+		<android.support.design.widget.CoordinatorLayout
+			android:id="@+id/coordinatorLayout"
+			android:layout_height="match_parent"
+			android:layout_width="match_parent">
 		<FrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:fitsSystemWindows="true">
-			<com.github.ksoichiro.android.observablescrollview.TouchInterceptionFrameLayout
+
+			<RelativeLayout
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:id="@+id/container" >
-				<RelativeLayout
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:orientation="vertical">
+				android:layout_height="match_parent"
+				android:orientation="vertical">
+				
+			<android.support.v7.widget.Toolbar
+				android:id="@+id/toolbar"
+				android:layout_width="match_parent"
+				android:layout_height="?attr/actionBarSize"
+				app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+				app:theme="@style/Toolbar" />
 
 			<FrameLayout
 				android:id="@+id/pager_wrapper"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:paddingTop="@dimen/tab_height">
+				android:layout_below="@+id/toolbar">
 				<android.support.v4.view.ViewPager
 					android:id="@+id/pager"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent" />
-				<View
-					android:layout_width="match_parent"
-					android:layout_height="4dp"
-					android:background="@drawable/toolbar_dropshadow"
-					android:id="@+id/dropshadow"/>
 			</FrameLayout>
 			
 			<FrameLayout
 				android:id="@+id/content_frame"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:layout_below="@+id/header"
+				android:layout_below="@+id/toolbar"
 				android:visibility="gone">
 			</FrameLayout>
-			
-			<RelativeLayout
+
+			<View
+				android:layout_width="match_parent"
+				android:layout_height="4dp"
+				android:layout_below="@+id/toolbar"
+				android:background="@drawable/toolbar_dropshadow"
+				android:id="@+id/dropshadow" />
+
+			<com.gc.materialdesign.views.ProgressBarIndeterminate
+				android:id="@+id/progressBar2"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:id="@+id/header"
-				android:orientation="vertical">
-
-				<android.support.v7.widget.Toolbar
-					android:id="@+id/toolbar"
-					android:layout_width="match_parent"
-					android:layout_height="?attr/actionBarSize"
-					app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
-					app:theme="@style/Toolbar" />
-				
-				<com.vidadesuporte.lib.SlidingTabLayout
-					android:id="@+id/sliding_tabs"
-					android:layout_width="match_parent"
-					android:layout_height="@dimen/tab_height"
-					android:layout_below="@+id/toolbar" />
-			</RelativeLayout>
+				android:layout_below="@+id/toolbar"
+				android:background="@color/colorAccent"
+				android:visibility="gone"
+			/>
 		</RelativeLayout>
-		</com.github.ksoichiro.android.observablescrollview.TouchInterceptionFrameLayout>
 		</FrameLayout>
+
+		<android.support.design.widget.FloatingActionButton
+			android:id="@+id/fabrandom"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:src="@drawable/ic_random"
+			android:layout_marginBottom="16dp"
+			android:layout_marginRight="16dp"
+			android:layout_gravity="right|bottom"
+			app:fabSize="normal" />
+		</android.support.design.widget.CoordinatorLayout>
 
 			<ListView
 				android:id="@+id/left_drawer"

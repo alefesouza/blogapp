@@ -6,12 +6,11 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:windowActionBarOverlay">true</item>
-		<item name="colorPrimary">@color/logo_red</item>
-        <item name="colorAccent">@color/logo_red</item>
-        <item name="homeAsUpIndicator">@drawable/ic_arrow_white</item>
-   		<item name="dropDownListViewStyle">@style/DropDownListViewStyle</item>
-		<item name="actionModeShareDrawable">@drawable/ic_share_white</item>
+		<item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+		<item name="actionModeShareDrawable">@drawable/ic_share</item>
         <item name="android:scrollingCache">false</item>
+   		<item name="dropDownListViewStyle">@style/DropDownListViewStyle</item>
     </style>
 
     <style name="DropDownListViewStyle" parent="Widget.AppCompat.ListView.DropDown">
@@ -21,11 +20,12 @@
 	<style name="Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
     	<item name="actionBarItemBackground">@drawable/toolbar_ripple</item>
 		<item name="selectableItemBackground">@drawable/toolbar_ripple</item>
+		<item name="background">@color/colorPrimary</item>
     </style>
-    
+
 	<style name="BlackOverflow" parent="VidaDeSuporte.Theme">
 		<item name="actionOverflowButtonStyle">@style/MyActionButtonOverFlow</item>
-		<item name="homeAsUpIndicator">@drawable/ic_arrow_black</item>
+        <item name="homeAsUpIndicator">@drawable/ic_arrow_black</item>
 		<item name="actionModeShareDrawable">@drawable/ic_share_black</item>
 	</style>
 

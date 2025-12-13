@@ -9,9 +9,8 @@
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/flexible_space_image_height"
-		android:scaleType="fitXY"
-        android:src="@drawable/drawer_logo" />
+        android:layout_height="wrap_content"
+		android:adjustViewBounds="true" />
 
     <View
         android:id="@+id/overlay"
@@ -41,7 +40,7 @@
 						android:layout_height="match_parent"
 						android:layout_below="@+id/placeholder"
 						android:background="#ffffff">
-						<com.vidadesuporte.other.CustomTextView
+						<br.com.vidadesuporte.other.CustomTextView
 					android:id="@+id/titulo"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -51,7 +50,7 @@
 					android:layout_marginTop="10dp"
 					android:layout_marginBottom="5dp"
 					android:textSize="20sp"
-					app:fontName="RobotoSlab-Bold.ttf"
+					app:fontName="Special-Elite.ttf"
 				/>
 			
 				<LinearLayout
@@ -63,7 +62,7 @@
 					android:layout_marginRight="20dp"
 					android:layout_marginBottom="10dp"
 					android:orientation="vertical" >
-					<com.vidadesuporte.other.CustomTextView
+					<br.com.vidadesuporte.other.CustomTextView
 						android:id="@+id/autor"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -111,17 +110,36 @@
 					</RelativeLayout>
 				</RelativeLayout>
 			</com.github.ksoichiro.android.observablescrollview.ObservableScrollView>
-			
-	<com.melnykov.fab.FloatingActionButton
+
+	<android.support.design.widget.FloatingActionButton
 		android:id="@+id/fabcomments"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:src="@drawable/ic_comments"
+		android:layout_marginBottom="16dp"
+		android:layout_marginRight="16dp"
+		android:layout_gravity="right|bottom"
+		app:fabSize="normal" />
+	
+	<RelativeLayout
+		android:layout_width="56dp"
+		android:layout_height="56dp"
         android:layout_gravity="right|bottom"
 		android:layout_marginRight="16dp"
 		android:layout_marginBottom="16dp"
-		android:src="@drawable/ic_comments"
-		app:fab_colorNormal="#f44336"
-		app:fab_colorPressed="#e53935" />
+		android:id="@+id/relat"
+		android:elevation="10dp">
+	<br.com.vidadesuporte.other.CustomTextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="18dp"
+		android:layout_centerHorizontal="true"
+		android:id="@+id/comentarioscount"
+		android:textColor="@color/colorAccent"
+		android:textSize="12sp"
+		app:fontName="Roboto-Regular.ttf"
+	/>
+	</RelativeLayout>
 
 	<RelativeLayout
 		android:layout_width="match_parent"
@@ -140,8 +158,16 @@
 			android:id="@+id/dropshadow"
 			android:background="@drawable/toolbar_dropshadow"
 			android:layout_below="@+id/toolbar" />
+		
+		<com.gc.materialdesign.views.ProgressBarDeterminate
+			android:id="@+id/progress"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/colorAccent"
+			android:layout_below="@+id/toolbar"
+		/>
 	</RelativeLayout>
-
+	
 		<LinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"

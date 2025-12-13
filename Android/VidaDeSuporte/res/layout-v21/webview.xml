@@ -42,46 +42,31 @@
         android:layout_height="wrap_content"
 		android:layout_alignParentTop="true"
 		android:visibility="gone"
-		android:background="#d92525"
+		android:background="@color/colorAccent"
 	/>
 
-	<com.melnykov.fab.FloatingActionButton
-		android:id = "@+id/fabcomments"
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/fabdownload"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_alignParentRight="true"
-		android:layout_marginRight="16dp"
-		android:layout_marginBottom="16dp"
-		android:src="@drawable/ic_comments"
-		app:fab_colorNormal="#f44336"
-		app:fab_colorPressed="#e53935"
-		android:visibility="gone" />
-
-	<com.melnykov.fab.FloatingActionButton
-		android:id = "@+id/fabdownload"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_alignParentRight="true"
-		android:layout_marginRight="16dp"
-		android:layout_marginBottom="16dp"
 		android:src="@drawable/ic_download"
-		app:fab_colorNormal="#f44336"
-		app:fab_colorPressed="#e53935"
-		android:visibility="gone" />
-
-	<com.melnykov.fab.FloatingActionButton
-		android:id = "@+id/fabopen"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
+		android:layout_marginBottom="16dp"
+		android:layout_marginRight="16dp"
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"
-		android:layout_marginRight="16dp"
-		android:layout_marginBottom="16dp"
+		app:fabSize="normal"
+		android:visibility="gone" />
+	
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/fabopen"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 		android:src="@drawable/ic_open"
-		app:fab_colorNormal="#f44336"
-		app:fab_colorPressed="#e53935"
+		android:layout_marginBottom="16dp"
+		android:layout_marginRight="16dp"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		app:fabSize="normal"
 		android:visibility="gone" />
 	
 	<View
