@@ -75,7 +75,10 @@ namespace ZeldaComBr
             progress.IsIndeterminate = false;
             progress.Visibility = Visibility.Collapsed;
 
-            string functionString = "document.querySelector('.plugin').style.overflow = 'visible';";
+            string functionString = @"document.querySelector('.plugin').style.overflow = 'visible';
+                var msViewportStyle = document.createElement('style');
+                msViewportStyle.appendChild(document.createTextNode('@-ms-viewport{width:device-width!important;}'));
+                document.getElementsByTagName('head')[0].appendChild(msViewportStyle);";
             if(!iserror)
             {
                 await webView1.InvokeScriptAsync("eval", new string[] { functionString });
@@ -102,11 +105,6 @@ namespace ZeldaComBr
         public void CBRefresh_Click(object sender, RoutedEventArgs e)
         {
             webView1.Refresh();
-        }
-
-        private void Back_Click(object sender, RoutedEventArgs e)
-        {
-            Frame.GoBack();
         }
     }
 }

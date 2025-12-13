@@ -165,4 +165,7 @@
   <data name="YouTubeUrl" xml:space="preserve">
     <value>youtube.com/user/hyrulelegends</value>
   </data>
+  <data name="StoreLink" xml:space="preserve">
+    <value>ms-windows-store://pdp/?productid=9NBLGGH6J0T8</value>
+  </data>
 </root>

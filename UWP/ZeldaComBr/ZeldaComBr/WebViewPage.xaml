@@ -21,7 +21,7 @@
             <CommandBar.Content>
                 <StackPanel>
                     <TextBlock x:Uid="CBTitle" Name="CBTitle" FontWeight="Bold" Margin="12,14" TextTrimming="WordEllipsis" />
-                    <AutoSuggestBox Width="300" LostFocus="SearchBox_LostFocus" PlaceholderText="Pesquisar" Name="SearchBox" HorizontalAlignment="Right" Margin="10" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" Visibility="Collapsed" />
+                    <AutoSuggestBox LostFocus="SearchBox_LostFocus" PlaceholderText="Pesquisar" Name="SearchBox" Margin="10" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" Visibility="Collapsed" />
                 </StackPanel>
             </CommandBar.Content>
 
@@ -55,6 +55,7 @@
 
                     <VisualState.Setters>
                         <Setter Target="CB.Margin" Value="48 0 0 0" />
+                        <Setter Target="SearchBox.HorizontalAlignment" Value="Stretch" />
                     </VisualState.Setters>
                 </VisualState>
 
@@ -65,6 +66,8 @@
 
                     <VisualState.Setters>
                         <Setter Target="CB.Margin" Value="0" />
+                        <Setter Target="SearchBox.HorizontalAlignment" Value="Right" />
+                        <Setter Target="SearchBox.Width" Value="300" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

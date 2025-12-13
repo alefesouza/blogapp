@@ -35,6 +35,7 @@ namespace ZeldaComBr
 
         public Post()
         {
+            Other.Other.Transition(this);
             this.InitializeComponent();
         }
 

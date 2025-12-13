@@ -9,6 +9,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.Storage.Streams;
+using Windows.System;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -18,6 +19,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using XamlAnimatedGif;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -28,7 +30,8 @@ namespace ZeldaComBr
     /// </summary>
     public sealed partial class ImageZoom : Page
     {
-        string url, imagetitle;
+        string url, imageTitle;
+        StorageFile file2;
 
         public ImageZoom()
         {
@@ -39,60 +42,87 @@ namespace ZeldaComBr
         {
             url = WebUtility.UrlDecode(e.Parameter as string);
             string[] image = url.Split('/');
-            imagetitle = url.Split('/')[image.Length - 1];
+            imageTitle = url.Split('/')[image.Length - 1];
 
-            CBTitle.Text = imagetitle;
+            CBTitle.Text = imageTitle;
 
-            ZoomImage.Source = new BitmapImage(new Uri(url, UriKind.Absolute));
+            AnimationBehavior.SetSourceUri(ZoomImage, new Uri(url, UriKind.Absolute));
         }
 
-        private void CBDownload_Click(object sender, RoutedEventArgs e)
+        private async void CBDownload_Click(object sender, RoutedEventArgs e)
         {
-            DownloadImage();
+            Loading.Visibility = Visibility.Visible;
+            try
+            {
+                Uri uri = new Uri(url);
+                var file = await StorageFile.CreateStreamedFileFromUriAsync(imageTitle, uri, RandomAccessStreamReference.CreateFromUri(uri));
+                file2 = await file.CopyAsync(KnownFolders.PicturesLibrary, imageTitle, NameCollisionOption.ReplaceExisting);
+
+                MessageDialog md = new MessageDialog(imageTitle + " salvo na pasta imagens" + KnownFolders.PicturesLibrary.Path);
+
+                md.Commands.Add(new UICommand("Abrir", new UICommandInvokedHandler(CommandHandlers)) { Id = 0 });
+                md.Commands.Add(new UICommand("Fechar", new UICommandInvokedHandler(CommandHandlers)) { Id = 1 });
+
+                await md.ShowAsync();
+            }
+            catch (Exception ex)
+            {
+                Other.Other.ShowMessage("Erro ao salvar imagem");
+            }
+            Loading.Visibility = Visibility.Collapsed;
         }
 
-        public async void DownloadImage()
+        public async void CommandHandlers(IUICommand commandLabel)
         {
-            Uri uri = new Uri(url);
-
-            // download image from uri into temp storagefile
-            var file = await StorageFile.CreateStreamedFileFromUriAsync(imagetitle, uri, RandomAccessStreamReference.CreateFromUri(uri));
-
-            // file is readonly, copy to a new location to remove restrictions
-            var file2 = await file.CopyAsync(KnownFolders.PicturesLibrary);
-
-            Other.Other.ShowMessage("Imagem salva na pasta Imagens");
+            var Actions = commandLabel.Label;
+            switch (Actions)
+            {
+                case "Abrir":
+                    await Launcher.LaunchFileAsync(file2);
+                    break;
+            }
         }
 
         private void CBShare_Click(object sender, RoutedEventArgs e)
         {
             DataTransferManager datatransfermanager = DataTransferManager.GetForCurrentView();
-            datatransfermanager.DataRequested += new TypedEventHandler<DataTransferManager, DataRequestedEventArgs>(ShareTextHandler);
+            datatransfermanager.DataRequested += new TypedEventHandler<DataTransferManager, DataRequestedEventArgs>(DataTransferManager_DataRequested);
             DataTransferManager.ShowShareUI();
         }
 
-        private void Back_Click(object sender, RoutedEventArgs e)
+        private async void DataTransferManager_DataRequested(DataTransferManager sender, DataRequestedEventArgs args)
         {
-            Frame.GoBack();
-        }
+            DataRequestDeferral deferral = args.Request.GetDeferral();
+            args.Request.Data.Properties.Title = "Compartilhar imagem";
+            args.Request.Data.Properties.Description = url;
+            args.Request.Data.SetText(url + " - Compartilhado pelo Zelda.com.br para Windows 10");
 
-        private async void ShareTextHandler(DataTransferManager sender, DataRequestedEventArgs e)
-        {
-            DataRequest request = e.Request;
-
-            request.Data.Properties.Title = "Compartilhar link";
-            request.Data.Properties.Description = Convert.ToString(url);
-
-            try
+            if (!File.Exists("ms-appdata:///temp/" + imageTitle))
             {
-                String text = imagetitle + " " + Convert.ToString(url);
-                request.Data.SetText(text);
+                try
+                {
+                    Uri uri = new Uri(url);
+                    var file = await StorageFile.CreateStreamedFileFromUriAsync(imageTitle, uri, RandomAccessStreamReference.CreateFromUri(uri));
+                    var file2 = await file.CopyAsync(ApplicationData.Current.TemporaryFolder);
+                }
+                catch (Exception e)
+                {
+                    return;
+                }
             }
-            catch
-            {
-                MessageDialog dialog = new MessageDialog("Houve um erro.");
-                await dialog.ShowAsync();
-            }
+            var imageUri = "ms-appdata:///temp/" + imageTitle;
+
+            StorageFile imageFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(imageUri));
+
+            List<IStorageItem> imageItems = new List<IStorageItem>();
+            imageItems.Add(imageFile);
+            args.Request.Data.SetStorageItems(imageItems);
+
+            RandomAccessStreamReference imageStreamRef = RandomAccessStreamReference.CreateFromFile(imageFile);
+            args.Request.Data.Properties.Thumbnail = imageStreamRef;
+            args.Request.Data.SetBitmap(imageStreamRef);
+
+            deferral.Complete();
         }
     }
 }

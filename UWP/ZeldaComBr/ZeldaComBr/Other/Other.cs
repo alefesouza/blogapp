@@ -9,6 +9,8 @@ using Windows.ApplicationModel.Resources;
 using Windows.Networking.Connectivity;
 using Windows.UI.Notifications;
 using Windows.UI.Popups;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace ZeldaComBr.Other
 {
@@ -98,6 +100,18 @@ namespace ZeldaComBr.Other
                 LiveTileUpdater.EnableNotificationQueue(true);
                 LiveTileUpdater.StartPeriodicUpdateBatch(uris, PeriodicUpdateRecurrence.Hour);
             }
+        }
+
+        public static void Transition(Page p)
+        {
+            TransitionCollection collection = new TransitionCollection();
+            NavigationThemeTransition theme = new NavigationThemeTransition();
+
+            var info = new DrillInNavigationTransitionInfo();
+
+            theme.DefaultNavigationTransitionInfo = info;
+            collection.Add(theme);
+            p.Transitions = collection;
         }
     }
 }

@@ -35,7 +35,7 @@
             </CommandBar>
         </RelativePanel>
 
-        <Frame Name="PostsFrame" Grid.Row="1" Grid.Column="0" />
+        <Frame Name="PostsFrame" Grid.Column="0" Grid.Row="1" />
 
         <Frame Name="PostFrame" Grid.Column="0" Grid.RowSpan="2" Visibility="Collapsed" />
 

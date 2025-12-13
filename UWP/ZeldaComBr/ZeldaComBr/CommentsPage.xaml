@@ -18,10 +18,7 @@
 
         <CommandBar Name="CB" x:Uid="CB" Grid.Row="0">
             <CommandBar.Content>
-                <StackPanel Orientation="Horizontal">
-                    <AppBarButton Icon="Back" Name="Back" Click="Back_Click" />
-                    <TextBlock Name="CBTitle" FontWeight="Bold" Margin="12,14" TextTrimming="WordEllipsis" />
-                </StackPanel>
+                <TextBlock Name="CBTitle" FontWeight="Bold" Margin="12,14" TextTrimming="WordEllipsis" />
             </CommandBar.Content>
 
             <CommandBar.SecondaryCommands>

@@ -33,7 +33,9 @@ namespace ZeldaComBr
         public Favorites()
         {
             this.InitializeComponent();
+            Other.Other.Transition(this);
             this.NavigationCacheMode = NavigationCacheMode.Required;
+
             lPosts = ListPosts;
             W = Warning;
 

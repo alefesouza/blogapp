@@ -38,6 +38,8 @@ namespace ZeldaComBr
         {
             this.InitializeComponent();
             this.NavigationCacheMode = NavigationCacheMode.Required;
+            Other.Other.Transition(this);
+
             hImage = HeaderImage;
             lPosts = ListPosts;
             pBar = PBar;

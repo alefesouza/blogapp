@@ -83,7 +83,7 @@ namespace ZeldaComBr
                 localSettings.Values["OpenTimes"] = int.Parse(localSettings.Values["OpenTimes"].ToString()) + 1;
             }
 
-            if (localSettings.Values["OpenTimes"].ToString().Equals(localSettings.Values["NextRate"].ToString()))
+            if (localSettings.Values["OpenTimes"].ToString().Equals(localSettings.Values["NextRate"].ToString()) && !localSettings.Values.ContainsKey("AlreadyRate"))
             {
                 RateApp();
             }
@@ -228,15 +228,6 @@ namespace ZeldaComBr
             }
         }
 
-        private void HamburgerLB_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (HamburgerLB.SelectedIndex != -1)
-            {
-                MainSplitView.IsPaneOpen = !MainSplitView.IsPaneOpen;
-                HamburgerLB.SelectedIndex = -1;
-            }
-        }
-
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Other.Other.CreateTile();
@@ -253,13 +244,14 @@ namespace ZeldaComBr
             await md.ShowAsync();
         }
 
-        public void CommandHandlers(IUICommand commandLabel)
+        public async void CommandHandlers(IUICommand commandLabel)
         {
             var Actions = commandLabel.Label;
             switch (Actions)
             {
                 case "Avaliar":
                     localSettings.Values["AlreadyRate"] = true;
+                    await Launcher.LaunchUriAsync(new Uri(Other.Other.loader.GetString("StoreLink")));
                     break;
                 case "Mais tarde":
                     localSettings.Values["NextRate"] = int.Parse(localSettings.Values["NextRate"].ToString()) + 7;

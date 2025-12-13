@@ -22,7 +22,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         
-        <SplitView Name="MainSplitView" CompactPaneLength="48" OpenPaneLength="240" Grid.RowSpan="2" Grid.ColumnSpan="2">
+        <SplitView Name="MainSplitView" CompactPaneLength="48" OpenPaneLength="240" Grid.RowSpan="2" Grid.ColumnSpan="2" PaneBackground="Transparent">
             <SplitView.Pane>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -31,15 +31,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <ListBox Name="HamburgerLB" Grid.Row="0" SelectionChanged="HamburgerLB_SelectionChanged">
-                        <ListBoxItem x:Name="hamburguer">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE700;" FontFamily="Segoe MDL2 Assets" FontSize="16" Margin="4" />
-                                <TextBlock Text="" Margin="18 0 0 0" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </ListBoxItem>
-                    </ListBox>
-                    <ListBox Name="HeaderLB" Grid.Row="1" SelectionChanged="HeaderLB_SelectionChanged">
+                    <ListBox Name="HeaderLB" Grid.Row="1" SelectionChanged="HeaderLB_SelectionChanged" ScrollViewer.VerticalScrollMode="Disabled" Margin="0 48 0 0">
                         <ListBoxItem x:Name="home">
                             <ToolTipService.ToolTip>
                                 <TextBlock Text="Início"></TextBlock>
@@ -70,7 +62,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                    <ListBox Name="SettingsLB" SelectionChanged="SettingsLB_SelectionChanged" BorderThickness="0 1 0 0" BorderBrush="#545454" Grid.Row="3">
+                    <ListBox Name="SettingsLB" SelectionChanged="SettingsLB_SelectionChanged" BorderThickness="0 1 0 0" BorderBrush="#545454" Grid.Row="3" ScrollViewer.VerticalScrollMode="Disabled">
                         <ListBoxItem x:Name="settings">
                             <ToolTipService.ToolTip>
                                 <TextBlock Text="Configurações"></TextBlock>
@@ -89,7 +81,7 @@
             </SplitView.Content>
         </SplitView>
         
-        <Grid x:Uid="Hamburguer" Grid.Row="0">
+        <Grid x:Uid="Hamburguer" Name="Hamburguer" Grid.Row="0">
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" >
                 <AppBarButton Click="HamburguerButton_Click" Name="CBHamburguer" Width="48" Height="48">
                     <TextBlock Text="&#xE700;" FontFamily="Segoe MDL2 Assets" FontSize="16" HorizontalAlignment="Center" />

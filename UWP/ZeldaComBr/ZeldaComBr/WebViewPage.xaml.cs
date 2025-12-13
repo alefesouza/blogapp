@@ -34,6 +34,7 @@ namespace ZeldaComBr
         public WebViewPage()
         {
             this.InitializeComponent();
+            Other.Other.Transition(this);
             WV = webView1;
             title = CBTitle;
         }
