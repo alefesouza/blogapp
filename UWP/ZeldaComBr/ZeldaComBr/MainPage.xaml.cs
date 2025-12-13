@@ -30,6 +30,7 @@ namespace ZeldaComBr
         public static Frame MFrame;
         public static bool toSettings = false, toWebView = false;
         public static int selectedIndex = 0;
+        ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
 
         public MainPage()
         {
@@ -45,7 +46,7 @@ namespace ZeldaComBr
                 <toast activationType='background' duration='long'>
                     <visual>
                         <binding template='ToastGeneric'>
-                            <text>Notificações - Zelda.com.br</text>
+                            <text>Notificações - {Other.Other.loader.GetString("AppName")}</text>
                             <text>Deseja receber notificações de novos posts do site?</text>
                         </binding>
                     </visual>
@@ -71,6 +72,22 @@ namespace ZeldaComBr
                 localSettings.Values["NotifNotifs"] = true;
             }
 
+            if (!localSettings.Values.ContainsKey("NextRate") && !localSettings.Values.ContainsKey("AlreadyRate"))
+            {
+                localSettings.Values["NextRate"] = 3;
+                localSettings.Values["OpenTimes"] = 0;
+            }
+
+            if (!localSettings.Values.ContainsKey("AlreadyRate"))
+            {
+                localSettings.Values["OpenTimes"] = int.Parse(localSettings.Values["OpenTimes"].ToString()) + 1;
+            }
+
+            if (localSettings.Values["OpenTimes"].ToString().Equals(localSettings.Values["NextRate"].ToString()))
+            {
+                RateApp();
+            }
+
             set = SettingsLB;
             header = HeaderLB;
 
@@ -87,19 +104,19 @@ namespace ZeldaComBr
 
                 if (a.Name.Equals("home"))
                 {
-                    targetUri = "http://zelda.com.br/";
+                    targetUri = "http://" + Other.Other.loader.GetString("SiteUrl");
                 }
                 else if (a.Name.Equals("facebook"))
                 {
-                    targetUri = "http://facebook.com/hyrulelegends";
+                    targetUri = "http://" + Other.Other.loader.GetString("FacebookUrl");
                 }
                 else if (a.Name.Equals("twitter"))
                 {
-                    targetUri = "http://twitter.com/hyrulelegends";
+                    targetUri = "http://" + Other.Other.loader.GetString("TwitterUrl");
                 }
                 else if (a.Name.Equals("youtube"))
                 {
-                    targetUri = "http://youtube.com/user/hyrulelegends";
+                    targetUri = "http://" + Other.Other.loader.GetString("YouTubeUrl");
                 }
                 else
                 {
@@ -164,6 +181,13 @@ namespace ZeldaComBr
                     toWebView = false;
                 }
 
+                if(HomePage.post.Visibility == Visibility.Visible && !Posts.toKnow.IsActive)
+                {
+                    HomePage.post.SetNavigationState("1,0");
+                    HomePage.post.Visibility = Visibility.Collapsed;
+                    SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+                }
+
                 if (HeaderLB.SelectedIndex == 0)
                 {
                     HomePage.posts.Navigate(typeof(Posts));
@@ -216,6 +240,31 @@ namespace ZeldaComBr
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             Other.Other.CreateTile();
+        }
+
+        public async void RateApp()
+        {
+            MessageDialog md = new MessageDialog(Other.Other.loader.GetString("DialogRate"));
+            md.Title = Other.Other.loader.GetString("RateApp");
+
+            md.Commands.Add(new UICommand("Avaliar", new UICommandInvokedHandler(CommandHandlers)) { Id = 0 });
+            md.Commands.Add(new UICommand("Mais tarde", new UICommandInvokedHandler(CommandHandlers)) { Id = 1 });
+
+            await md.ShowAsync();
+        }
+
+        public void CommandHandlers(IUICommand commandLabel)
+        {
+            var Actions = commandLabel.Label;
+            switch (Actions)
+            {
+                case "Avaliar":
+                    localSettings.Values["AlreadyRate"] = true;
+                    break;
+                case "Mais tarde":
+                    localSettings.Values["NextRate"] = int.Parse(localSettings.Values["NextRate"].ToString()) + 7;
+                    break;
+            }
         }
     }
 }

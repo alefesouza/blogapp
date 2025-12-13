@@ -16,7 +16,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-        <CommandBar Name="CB" Background="#1e5e23" Grid.Row="0">
+        <CommandBar Name="CB" x:Uid="CB" Grid.Row="0">
             <CommandBar.Content>
                 <TextBlock Name="CBTitle" FontWeight="Bold" Margin="12,14" TextTrimming="WordEllipsis" />
             </CommandBar.Content>

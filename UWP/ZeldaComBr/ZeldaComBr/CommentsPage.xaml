@@ -16,11 +16,11 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <CommandBar Background="#1e5e23" Name="CB" Grid.Row="0">
+        <CommandBar Name="CB" x:Uid="CB" Grid.Row="0">
             <CommandBar.Content>
                 <StackPanel Orientation="Horizontal">
                     <AppBarButton Icon="Back" Name="Back" Click="Back_Click" />
-                    <TextBlock Text="Zelda.com.br" Name="CBTitle" FontWeight="Bold" Margin="12,14" TextTrimming="WordEllipsis" />
+                    <TextBlock Name="CBTitle" FontWeight="Bold" Margin="12,14" TextTrimming="WordEllipsis" />
                 </StackPanel>
             </CommandBar.Content>
 

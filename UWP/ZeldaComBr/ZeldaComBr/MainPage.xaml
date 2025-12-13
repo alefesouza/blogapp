@@ -63,7 +63,8 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="m:LeftPanelItem">
                             <StackPanel Orientation="Horizontal" ToolTipService.ToolTip="{x:Bind Title}">
-                                <TextBlock Text="{x:Bind Icon}" FontFamily="Segoe MDL2 Assets" FontSize="16" Margin="4" />
+                                <TextBlock Text="{x:Bind Icon}" FontFamily="Segoe MDL2 Assets" FontSize="16" Margin="4" Visibility="{x:Bind Visibility}" />
+                                <Image Source="{x:Bind Image}" Margin="4" VerticalAlignment="Center" Visibility="{x:Bind Visibility2}" />
                                 <TextBlock Text="{x:Bind Title}" Margin="18 0 0 0" VerticalAlignment="Center" />
                             </StackPanel>
                         </DataTemplate>
@@ -88,7 +89,7 @@
             </SplitView.Content>
         </SplitView>
         
-        <Grid Background="#1e5e23" Grid.Row="0">
+        <Grid x:Uid="Hamburguer" Grid.Row="0">
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" >
                 <AppBarButton Click="HamburguerButton_Click" Name="CBHamburguer" Width="48" Height="48">
                     <TextBlock Text="&#xE700;" FontFamily="Segoe MDL2 Assets" FontSize="16" HorizontalAlignment="Center" />

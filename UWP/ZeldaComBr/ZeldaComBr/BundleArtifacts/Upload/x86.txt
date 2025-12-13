@@ -1,0 +1,2 @@
+MainPackage=C:\Users\Alefe\documents\visual studio 2015\Projects\ZeldaComBr\ZeldaComBr\bin\x86\Release\Upload\ZeldaComBr_1.9.0.0_x86.appx
+SymbolPackage=C:\Users\Alefe\documents\visual studio 2015\Projects\ZeldaComBr\ZeldaComBr\AppPackages\ZeldaComBr_1.9.0.0\ZeldaComBr_1.9.0.0_x86.appxsym

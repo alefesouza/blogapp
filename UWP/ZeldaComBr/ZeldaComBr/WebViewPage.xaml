@@ -16,16 +16,19 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        
-        <CommandBar Background="#1e5e23" Name="CB" Grid.Row="0">
+
+        <CommandBar Name="CB" x:Uid="CB" Grid.Row="0" HorizontalContentAlignment="Stretch">
             <CommandBar.Content>
-                <TextBlock Text="Zelda.com.br" Name="CBTitle" FontWeight="Bold" Margin="12,14" TextTrimming="WordEllipsis" />
+                <StackPanel>
+                    <TextBlock x:Uid="CBTitle" Name="CBTitle" FontWeight="Bold" Margin="12,14" TextTrimming="WordEllipsis" />
+                    <AutoSuggestBox Width="300" LostFocus="SearchBox_LostFocus" PlaceholderText="Pesquisar" Name="SearchBox" HorizontalAlignment="Right" Margin="10" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" Visibility="Collapsed" />
+                </StackPanel>
             </CommandBar.Content>
 
             <AppBarButton Label="Compartilhar" Click="ShareButton_Click" Name="CBShare" ToolTipService.ToolTip="Compartilhar" >
                 <TextBlock Text="&#xE72D;" FontFamily="Segoe MDL2 Assets" FontSize="18" HorizontalAlignment="Center" />
             </AppBarButton>
-            <AppBarButton Icon="Find" Label="Pesquisar" Click="SearchButton_Click" Name="CBSearch" ToolTipService.ToolTip="Pesquisar" />
+            <AppBarButton Icon="Find" Label="Pesquisar" Click="CBSearch_Click" Name="CBSearch" ToolTipService.ToolTip="Pesquisar" />
 
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="Abrir no navegador" Name="CBOpen" Click="CBOpen_Click" />
@@ -34,11 +37,6 @@
                 <AppBarButton Label="Recarregar" Name="CBReload" Click="CBRefresh_Click" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
-
-        <RelativePanel Background="#1e5e23" Name="SearchHolder" Visibility="Collapsed" Grid.Row="1">
-            <AutoSuggestBox Width="200" PlaceholderText="Pesquisar" Name="SearchBox" Margin="10" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" RelativePanel.LeftOf="CloseHolder" />
-            <Button Content="Fechar" Click="CloseSearchHolder_Click" Margin="10 10 20 10" Name="CloseHolder" RelativePanel.AlignRightWithPanel="True"></Button>
-        </RelativePanel>
 
         <RelativePanel Grid.Row="2">
             <ProgressRing x:Name="progress1" IsActive="True" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.AlignVerticalCenterWithPanel="True" />

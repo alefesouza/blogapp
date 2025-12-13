@@ -98,7 +98,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="WebPages\Error.html" />
+    <Content Include="Assets\Images\Triforce.png" />
+    <Content Include="Assets\WebPages\Error.html" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -145,15 +146,11 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <PRIResource Include="Strings\pt-BR\Resources.resw" />
     <None Include="ZeldaComBr_StoreKey.pfx" />
     <None Include="ZeldaComBr_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\BadgeLogo.scale-100.png" />
-    <Content Include="Assets\BadgeLogo.scale-125.png" />
-    <Content Include="Assets\BadgeLogo.scale-150.png" />
-    <Content Include="Assets\BadgeLogo.scale-200.png" />
-    <Content Include="Assets\BadgeLogo.scale-400.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-125.png" />
     <Content Include="Assets\SplashScreen.scale-150.png" />
@@ -191,7 +188,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
-    <Content Include="Images\Error.png" />
+    <Content Include="Assets\Images\Error.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -252,9 +249,14 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="PushSDK">
-      <HintPath>..\..\..\..\PushSDK\PushSDK.winmd</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\..\..\..\Downloads\Parse-SDK-dotNET-master\Parse-SDK-dotNET-master\Parse.UWP\Parse.UWP.csproj">
+      <Project>{7fd39803-bd49-4b8f-a033-06287f3dfc50}</Project>
+      <Name>Parse.UWP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Downloads\Parse-SDK-dotNET-master\Parse-SDK-dotNET-master\Parse\Parse.csproj">
+      <Project>{de07a443-9619-4bd7-b540-41296f8a2959}</Project>
+      <Name>Parse</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

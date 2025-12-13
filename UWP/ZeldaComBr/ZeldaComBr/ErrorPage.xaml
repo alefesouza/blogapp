@@ -8,9 +8,9 @@
     mc:Ignorable="d">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <Grid Background="#d40000">
+        <Grid x:Uid="Error">
             <StackPanel VerticalAlignment="Center">
-                <Image Source="ms-appx:///Images/Error.png" Grid.Row="0" HorizontalAlignment="Center" MaxWidth="350" />
+                <Image Source="ms-appx:///Assets/Images/Error.png" Grid.Row="0" HorizontalAlignment="Center" MaxWidth="350" />
                 <Button Content="Tentar novamente" Name="TryAgain" Click="TryAgain_Click" Grid.Row="1" HorizontalAlignment="Center" />
             </StackPanel>
         </Grid>

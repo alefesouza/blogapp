@@ -1,10 +1,11 @@
-﻿using PushSDK;
+﻿using Parse;
 using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Resources;
 using Windows.Networking.Connectivity;
 using Windows.UI.Notifications;
 using Windows.UI.Popups;
@@ -13,10 +14,9 @@ namespace ZeldaComBr.Other
 {
     public static class Other
     {
-        public static string BlogId = "95564318";
-        public static string YouTubeID = "UUJW-3SY48ok-9_uonxzKe0A";
         public static string defaultUrl = "http://apps.aloogle.net/blogapp/zeldacombr/";
         public static SQLiteConnection objConn = new SQLiteConnection("ZeldaComBr.db");
+        public static ResourceLoader loader = new ResourceLoader();
 
         public static bool JsonExists(string name)
         {
@@ -65,31 +65,18 @@ namespace ZeldaComBr.Other
             return connected;
         }
 
-        public static void Notif(bool enable)
+        public static async void Notif(bool enable)
         {
-            NotificationService service = NotificationService.GetCurrent("secret key aqui");
-
-            if (enable)
+            if(IsConnected())
             {
-                service.OnPushAccepted += (sender, pushNotification) => {
-                    string pushString = pushNotification.ToString();
-                };
-
-                service.OnPushTokenReceived += (sender, pushToken) => {
-                };
-
-                service.OnPushTokenFailed += (sender, errorMessage) => {
-                };
-
-                service.SubscribeToPushService();
-            }
-            else
-            {
-                service.UnsubscribeFromPushes(
-                    (obj, args) => {
-                    },
-                    (obj, args) => {
-                    });
+                if (enable)
+                {
+                    await ParsePush.SubscribeAsync("");
+                }
+                else
+                {
+                    await ParsePush.UnsubscribeAsync("");
+                }
             }
         }
 

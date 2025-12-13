@@ -34,10 +34,10 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             
-                            <TextBlock Text="{Binding Title}" Foreground="#2e7d32" Margin="10" FontSize="22" TextWrapping="Wrap" Grid.Row="0" />
+                            <TextBlock Text="{Binding Title}" x:Uid="CardTitle" Margin="10" FontSize="22" TextWrapping="Wrap" Grid.Row="0" />
                             <Image Source="{Binding Image}" Grid.Row="1" />
                             <TextBlock Text="{Binding Description}" Margin="10" Foreground="Black" TextWrapping="Wrap" TextAlignment="Justify" Grid.Row="2" />
-                            <StackPanel Background="#1b1b1b" Padding="15" Grid.Row="3">
+                            <StackPanel x:Uid="CardFooter" Padding="15" Grid.Row="3">
                                 <TextBlock Text="{Binding Comments}" HorizontalAlignment="Center" TextWrapping="Wrap" />
                             </StackPanel>
                         </Grid>

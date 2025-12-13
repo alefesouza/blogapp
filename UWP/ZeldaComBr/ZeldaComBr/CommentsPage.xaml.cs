@@ -22,6 +22,8 @@ namespace ZeldaComBr
     /// </summary>
     public sealed partial class CommentsPage : Page
     {
+        bool iserror;
+
         public CommentsPage()
         {
             this.InitializeComponent();
@@ -42,7 +44,11 @@ namespace ZeldaComBr
 
         private void WebView1_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
         {
-            webView1.Navigate(new Uri("ms-appx-web:///WebPages/Error.html"));
+            if(!iserror)
+            {
+                webView1.Navigate(new Uri("ms-appx-web:///Assets/WebPages/Error.html"));
+                iserror = true;
+            }
         }
 
         private void webView1_ContentLoading(WebView sender, WebViewContentLoadingEventArgs args)
@@ -70,7 +76,11 @@ namespace ZeldaComBr
             progress.Visibility = Visibility.Collapsed;
 
             string functionString = "document.querySelector('.plugin').style.overflow = 'visible';";
-            await webView1.InvokeScriptAsync("eval", new string[] { functionString });
+            if(!iserror)
+            {
+                await webView1.InvokeScriptAsync("eval", new string[] { functionString });
+                iserror = false;
+            }
         }
 
         public void CBBack_Click(object sender, RoutedEventArgs e)

@@ -12,6 +12,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.System;
 using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -30,6 +31,7 @@ namespace ZeldaComBr
     public sealed partial class HomePage : Page
     {
         public static Frame post, posts;
+        DispatcherTimer tmr = new DispatcherTimer();
 
         public HomePage()
         {
@@ -47,27 +49,33 @@ namespace ZeldaComBr
                 localSettings.Values["defaultTables"] = true;
             }
 
+            tmr.Interval = TimeSpan.FromMilliseconds(0);
+            tmr.Tick += GoFocus;
+
             post = PostFrame;
             posts = PostsFrame;
             MainPage.header.SelectedIndex = 0;
         }
 
-        private void CloseSearchHolder_Click(object sender, RoutedEventArgs e)
+        private void CBSearch_Click(object sender, RoutedEventArgs e)
         {
-            SearchHolder.Visibility = Visibility.Collapsed;
+            SearchBox.Visibility = Visibility.Visible;
+            CBTitle.Visibility = Visibility.Collapsed;
+            CBSearch.Visibility = Visibility.Collapsed;
+            tmr.Start();
         }
 
-        private void Search_Click(object sender, RoutedEventArgs e)
+        private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (SearchHolder.Visibility == Visibility.Collapsed)
-            {
-                SearchHolder.Visibility = Visibility.Visible;
-                Task.Factory.StartNew(() => Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => SearchBox.Focus(FocusState.Programmatic)));
-            }
-            else
-            {
-                SearchHolder.Visibility = Visibility.Collapsed;
-            }
+            SearchBox.Visibility = Visibility.Collapsed;
+            CBTitle.Visibility = Visibility.Visible;
+            CBSearch.Visibility = Visibility.Visible;
+        }
+
+        public void GoFocus(object sender, object e)
+        {
+            SearchBox.Focus(FocusState.Programmatic);
+            tmr.Stop();
         }
 
         public void Refresh_Click(object sender, RoutedEventArgs e)
@@ -82,7 +90,7 @@ namespace ZeldaComBr
 
         public async void OpenBrowser()
         {
-            await Launcher.LaunchUriAsync(new Uri("http://zelda.com.br"));
+            await Launcher.LaunchUriAsync(new Uri("http://" + Other.Other.loader.GetString("SiteUrl")));
         }
 
         private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)

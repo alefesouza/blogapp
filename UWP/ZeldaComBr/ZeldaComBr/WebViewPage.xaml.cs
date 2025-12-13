@@ -29,6 +29,7 @@ namespace ZeldaComBr
     {
         public static WebView WV;
         public static TextBlock title;
+        DispatcherTimer tmr = new DispatcherTimer();
 
         public WebViewPage()
         {
@@ -48,11 +49,14 @@ namespace ZeldaComBr
             webView1.NavigationStarting += webView1_NavigationStarting;
             webView1.LoadCompleted += webView1_LoadCompleted;
             webView1.NavigationFailed += WebView1_NavigationFailed;
+
+            tmr.Interval = TimeSpan.FromMilliseconds(0);
+            tmr.Tick += GoFocus;
         }
 
         private void WebView1_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
         {
-            webView1.Navigate(new Uri("ms-appx-web:///WebPages/Error.html"));
+            webView1.Navigate(new Uri("ms-appx-web:///Assets/WebPages/Error.html"));
         }
 
         private void webView1_ContentLoading(WebView sender, WebViewContentLoadingEventArgs args)
@@ -146,22 +150,27 @@ namespace ZeldaComBr
             webView1.Navigate(targetUri);
         }
 
-        private void CloseSearchHolder_Click(object sender, RoutedEventArgs e)
+        private void CBSearch_Click(object sender, RoutedEventArgs e)
         {
-            SearchHolder.Visibility = Visibility.Collapsed;
+            SearchBox.Visibility = Visibility.Visible;
+            CBTitle.Visibility = Visibility.Collapsed;
+            CBSearch.Visibility = Visibility.Collapsed;
+            CBShare.Visibility = Visibility.Collapsed;
+            tmr.Start();
         }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        public void GoFocus(object sender, object e)
         {
-            if (SearchHolder.Visibility == Visibility.Collapsed)
-            {
-                SearchHolder.Visibility = Visibility.Visible;
-                Task.Factory.StartNew(() => Dispatcher.RunAsync(CoreDispatcherPriority.Low, () => SearchBox.Focus(FocusState.Programmatic)));
-            }
-            else
-            {
-                SearchHolder.Visibility = Visibility.Collapsed;
-            }
+            SearchBox.Focus(FocusState.Programmatic);
+            tmr.Stop();
+        }
+
+        private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Visibility = Visibility.Collapsed;
+            CBTitle.Visibility = Visibility.Visible;
+            CBSearch.Visibility = Visibility.Visible;
+            CBShare.Visibility = Visibility.Visible;
         }
 
         private void CBOpen_Click(object sender, RoutedEventArgs e)

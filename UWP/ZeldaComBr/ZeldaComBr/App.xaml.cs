@@ -1,4 +1,4 @@
-﻿using PushSDK;
+﻿using Parse;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Data.Xml.Dom;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
@@ -37,6 +38,9 @@ namespace ZeldaComBr
                 Microsoft.ApplicationInsights.WindowsCollectors.Metadata |
                 Microsoft.ApplicationInsights.WindowsCollectors.Session);
             this.InitializeComponent();
+
+            ParseClient.Initialize("IGHMijdAiP9x2DhjuVvQ65SdVYMJGE59i0NuD8iI", "qwyzQ11jrgdBiMDlygh0ntVnwxbeDysoOmcXAPs9");
+
             this.Suspending += OnSuspending;
         }
 
@@ -45,26 +49,17 @@ namespace ZeldaComBr
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
 
 #if DEBUG
-            if (System.Diagnostics.Debugger.IsAttached)
+            if (Debugger.IsAttached)
             {
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
 
             titleBarColor();
-
-            ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-
-            if (!localSettings.Values.ContainsKey("NotifEnabled") || bool.Parse(localSettings.Values["NotifEnabled"].ToString()))
-            {
-                Other.Other.Notif(true);
-
-                NotificationService.HandleStartPush(e.Arguments);
-            }
 
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -96,6 +91,19 @@ namespace ZeldaComBr
 
             // Ensure the current window is active
             Window.Current.Activate();
+
+            // This optional line tracks statistics around app opens, including push effectiveness:
+            if(Other.Other.IsConnected())
+            {
+                await ParseAnalytics.TrackAppOpenedAsync(e);
+
+                ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+
+                if (!localSettings.Values.ContainsKey("NotifEnabled") || bool.Parse(localSettings.Values["NotifEnabled"].ToString()))
+                {
+                    Other.Other.Notif(true);
+                }
+            }
         }
 
         public async void showMessage(string Message)
@@ -141,7 +149,6 @@ namespace ZeldaComBr
             if (arguments.ToString().Equals("enablenotif"))
             {
                 localSettings.Values["NotifEnabled"] = true;
-                NotificationService service = NotificationService.GetCurrent("secret key aqui");
                 Other.Other.Notif(true);
             }
             else if(arguments.ToString().Equals("disablenotif"))

@@ -8,7 +8,7 @@
     mc:Ignorable="d">
 
     <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <CommandBar Name="CB" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Background="#1e5e23" Grid.Row="0" Grid.Column="0">
+        <CommandBar Name="CB" x:Uid="CB" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Grid.Row="0" Grid.Column="0">
             <CommandBar.Content>
                 <TextBlock Text="Configurações" Name="CBTitle" FontWeight="Bold" Margin="12,14" TextTrimming="WordEllipsis" />
             </CommandBar.Content>
@@ -41,10 +41,10 @@
                                 <LineBreak/>
                                 <LineBreak/>
                                 Aplicativo desenvolvido por
-                                <Hyperlink NavigateUri="http://google.com/+AlefeSouza">Alefe Souza</Hyperlink>
+                                <Hyperlink NavigateUri="http://google.com/+AlefeSouza">Alefe Souza</Hyperlink>.
                                 <LineBreak />
                                 Quer ter uma versão desse aplicativo para seu blog ou site? Entre em contato
-                                <Hyperlink NavigateUri="mailto:blogapp@apps.aloogle.net">clicando aqui</Hyperlink> !
+                                <Hyperlink NavigateUri="mailto:blogapp@apps.aloogle.net">clicando aqui</Hyperlink>!
                             </Paragraph>
                         </RichTextBlock>
                     </StackPanel>
