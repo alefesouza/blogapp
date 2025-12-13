@@ -22,6 +22,8 @@ Don’t mind the coding practices or standards used here, I was just starting to
 
 More screenshots, including tablet version, on the directory for each app.
 
+Screenshots of the evolution of the app inside [./Screenshots/Evolution](./Screenshots/Evolution/).
+
 | Chrome | UWP |
 |-|-|
 | <img src="./Chrome/ZeldaComBr/Screenshots/1.webp"> | <img src="./UWP/ZeldaComBr/Screenshots/1.png"> |
