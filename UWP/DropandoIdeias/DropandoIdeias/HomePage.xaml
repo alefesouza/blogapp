@@ -1,0 +1,79 @@
+﻿<Page
+    x:Class="DropandoIdeias.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DropandoIdeias"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" x:Name="PostsGrid" />
+            <ColumnDefinition Width="0" x:Name="PostGrid" />
+        </Grid.ColumnDefinitions>
+
+        <RelativePanel Grid.Row="0" Grid.Column="0">
+            <CommandBar Name="CB" x:Uid="CB" RelativePanel.AlignLeftWithPanel="True" RelativePanel.AlignRightWithPanel="True" Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Stretch">
+                <CommandBar.Content>
+                    <StackPanel>
+                        <TextBlock Name="CBTitle" x:Uid="CBTitle" FontWeight="Bold" Margin="12,14" TextTrimming="WordEllipsis" />
+                        <AutoSuggestBox LostFocus="SearchBox_LostFocus" PlaceholderText="Pesquisar" Name="SearchBox" HorizontalAlignment="Stretch" Margin="10" QueryIcon="Find" QuerySubmitted="SearchBox_QuerySubmitted" Visibility="Collapsed" />
+                    </StackPanel>
+                </CommandBar.Content>
+
+                <AppBarButton Label="Post aleatório" Icon="ReShare" Name="CBRandom" Click="CBRandom_Click"></AppBarButton>
+                <AppBarButton Label="Pesquisar" Icon="Find" Name="CBSearch" Click="CBSearch_Click" ToolTipService.ToolTip="Pesquisar" />
+
+                <CommandBar.SecondaryCommands>
+                    <AppBarButton Label="Atualizar" Name="Refresh" Click="Refresh_Click" />
+                    <AppBarButton Label="Abrir site" Name="OpenSite" Click="OpenSite_Click" />
+                </CommandBar.SecondaryCommands>
+            </CommandBar>
+        </RelativePanel>
+
+        <Frame Name="PostsFrame" Grid.Row="1" Grid.Column="0" />
+
+        <Frame Name="PostFrame" Grid.Column="0" Grid.RowSpan="2" Visibility="Collapsed" />
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="CB.Margin" Value="48 0 0 0" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="660" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="CB.Margin" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="848" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="PostsGrid.Width" Value="400" />
+                        <Setter Target="PostGrid.Width" Value="*" />
+                        <Setter Target="PostFrame.(Grid.Column)" Value="1" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</Page>
