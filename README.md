@@ -2,7 +2,7 @@
 
 BlogApp was a set of Android apps and Chrome extensions that I created for free for blogs and news websites between 2014 and 2015 (I was 17 years old at the time). I started the project to improve my Android, Chrome and PHP development skills and to get my work in front of more people.
 
-The first versions were just a simple WebView, but the latest versions were fully native Android apps written in Java, loading content through the Blogger REST API and supporting push notifications.
+The first versions were just a simple WebView, but the latest versions were fully native Android apps written in Java, loading content through the WordPress and Blogger REST API and supporting push notifications.
 
 The Chrome extension was a wrapper for the RSS feed and supported push notifications for new posts, at a time when it was uncommon for websites to offer push notifications.
 

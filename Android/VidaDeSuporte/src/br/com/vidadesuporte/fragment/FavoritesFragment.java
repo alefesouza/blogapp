@@ -87,7 +87,7 @@ public class FavoritesFragment extends Fragment implements AbsListView.OnScrollL
 				try {
 					JSONObject json = new JSONObject(favorites[i]);
 
-					postsarray.add(new Posts(json.getString("id"), json.getString("titulo"), json.getString("imagem"), json.getString("descricao"), json.getString("url"), "", json.getString("categoria")));
+					postsarray.add(new Posts(json.getString("id"), json.getString("titulo"), json.getString("imagem"), json.getString("descricao"), json.getString("url"), ""));
 				} catch (JSONException e) {}
 			}
 		}

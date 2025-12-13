@@ -8,19 +8,17 @@ public class Posts {
     private String description;
     private String url;
     private String comments;
-    private String category;
 	
     public Posts() {
     }
 
-    public Posts(String id, String title, String image, String description, String url, String comments, String category) {
+    public Posts(String id, String title, String image, String description, String url, String comments) {
         this.id = id;
 		this.title = title;
 		this.image = image;
         this.description = description;
         this.url = url;
         this.comments = comments;
-		this.category = category;
     }
 
     public String getId() {
@@ -47,10 +45,6 @@ public class Posts {
         return this.comments;
     }
 
-    public String getCategory() {
-        return this.category;
-    }
-
     public void setId(String id) {
         this.id = id;
     }
@@ -73,9 +67,5 @@ public class Posts {
 
     public void setComments(String comments) {
         this.comments = comments;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
     }
 }

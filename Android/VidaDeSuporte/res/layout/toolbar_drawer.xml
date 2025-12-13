@@ -11,10 +11,6 @@
 		android:id="@+id/drawer_layout"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
-		<android.support.design.widget.CoordinatorLayout
-			android:id="@+id/coordinatorLayout"
-			android:layout_height="match_parent"
-			android:layout_width="match_parent">
 		<FrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
@@ -41,6 +37,16 @@
 					android:id="@+id/pager"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent" />
+				
+				<android.support.design.widget.FloatingActionButton
+					android:id="@+id/fabrandom"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:src="@drawable/ic_random"
+					android:layout_marginBottom="16dp"
+					android:layout_marginRight="16dp"
+					android:layout_gravity="right|bottom"
+					app:fabSize="normal" />
 			</FrameLayout>
 			
 			<FrameLayout
@@ -57,28 +63,8 @@
 				android:layout_below="@+id/toolbar"
 				android:background="@drawable/toolbar_dropshadow"
 				android:id="@+id/dropshadow" />
-
-			<com.gc.materialdesign.views.ProgressBarIndeterminate
-				android:id="@+id/progressBar2"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_below="@+id/toolbar"
-				android:background="@color/colorAccent"
-				android:visibility="gone"
-			/>
 		</RelativeLayout>
 		</FrameLayout>
-
-		<android.support.design.widget.FloatingActionButton
-			android:id="@+id/fabrandom"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:src="@drawable/ic_random"
-			android:layout_marginBottom="16dp"
-			android:layout_marginRight="16dp"
-			android:layout_gravity="right|bottom"
-			app:fabSize="normal" />
-		</android.support.design.widget.CoordinatorLayout>
 
 			<ListView
 				android:id="@+id/left_drawer"

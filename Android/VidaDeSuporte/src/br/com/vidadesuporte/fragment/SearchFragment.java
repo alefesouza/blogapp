@@ -242,9 +242,8 @@ public class SearchFragment extends Fragment implements AbsListView.OnScrollList
 						String imagem = c.get(TAG_IMAGEM).getAsString();
 						String url = c.get(TAG_URL).getAsString();
 						String comentarios = c.get(TAG_COMENTARIOS).getAsString();
-						String categoria = c.get("categoria").getAsString();
 
-						postsarray.add(new Posts(id, titulo, imagem, descricao, url, comentarios, categoria));
+						postsarray.add(new Posts(id, titulo, imagem, descricao, url, comentarios));
 					}
 					
 					if(!seted) {

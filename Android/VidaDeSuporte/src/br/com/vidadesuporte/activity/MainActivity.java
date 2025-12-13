@@ -82,13 +82,12 @@ public class MainActivity extends AppCompatActivity {
 
 	ArrayList<String> categoriasids = new ArrayList<String>();
 	ArrayList<String> categoriasnames = new ArrayList<String>();
-	ArrayList<String> categoriasicons = new ArrayList<String>();
 	private DrawerAdapter adapter2;
 	private TypedArray categoryIcons, socialIcons;
 	public static FloatingActionButton fabrandom;
 	SharedPreferences preferences;
 	Editor editor;
-	String titulo, suggestion, iconColor, linksname, fcategoriasname;
+	String titulo, suggestion, iconColor, linksname, fplaylistsname;
 	public static int pos;
 	int linkscount, categoriastotal, fcategoriascount;
 	boolean passed, start, home, drawerloaded;
@@ -175,15 +174,6 @@ public class MainActivity extends AppCompatActivity {
 					}
 				}
 		});
-		
-		fabrandom.setOnLongClickListener(new OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View p1) {
-				Toast toast = Toast.makeText(MainActivity.this, "Post aleatório", Toast.LENGTH_LONG);
-				toast.show();
-				return false;
-			}
-		});
 
 		if (savedInstanceState != null) {
 			pos = savedInstanceState.getInt("position");
@@ -225,11 +215,9 @@ public class MainActivity extends AppCompatActivity {
 
 						String id = c.get("id").getAsString();
 						String name = c.get("titulo").getAsString();
-						String icon = c.get("icon").getAsString();
 
 						categoriasids.add(id);
 						categoriasnames.add(name);
-						categoriasicons.add(icon);
 					}
 					categoriastotal = json.get("categorias").getAsJsonObject().get("total").getAsInt();
 
@@ -245,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
 						fcategoriasnames.add(name);
 						fcategoriasicons.add(icon);
 					}
-					fcategoriasname = json.get("featuredcategorias").getAsJsonObject().get("name").getAsString();
+					fplaylistsname = json.get("featuredcategorias").getAsJsonObject().get("name").getAsString();
 					
 					drawerloaded = true;
 					initDrawer(1);
@@ -363,13 +351,13 @@ public class MainActivity extends AppCompatActivity {
 
 			icons = new ArrayList < Icons > ();
 
-			icons.add(new Icons("Início", categoryIcons.getResourceId(0, -1), 0, ""));
-			icons.add(new Icons("Favoritos", categoryIcons.getResourceId(1, -1), 0, ""));
-			icons.add(new Icons("Rede sociais", categoryIcons.getResourceId(0, -1), 5, ""));
-			icons.add(new Icons("Facebook", socialIcons.getResourceId(0, -1), 1, ""));
-			icons.add(new Icons("Instagram", socialIcons.getResourceId(1, -1), 1, ""));
-			icons.add(new Icons("Twitter", socialIcons.getResourceId(2, -1), 1, ""));
-			icons.add(new Icons("YouTube", socialIcons.getResourceId(3, -1), 1, ""));
+			icons.add(new Icons("Início", categoryIcons.getResourceId(0, -1), false, ""));
+			icons.add(new Icons("Favoritos", categoryIcons.getResourceId(1, -1), false, ""));
+			icons.add(new Icons("Rede sociais", categoryIcons.getResourceId(0, -1), true, ""));
+			icons.add(new Icons("Facebook", socialIcons.getResourceId(0, -1), false, ""));
+			icons.add(new Icons("Instagram", socialIcons.getResourceId(1, -1), false, ""));
+			icons.add(new Icons("Twitter", socialIcons.getResourceId(2, -1), false, ""));
+			icons.add(new Icons("YouTube", socialIcons.getResourceId(3, -1), false, ""));
 
 			adapter2 = new DrawerAdapter(getApplicationContext(), icons);
 			mDrawerList.setAdapter(adapter2);
@@ -379,25 +367,25 @@ public class MainActivity extends AppCompatActivity {
 			mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
 		} else {
 			if(linksnames.size() > 0) {
-				icons.add(new Icons(linksname, categoryIcons.getResourceId(0, -1), 5, ""));
+				icons.add(new Icons(linksname, categoryIcons.getResourceId(0, -1), true, ""));
 				for (int i = 0; i < linksnames.size(); i++) {
-					icons.add(new Icons(linksnames.get(i), categoryIcons.getResourceId(2, (i + 1)*-1), 2, linksicons.get(i)));
+					icons.add(new Icons(linksnames.get(i), categoryIcons.getResourceId(2, (i + 1)*-1), false, linksicons.get(i)));
 				}
 				linkscount = linksnames.size() + 1;
 			}
 
 			if(fcategoriasids.size() > 0) {
-				icons.add(new Icons(fcategoriasname, categoryIcons.getResourceId(0, -1), 5, ""));
+				icons.add(new Icons(fplaylistsname, categoryIcons.getResourceId(0, -1), true, ""));
 				for (int i = 0; i < fcategoriasids.size(); i++) {
-					icons.add(new Icons(fcategoriasnames.get(i), categoryIcons.getResourceId(3, (i + 1)*-1), 3, fcategoriasicons.get(i)));
+					icons.add(new Icons(fcategoriasnames.get(i), categoryIcons.getResourceId(3, (i + 1)*-1), false, fcategoriasicons.get(i)));
 				}
 				fcategoriascount = fcategoriasids.size() + 1;
 			}
 
 			if(categoriasids.size() > 0) {
-				icons.add(new Icons("Categorias", categoryIcons.getResourceId(0, -1), 5, ""));
+				icons.add(new Icons("Categorias", categoryIcons.getResourceId(0, -1), true, ""));
 				for (int i = 0; i < categoriasids.size(); i++) {
-					icons.add(new Icons(categoriasnames.get(i), categoryIcons.getResourceId(3, (i + 1)*-1), 4, categoriasicons.get(i)));
+					icons.add(new Icons(categoriasnames.get(i), categoryIcons.getResourceId(3, (i + 1)*-1), false, ""));
 				}
 			}
 

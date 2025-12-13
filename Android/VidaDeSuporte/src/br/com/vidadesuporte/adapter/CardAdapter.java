@@ -57,7 +57,6 @@ public class CardAdapter extends BaseAdapter {
 
 		CustomTextView titulo = (CustomTextView)convertView.findViewById(R.id.titulo);
 		ImageView imagem = (ImageView)convertView.findViewById(R.id.image);
-		ImageView category = (ImageView)convertView.findViewById(R.id.category);
 		CustomTextView descricao = (CustomTextView)convertView.findViewById(R.id.descricao);
 		CustomTextView comentarios = (CustomTextView)convertView.findViewById(R.id.comentarios);
 
@@ -102,11 +101,6 @@ public class CardAdapter extends BaseAdapter {
 						}, 100);
 				}
 			});
-
-		Ion.with(context)
-			.load(posts.get(position).getCategory())
-			.withBitmap()
-			.intoImageView(category);
 
 		RelativeLayout relative = (RelativeLayout)convertView.findViewById(R.id.conteudo);
 		relative.setOnClickListener(new OnClickListener() {

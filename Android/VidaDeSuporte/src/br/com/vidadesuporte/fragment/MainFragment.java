@@ -34,11 +34,6 @@ import br.com.vidadesuporte.other.Other;
 import com.github.ksoichiro.android.observablescrollview.*;
 import br.com.vidadesuporte.activity.*;
 import br.com.vidadesuporte.other.*;
-import android.content.*;
-import android.content.SharedPreferences.Editor;
-import com.google.gson.*;
-import android.support.design.widget.*;
-import android.preference.*;
 
 @SuppressLint("InflateParams")
 public class MainFragment extends Fragment implements AbsListView.OnScrollListener, SwipeRefreshLayout.OnRefreshListener, ObservableScrollViewCallbacks {
@@ -48,17 +43,15 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 	public static ObservableListView list;
 	ArrayList <Posts> postsarray = new ArrayList <Posts>();
 	int more, mLastFirstVisibleItem, page, lastMore;
-	boolean ismore, block, isfirst, passed, nomore, seted, lastisfromoff;
+	boolean ismore, block, isfirst, passed, nomore, seted;
 	String title, lastUrl;
 	ViewGroup footer3, footer4, footer5;
 	ProgressBar progressBar;
 	ProgressBarCircularIndeterminate progressBarCompat;
 	private SwipeRefreshLayout mSwipeLayout;
 	SwingBottomInAnimationAdapter swingBottomInAnimationAdapter;
-	SharedPreferences preferences;
-	Editor editor;
 
-	private static String url, firstUrl;
+	private static String url;
 	private static final String TAG_POSTS = "posts";
 	private static final String TAG_ID = "id";
 	private static final String TAG_TITULO = "titulo";
@@ -83,12 +76,9 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		editor = preferences.edit();
 		view = inflater.inflate(R.layout.fragment_main, container, false);
 
-		firstUrl = "http://apps.aloogle.net/blogapp/wordpress/json/main.php?id=" + getString(R.string.blogid);
-		url = firstUrl;
+		url = "http://apps.aloogle.net/blogapp/wordpress/json/main.php?id=" + getString(R.string.blogid);
 		page = 1;
 			
 		lastMore = 10;
@@ -114,203 +104,148 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 		mSwipeLayout.setColorSchemeResources(R.color.colorAccent,
 											 R.color.logo_red, R.color.logo_black,
 											 R.color.logo_red);
-											 
-		if (Build.VERSION.SDK_INT >= 21) {
-			progressBar = (ProgressBar)view.findViewById(R.id.progressBar1);
-			progressBar.setVisibility(View.VISIBLE);
-		} else {
-			progressBarCompat = (ProgressBarCircularIndeterminate)view.findViewById(R.id.progressBar1);
-			progressBarCompat.setVisibility(View.VISIBLE);
-		}
-
-		lastisfromoff = false;
-
-		final boolean hasHome = preferences.contains("homeJson");
-		if(hasHome) {
-			JsonParser parser = new JsonParser();
-			JsonObject json = (JsonObject)parser.parse(preferences.getString("homeJson", ""));
-			makeList(json, true, false);
-			lastisfromoff = true;
-			getActivity().findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
-		}
-		
 		if (Other.isConnected(getActivity())) {
-			getPosts(hasHome);
+			getPosts();
 			if (Build.VERSION.SDK_INT == 10) {
 				new Handler().postDelayed(new Runnable() {
 						@Override
 						public void run() {
-							getPosts(hasHome);
+							getPosts();
 						}
 					}, 2000);
 			}
 		} else {
-			if(!preferences.contains("homeJson")) {
-				setError();
-			}
+			final RelativeLayout mainContent = (RelativeLayout)view.findViewById(R.id.main_content);
+			mainContent.setVisibility(View.GONE);
+			final RelativeLayout fragment = (RelativeLayout)view.findViewById(R.id.fragment);
+			LayoutInflater errorinflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			final View error = errorinflater.inflate(R.layout.error, null);
+			LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			error.setLayoutParams(vp);
+			error.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (Other.isConnected(getActivity())) {
+							fragment.removeView(error);
+							mainContent.setVisibility(View.VISIBLE);
+							getPosts();
+						} else {
+							Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
+							toast.show();
+						}
+					}
+				});
+			fragment.addView(error);
 		}
 
 		return view;
 	}
 	
-	public void getPosts(final boolean fromUpdate) {
+	public void getPosts() {
+		if (isfirst) {
+			if (Build.VERSION.SDK_INT >= 21) {
+				progressBar = (ProgressBar)view.findViewById(R.id.progressBar1);
+				progressBar.setVisibility(View.VISIBLE);
+			} else {
+				progressBarCompat = (ProgressBarCircularIndeterminate)view.findViewById(R.id.progressBar1);
+				progressBarCompat.setVisibility(View.VISIBLE);
+			}
+		}
 		Ion.with(this)
 			.load(url)
 			.asJsonObject()
 			.setCallback(new FutureCallback<JsonObject>() {
 				@Override
-				public void onCompleted(Exception e, final JsonObject json) {
-					if(e != null) {
-						if(isfirst && !preferences.contains("homeJson")) {
-							setError();
+				public void onCompleted(Exception e, JsonObject json) {
+					if (isfirst) {
+						if (Build.VERSION.SDK_INT >= 21) {
+							progressBar.setVisibility(View.GONE);
+						} else {
+							progressBarCompat.setVisibility(View.GONE);
 						}
-						Toast toast = Toast.makeText(getActivity(), "Houve um erro, " + getString(R.string.needinternet).toLowerCase(), Toast.LENGTH_LONG);
-						toast.show();
-						return;
-					}
-					if(url.equals(firstUrl) && preferences.contains("homeJson")) {
-					if(!preferences.getString("homeJson", "").equals(json.toString())) {
-						Snackbar
-							.make(getActivity().findViewById(R.id.coordinatorLayout), "Há novos posts!", Snackbar.LENGTH_LONG)
-							.setAction("Atualizar", new OnClickListener() {
-								@Override
-								public void onClick(View p1) {
-									makeList(json, false, fromUpdate);
-								}
-							})
-							.show();
-						editor.putString("homeJson",json.toString());
-						editor.commit();
-						update(false);
-					}
-					} else {
-						makeList(json, false, fromUpdate);
 					}
 					mSwipeLayout.setRefreshing(false);
-					getActivity().findViewById(R.id.progressBar2).setVisibility(View.GONE);
+					JsonArray posts = json.get(TAG_POSTS).getAsJsonArray();
+					if (ismore) {
+						if (!passed) {
+							more = more + posts.size();
+						}
+					}
+					block = false;
+					passed = false;
+
+					lastMore = posts.size();
+
+					if (Build.VERSION.SDK_INT > 10) {
+						if (lastMore < 10) {
+							list.removeFooterView(footer3);
+							list.addFooterView(footer4, null, false);
+							nomore = true;
+						}
+					}
+
+					for (int i = 0; i < posts.size(); i++) {
+						JsonObject c = posts.get(i).getAsJsonObject();
+
+						String id = c.get(TAG_ID).getAsString();
+						String titulo = c.get(TAG_TITULO).getAsString();
+						String descricao = c.get(TAG_DESCRICAO).getAsString();
+						String imagem = c.get(TAG_IMAGEM).getAsString();
+						String url = c.get(TAG_URL).getAsString();
+						String comentarios = c.get(TAG_COMENTARIOS).getAsString();
+						
+						postsarray.add(new Posts(id, titulo, imagem, descricao, url, comentarios));
+					}
+
+					if(!seted) {
+						swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(new CardAdapter(getActivity(), postsarray));
+						swingBottomInAnimationAdapter.setAbsListView(list);
+
+						assert swingBottomInAnimationAdapter.getViewAnimator() != null;
+						swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
+
+						list.setAdapter(swingBottomInAnimationAdapter);
+						list.setOnScrollListener(MainFragment.this);
+						seted = true;
+					} else {
+						swingBottomInAnimationAdapter.notifyDataSetChanged(true);
+					}
+
+					lastUrl = url;
+
+					page ++;
+					url = "http://apps.aloogle.net/blogapp/wordpress/json/main.php?page=" + page + "&id=" + getString(R.string.blogid);
+					isfirst = false;
+					list.setVisibility(View.VISIBLE);
 				}});}
 
-	public void makeList(JsonObject json, boolean fromOff, boolean fromUpdate) {
-		JsonArray posts = json.get(TAG_POSTS).getAsJsonArray();
-		if (ismore) {
-			if (!passed) {
-				more = more + posts.size();
-			}
-		}
-		block = false;
-		passed = false;
-
-		lastMore = posts.size();
-
-		if (Build.VERSION.SDK_INT > 10) {
-			if (lastMore < 10) {
-				list.removeFooterView(footer3);
-				list.addFooterView(footer4, null, false);
-				nomore = true;
-			}
-		}
-
-		for (int i = 0; i < posts.size(); i++) {
-			JsonObject c = posts.get(i).getAsJsonObject();
-
-			String id = c.get(TAG_ID).getAsString();
-			String titulo = c.get(TAG_TITULO).getAsString();
-			String descricao = c.get(TAG_DESCRICAO).getAsString();
-			String imagem = c.get(TAG_IMAGEM).getAsString();
-			String url = c.get(TAG_URL).getAsString();
-			String comentarios = c.get(TAG_COMENTARIOS).getAsString();
-			String categoria = c.get("categoria").getAsString();
-
-			postsarray.add(new Posts(id, titulo, imagem, descricao, url, comentarios, categoria));
-		}
-
-		if(!seted) {
-			swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(new CardAdapter(getActivity(), postsarray));
-			swingBottomInAnimationAdapter.setAbsListView(list);
-
-			assert swingBottomInAnimationAdapter.getViewAnimator() != null;
-			swingBottomInAnimationAdapter.getViewAnimator().setInitialDelayMillis(300);
-
-			list.setAdapter(swingBottomInAnimationAdapter);
-			list.setOnScrollListener(MainFragment.this);
-			seted = true;
-		} else {
-			swingBottomInAnimationAdapter.notifyDataSetChanged(true);
-		}
-
-		lastUrl = url;
-
-		if(!fromOff) {
-		page ++;
-		}
-		
-		url = firstUrl + "&page=" + page;
-		isfirst = false;
-		if (Build.VERSION.SDK_INT >= 21) {
-			progressBar.setVisibility(View.GONE);
-		} else {
-			progressBarCompat.setVisibility(View.GONE);
-		}
-		list.setVisibility(View.VISIBLE);
-	}
-
-
-	public void update(boolean toLimpar) {
-		if (Other.isConnected(getActivity())) {
-			url = firstUrl;
-			more = 0;
-			ismore = false;
-			block = true;
-			isfirst = true;
-			page = 1;
-			if (nomore) {
-				list.removeFooterView(footer4);
-				list.addFooterView(footer3, null, false);
-			}
-			if(!toLimpar) {
-				getPosts(true);
-			}
-		} else {
-			mSwipeLayout.setRefreshing(false);
-			Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
-			toast.show();
-		}
-	}
-	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_refresh:
-				update(true);
+				if (Other.isConnected(getActivity())) {
+					postsarray.clear();
+					url = "http://apps.aloogle.net/blogapp/wordpress/json/main.php?id=" + getString(R.string.blogid);
+					list.setVisibility(View.GONE);
+					more = 0;
+					ismore = false;
+					block = true;
+					isfirst = true;
+					page = 1;
+					if (nomore) {
+						list.removeFooterView(footer4);
+						list.addFooterView(footer3, null, false);
+					}
+					getPosts();
+				} else {
+					Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
+					toast.show();
+				}
 				return true;
 			default:
 				return
 					super.onOptionsItemSelected(item);
 		}
-	}
-	
-	public void setError() {
-		final RelativeLayout mainContent = (RelativeLayout)view.findViewById(R.id.main_content);
-		mainContent.setVisibility(View.GONE);
-		final RelativeLayout fragment = (RelativeLayout)view.findViewById(R.id.fragment);
-		LayoutInflater errorinflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		final View error = errorinflater.inflate(R.layout.error, null);
-		LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		error.setLayoutParams(vp);
-		error.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (Other.isConnected(getActivity())) {
-						fragment.removeView(error);
-						mainContent.setVisibility(View.VISIBLE);
-						getPosts(false);
-					} else {
-						Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
-						toast.show();
-					}
-				}
-			});
-		fragment.addView(error);
 	}
 
 	@Override
@@ -323,7 +258,7 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 				if (!block) {
 					if (Other.isConnected(getActivity())) {
 						ismore = true;
-						getPosts(false);
+						getPosts();
 						block = true;
 					} else {
 						Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
@@ -335,7 +270,7 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 										list.removeFooterView(footer5);
 										list.addFooterView(footer3);
 										ismore = true;
-										getPosts(false);
+										getPosts();
 									} else {
 										Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
 										toast.show();
@@ -373,6 +308,23 @@ public class MainFragment extends Fragment implements AbsListView.OnScrollListen
 	}
 
 	public void onRefresh() {
-		update(true);
+		if (Other.isConnected(getActivity())) {
+			list.setVisibility(View.GONE);
+			postsarray.clear();
+			url = "http://apps.aloogle.net/blogapp/wordpress/json/main.php?id=" + getString(R.string.blogid);
+			more = 0;
+			ismore = false;
+			block = true;
+			page = 1;
+			if (nomore) {
+				list.removeFooterView(footer4);
+				list.addFooterView(footer3, null, false);
+			}
+			getPosts();
+		} else {
+			mSwipeLayout.setRefreshing(false);
+			Toast toast = Toast.makeText(getActivity(), getString(R.string.needinternet), Toast.LENGTH_LONG);
+			toast.show();
+		}
 	}
 }

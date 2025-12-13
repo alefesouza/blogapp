@@ -13,39 +13,18 @@
 	android:background="@drawable/card"
     android:orientation="vertical"
     android:paddingBottom="@dimen/card_padding" >
-
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:padding="10dp"
-		android:id="@+id/head">
-		
-	<ImageView
-		android:id="@+id/category"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-		android:layout_alignParentTop="true"
-		android:layout_alignParentLeft="true"
-        tools:ignore="ContentDescription"
-	/>
 	
 	<br.com.vidadesuporte.other.CustomTextView
         android:id="@+id/titulo"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-		android:layout_alignLeft="@+id/category"
 		android:textColor="#000000"
-		android:layout_marginLeft="60dp"
-        android:textSize="27sp"
+		android:layout_margin="10dp"
+		android:layout_alignParentTop="true"
+        android:textSize="16sp"
         app:fontName="Special-Elite.ttf"
 	/>
-	</RelativeLayout>
 
-	<RelativeLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@+id/head"
-		android:id="@+id/imagerelative">
 	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_below="@+id/titulo"
@@ -63,18 +42,18 @@
 		android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+		android:layout_below="@+id/titulo"
 		android:adjustViewBounds="true"
         tools:ignore="ContentDescription"
 	/>
-</RelativeLayout>
 	
     <br.com.vidadesuporte.other.CustomTextView
         android:id="@+id/descricao"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-		android:layout_below="@+id/imagerelative"
+		android:layout_below="@+id/image"
 		android:textColor="#000000"
-		android:layout_margin="15dp"
+		android:layout_margin="10dp"
         app:fontName="Roboto-Regular.ttf"
 	/>
 
@@ -89,16 +68,16 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/commentsspace"
-		android:background="#1b1b1b"
+		android:background="@drawable/card"
 		android:layout_below="@+id/comentariosline"
 		android:padding="10dp" >
     <br.com.vidadesuporte.other.CustomTextView
         android:id="@+id/comentarios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-		android:textColor="#ffffff"
-		android:layout_centerInParent="true"
-        app:fontName="Dosis-Light.otf"
+		android:textColor="@color/colorAccent"
+		android:layout_alignParentRight="true"
+        app:fontName="Roboto-Regular.ttf"
 	/>
 	</RelativeLayout>
 </RelativeLayout>
