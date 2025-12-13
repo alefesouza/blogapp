@@ -1,0 +1,20 @@
+﻿<Application
+    x:Class="ZeldaComBr.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ZeldaComBr"
+    RequestedTheme="Dark">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <Color x:Key="SystemAccentColor">#FFfcd011</Color>
+
+                    <SolidColorBrush x:Key="TitleBarBackgroundThemeBrush" Color="#FF1e5e23" />
+                    <SolidColorBrush x:Key="TitleBarButtonHoverThemeBrush" Color="#FFfbda4d" />
+                    <SolidColorBrush x:Key="TitleBarButtonPressedThemeBrush" Color="#FFfcd011" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
