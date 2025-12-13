@@ -14,9 +14,9 @@ Don’t mind the coding practices or standards used here, I was just starting to
 
 | App | Version | Release date | #1 | #2 | #3 |
 |-|-|-|-|-|-|
-| DropandoIdeias | 3.7.1 | 24/08/2015 | <img src="./DropandoIdeias/Screenshots/phone/1.webp"> | <img src="./DropandoIdeias/Screenshots/phone/2.webp"> | <img src="./DropandoIdeias/Screenshots/phone/3.webp"> |
-| CasaDoCogumelo | 3.5.7 | 14/06/2015 | <img src="./CasaDoCogumelo/Screenshots/phone/1.webp"> | <img src="./CasaDoCogumelo/Screenshots/phone/2.webp"> | <img src="./CasaDoCogumelo/Screenshots/phone/3.webp"> |
-| ZeldaComBr | 2.2.2 | 09/12/2014 | <img src="./ZeldaComBr/Screenshots/phone/1.webp"> | <img src="./ZeldaComBr/Screenshots/phone/2.webp"> | <img src="./ZeldaComBr/Screenshots/phone/3.webp"> |
+| DropandoIdeias | 3.7.1 | 24/08/2015 | <img src="./Android/DropandoIdeias/Screenshots/phone/1.webp"> | <img src="./Android/DropandoIdeias/Screenshots/phone/2.webp"> | <img src="./Android/DropandoIdeias/Screenshots/phone/3.webp"> |
+| CasaDoCogumelo | 3.5.7 | 14/06/2015 | <img src="./Android/CasaDoCogumelo/Screenshots/phone/1.webp"> | <img src="./Android/CasaDoCogumelo/Screenshots/phone/2.webp"> | <img src="./Android/CasaDoCogumelo/Screenshots/phone/3.webp"> |
+| ZeldaComBr | 2.2.2 | 09/12/2014 | <img src="./Android/ZeldaComBr/Screenshots/phone/1.webp"> | <img src="./Android/ZeldaComBr/Screenshots/phone/2.webp"> | <img src="./Android/ZeldaComBr/Screenshots/phone/3.webp"> |
 
 More screenshots, including table version, on the directory for each app.
 
