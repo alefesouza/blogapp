@@ -14,11 +14,10 @@ Adapting the app is very easy (even though no one would do that nowadays because
 |-|-|
 | ![Screenshot_2015-07-16-17-27-14](./Screenshots/Screenshot_2015-07-16-17-27-14.png) | ![Screenshot_2015-07-17-00-09-08](./Screenshots/Screenshot_2015-07-17-00-09-08.png) |
 | ![Screenshot_2015-07-07-19-37-26](./Screenshots/Screenshot_2015-07-07-19-37-26.png) | ![Screenshot_2015-07-09-15-01-25](./Screenshots/Screenshot_2015-07-09-15-01-25.png) |
-| ![Screenshot_2015-07-12-16-39-22](./Screenshots/Screenshot_2015-07-12-16-39-22.png) | ![Screenshot_2015-07-09-15-00-56](./Screenshots/Screenshot_2015-07-09-00-09-51.png) |
 | ![Screenshot_2015-07-12-16-40-10](./Screenshots/Screenshot_2015-07-12-16-40-10.png) | ![Screenshot_2015-07-07-21-01-42](./Screenshots/Screenshot_2015-07-07-21-01-42.png) |
 | ![Screenshot_2015-07-12-18-55-42](./Screenshots/Screenshot_2015-07-12-18-55-42.png) | ![Screenshot_2015-07-07-21-00-18](./Screenshots/Screenshot_2015-07-07-21-00-18.png) |
-| ![Screenshot_2015-07-12-19-02-44](./Screenshots/Screenshot_2015-07-12-19-02-44.png) | ![Screenshot_2015-07-08-00-19-05](./Screenshots/Screenshot_2015-07-07-20-59-46) |
-| ![Screenshot_2015-07-12-16-39-39](./Screenshots/Screenshot_2015-07-12-16-39-39.png) | |
+| ![Screenshot_2015-07-12-19-02-44](./Screenshots/Screenshot_2015-07-12-19-02-44.png) | ![Screenshot_2015-07-08-00-19-05](./Screenshots/Screenshot_2015-07-07-20-59-46.png) |
+| ![Screenshot_2015-07-12-16-39-39](./Screenshots/Screenshot_2015-07-12-16-39-39.png) | ![Screenshot_2015-07-09-15-00-56](./Screenshots/Screenshot_2015-07-09-00-09-51.png) |
 | ![Screenshot_2015-07-07-17-00-13](./Screenshots/Screenshot_2015-07-07-17-00-13.png) | |
 | ![Screenshot_2015-07-07-19-37-17](./Screenshots/Screenshot_2015-07-07-19-37-17.png) | |
 | ![Screenshot_2015-07-07-19-37-46](./Screenshots/Screenshot_2015-07-07-19-37-46.png) | |
