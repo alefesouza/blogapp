@@ -12,11 +12,13 @@ Written in Java.
 
 | Phone | Tablet 7" | Tablet 10" |
 |-|-|-|
-| <img src="./Screenshots/phone/1.webp"> | <img src="./Screenshots/tablet7/1.webp"> | <img src="./Screenshots/tablet10/1.webp"> |
-| <img src="./Screenshots/phone/2.webp"> | <img src="./Screenshots/tablet7/2.webp"> | |
-| <img src="./Screenshots/phone/3.webp"> | | |
-| <img src="./Screenshots/phone/4.webp"> | | |
-| <img src="./Screenshots/phone/5.webp"> | <img src="./Screenshots/tablet7/5.webp"> | <img src="./Screenshots/tablet10/5.webp"> |
-| <img src="./Screenshots/phone/6.webp"> | | <img src="./Screenshots/tablet10/6.webp"> |
-| <img src="./Screenshots/phone/7.webp"> | <img src="./Screenshots/tablet7/7.webp"> | |
-| <img src="./Screenshots/phone/8.webp"> | | |
+| <img src="./Screenshots/phone/1.jpg"> | <img src="./Screenshots/tablet7/1.jpg"> | <img src="./Screenshots/tablet10/1.jpg"> |
+| <img src="./Screenshots/phone/2.jpg"> | <img src="./Screenshots/tablet7/2.jpg"> | |
+| <img src="./Screenshots/phone/3.jpg"> | | |
+| <img src="./Screenshots/phone/4.jpg"> | | |
+| <img src="./Screenshots/phone/5.jpg"> | <img src="./Screenshots/tablet7/5.jpg"> | <img src="./Screenshots/tablet10/5.jpg"> |
+| <img src="./Screenshots/phone/6.jpg"> | | <img src="./Screenshots/tablet10/6.jpg"> |
+| <img src="./Screenshots/phone/7.jpg"> | <img src="./Screenshots/tablet7/7.jpg"> | |
+| <img src="./Screenshots/phone/8.jpg"> | | |
+
+Screenshots of the evolution of the app inside [../../Screenshots/Evolution](../../Screenshots/Evolution/).

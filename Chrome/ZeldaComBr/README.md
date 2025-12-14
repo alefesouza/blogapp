@@ -12,7 +12,7 @@ Written with web technologies.
 
 | Chrome |
 |-|
-| <img src="./Screenshots/1.webp"> |
-| <img src="./Screenshots/2.webp"> |
-| <img src="./Screenshots/3.webp"> |
-| <img src="./Screenshots/4.webp"> |
+| <img src="./Screenshots/1.jpg"> |
+| <img src="./Screenshots/2.jpg"> |
+| <img src="./Screenshots/3.jpg"> |
+| <img src="./Screenshots/4.jpg"> |
